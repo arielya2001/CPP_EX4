@@ -11,4 +11,7 @@ add_executable(CPP_EX4
         AscendingOrderIterator.hpp
         DescendingOrderIterator.hpp
         SideCrossOrderIterator.hpp
+        ReverseOrderIterator.hpp
+        OrderIterator.hpp
+        MiddleOutOrderIterator.hpp
 )

@@ -11,6 +11,11 @@
 #include <stdexcept>
 #include "AscendingOrderIterator.hpp"
 #include "DescendingOrderIterator.hpp"
+#include "ReverseOrderIterator.hpp"
+#include "SideCrossOrderIterator.hpp"
+#include "OrderIterator.hpp"
+#include "MiddleOutOrderIterator.hpp"
+
 
 namespace ariel {
 
@@ -74,6 +79,39 @@ namespace ariel {
         DescendingOrderIterator<T> end_descending_order() const {
             return DescendingOrderIterator<T>(*this, true);
         }
+
+        SideCrossOrderIterator<T> begin_side_cross_order() const {
+            return SideCrossOrderIterator<T>(*this, false);
+        }
+
+        SideCrossOrderIterator<T> end_side_cross_order() const {
+            return SideCrossOrderIterator<T>(*this, true);
+        }
+
+        ReverseOrderIterator<T> begin_reverse_order() const {
+            return ReverseOrderIterator<T>(*this, false);
+        }
+
+        ReverseOrderIterator<T> end_reverse_order() const {
+            return ReverseOrderIterator<T>(*this, true);
+        }
+
+        OrderIterator<T> begin_order() const {
+            return OrderIterator<T>(*this, false);
+        }
+
+        OrderIterator<T> end_order() const {
+            return OrderIterator<T>(*this, true);
+        }
+
+        MiddleOutOrderIterator<T> begin_middle_out_order() const {
+            return MiddleOutOrderIterator<T>(*this, false);
+        }
+
+        MiddleOutOrderIterator<T> end_middle_out_order() const {
+            return MiddleOutOrderIterator<T>(*this, true);
+        }
+
 
 
     };
