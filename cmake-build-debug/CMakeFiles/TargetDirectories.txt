@@ -1,0 +1,3 @@
+/home/ariely122/CPP_EX4/cmake-build-debug/CMakeFiles/CPP_EX4.dir
+/home/ariely122/CPP_EX4/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/ariely122/CPP_EX4/cmake-build-debug/CMakeFiles/rebuild_cache.dir

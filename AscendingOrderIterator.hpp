@@ -1,0 +1,80 @@
+//
+// Created by ariely122 on 6/6/25.
+//
+
+#ifndef ASCENDINGORDERITERATOR_HPP
+#define ASCENDINGORDERITERATOR_HPP
+
+#include <vector>
+#include <algorithm>
+#include <cstddef>
+
+namespace ariel {
+
+    template<typename T>
+    class MyContainer;
+
+    template<typename T>
+    class AscendingOrderIterator {
+    private:
+        const MyContainer<T>* container;  // מצביע לקונטיינר
+        std::vector<T> sorted_data;       // עותק ממויין של האיברים
+        size_t index;                     // אינדקס
+
+    public:
+        // 🔹 בנאי רגיל
+        AscendingOrderIterator(const MyContainer<T>& cont, bool is_end = false)
+            : container(&cont), index(0) {
+            sorted_data = container->getData();
+            std::sort(sorted_data.begin(), sorted_data.end());
+            if (is_end) {
+                index = sorted_data.size();
+            }
+        }
+
+        //  בנאי העתקה (Copy Constructor)
+        AscendingOrderIterator(const AscendingOrderIterator& other)
+            : container(other.container),
+              sorted_data(other.sorted_data),
+              index(other.index) {}
+
+        //  אופרטור השמה
+        AscendingOrderIterator& operator=(const AscendingOrderIterator& other) {
+            if (this != &other) {
+                container = other.container;
+                sorted_data = other.sorted_data;
+                index = other.index;
+            }
+            return *this;
+        }
+
+        // אופרטור גישה לערך
+        T operator*() const {
+            if (index >= sorted_data.size()) {
+                throw std::out_of_range("Iterator out of range");
+            }
+            return sorted_data[index];
+        }
+
+        // אופרטור הגדלה
+        AscendingOrderIterator& operator++() {
+            if (index >= sorted_data.size()) {
+                throw std::out_of_range("Cannot increment beyond end.");
+            }
+            ++index;
+            return *this;
+        }
+
+        // השוואה
+        bool operator!=(const AscendingOrderIterator& other) const {
+            return index != other.index;
+        }
+
+        bool operator==(const AscendingOrderIterator& other) const {
+            return index == other.index;
+        }
+    };
+
+}
+
+#endif //ASCENDINGORDERITERATOR_HPP
