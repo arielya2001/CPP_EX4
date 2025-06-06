@@ -1291,12 +1291,12 @@ TEST_CASE("Iterators with double") {  // Tests iterators with doubles
         c.addElement(1.41);  // Adds element 1.41
         c.addElement(2.72);  // Adds element 2.72
         c.addElement(5.0); // // Adds element 5.0
-        c.addElement(0.0); // Adds element 0.5
+        c.addElement(0.5); // Adds element 0.5
 
-        testIterators(c,  // Tests拿出 all iterator types
+        testIterators(c,  // Tests all iterator types
                       vector<double>{0.5, 1.41, 2.72, 3.14, 5.0},    // Expected ascending order
                       vector<double>{5.0, 3.14, 2.72, 1.41, 0.5}, // // Expected descending order
-                      vector<double>{0.0, 5.0, 1.41, 3.14, 2.72}, // // Expected side cross order
+                      vector<double>{0.5, 5.0, 1.41, 3.14, 2.72}, // // Expected side cross order
                       vector<double>{0.5, 5.0, 2.72, 1.41, 3.14}, // // Expected reverse order
                       vector<double>{3.14, 1.41, 2.72, 5.0, 0.5}, // // Expected insertion order
                       vector<double>{2.72, 1.41, 5.0, 3.14, 0.5}); // // Expected middle out order
@@ -1359,7 +1359,7 @@ TEST_CASE("Iterators with double") {  // Tests iterators with doubles
                       vector<double>{2.5, 2.5, 2.5, 2.5, 2.5}, // // Expected side cross order
                       vector<double>{2.5, 2.5, 2.5, 2.5, 2.5}, // // Expected reverse order
                       vector<double>{2.5, 2.5, 2.5, 2.5, 2.5}, // // Expected insertion order
-                      vector<double>{2.5, 5, 2.5, 2.5, 2.5, 2.5}); // // Expected middle out order
+                      vector<double>{2.5, 2.5, 2.5, 2.5, 2.5}); // // Expected middle out order
     }
 
     SUBCASE("Large container") {  // Tests container with many elements
