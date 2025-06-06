@@ -27,6 +27,7 @@ The project demonstrates iterator behavior through:
 - `Main.cpp`: Provides formatted output of all iterator types for two sample containers (odd and even-sized).
 - `Demo.cpp`: A minimal example showcasing the functionality of all six iterator types(Given to us).
 - `doctest.h`: Testing framework used for writing and running unit tests.
+- `Makefile`: Automates build, test, demo, and cleanup tasks via make commands
 
 ## Class Design  
 
