@@ -17,26 +17,487 @@ string captureOutput(const MyContainer<T>& c) {
     return oss.str();
 }
 
-TEST_CASE("Basic operations and container functions") {
-    MyContainer<int> c;
-    CHECK(c.size() == 0);
-    CHECK(captureOutput(c) == "[]");
+TEST_CASE("MyContainer operations with different types") {
+    SUBCASE("Testing with int") {
+        MyContainer<int> c;
 
-    c.addElement(5);
-    c.addElement(3);
-    c.addElement(8);
-    c.addElement(1);
-    c.addElement(7);
-    CHECK(c.size() == 5);
-    CHECK(captureOutput(c) == "[5, 3, 8, 1, 7]");
-    CHECK(c.getData() == vector<int>{5, 3, 8, 1, 7});
+        // Test initial state
+        CHECK(c.size() == 0);
+        CHECK(captureOutput(c) == "[]");
+        CHECK(c.getData() == std::vector<int>{});
 
-    c.removeElement(3);
-    CHECK(c.size() == 4);
-    CHECK(captureOutput(c) == "[5, 8, 1, 7]");
-    CHECK(c.getData() == vector<int>{5, 8, 1, 7});
+        // Test addElement
+        c.addElement(5);
+        c.addElement(3);
+        c.addElement(8);
+        c.addElement(1);
+        c.addElement(7);
+        CHECK(c.size() == 5);
+        CHECK(captureOutput(c) == "[5, 3, 8, 1, 7]");
+        CHECK(c.getData() == std::vector<int>{5, 3, 8, 1, 7});
 
-    CHECK_THROWS_AS(c.removeElement(37), runtime_error);
+        // Test removeElement
+        c.removeElement(3);
+        CHECK(c.size() == 4);
+        CHECK(captureOutput(c) == "[5, 8, 1, 7]");
+        CHECK(c.getData() == std::vector<int>{5, 8, 1, 7});
+
+        // Test removeElement with non-existent element
+        CHECK_THROWS_AS(c.removeElement(30), std::runtime_error);
+
+        // Test remove all elements
+        c.removeElement(5);
+        c.removeElement(8);
+        c.removeElement(1);
+        c.removeElement(7);
+        CHECK(c.size() == 0);
+        CHECK(captureOutput(c) == "[]");
+        CHECK(c.getData() == std::vector<int>{});
+
+        // Test remove from empty container
+        CHECK_THROWS_AS(c.removeElement(1), std::runtime_error);
+    }
+
+    SUBCASE("Testing with double") {
+        MyContainer<double> c;
+
+        // Test initial state
+        CHECK(c.size() == 0);
+        CHECK(captureOutput(c) == "[]");
+        CHECK(c.getData() == std::vector<double>{});
+
+        // Test addElement
+        c.addElement(5.5);
+        c.addElement(3.3);
+        c.addElement(8.8);
+        c.addElement(1.1);
+        c.addElement(7.7);
+        CHECK(c.size() == 5);
+        CHECK(captureOutput(c) == "[5.5, 3.3, 8.8, 1.1, 7.7]");
+        CHECK(c.getData() == std::vector<double>{5.5, 3.3, 8.8, 1.1, 7.7});
+
+        // Test removeElement
+        c.removeElement(3.3);
+        CHECK(c.size() == 4);
+        CHECK(captureOutput(c) == "[5.5, 8.8, 1.1, 7.7]");
+        CHECK(c.getData() == std::vector<double>{5.5, 8.8, 1.1, 7.7});
+
+        // Test removeElement with non-existent element
+        CHECK_THROWS_AS(c.removeElement(37.7), std::runtime_error);
+
+        // Test remove all elements
+        c.removeElement(5.5);
+        c.removeElement(8.8);
+        c.removeElement(1.1);
+        c.removeElement(7.7);
+        CHECK(c.size() == 0);
+        CHECK(captureOutput(c) == "[]");
+        CHECK(c.getData() == std::vector<double>{});
+
+        // Test remove from empty container
+        CHECK_THROWS_AS(c.removeElement(1.1), std::runtime_error);
+    }
+
+    SUBCASE("Testing with string") {
+        MyContainer<std::string> c;
+
+        // Test initial state
+        CHECK(c.size() == 0);
+        CHECK(captureOutput(c) == "[]");
+        CHECK(c.getData() == std::vector<std::string>{});
+
+        // Test addElement
+        c.addElement("apple");
+        c.addElement("banana");
+        c.addElement("cherry");
+        c.addElement("date");
+        c.addElement("elderberry");
+        CHECK(c.size() == 5);
+        CHECK(captureOutput(c) == "[apple, banana, cherry, date, elderberry]");
+        CHECK(c.getData() == std::vector<std::string>{"apple", "banana", "cherry", "date", "elderberry"});
+
+        // Test removeElement
+        c.removeElement("banana");
+        CHECK(c.size() == 4);
+        CHECK(captureOutput(c) == "[apple, cherry, date, elderberry]");
+        CHECK(c.getData() == std::vector<std::string>{"apple", "cherry", "date", "elderberry"});
+
+        // Test removeElement with non-existent element
+        CHECK_THROWS_AS(c.removeElement("fig"), std::runtime_error);
+
+        // Test remove all elements
+        c.removeElement("apple");
+        c.removeElement("cherry");
+        c.removeElement("date");
+        c.removeElement("elderberry");
+        CHECK(c.size() == 0);
+        CHECK(captureOutput(c) == "[]");
+        CHECK(c.getData() == std::vector<std::string>{});
+
+        // Test remove from empty container
+        CHECK_THROWS_AS(c.removeElement("apple"), std::runtime_error);
+    }
+    SUBCASE("Testing with char") {
+        MyContainer<char> c;
+
+        // Test initial state
+        CHECK(c.size() == 0);
+        CHECK(captureOutput(c) == "[]");
+        CHECK(c.getData() == std::vector<char>{});
+
+        // Test addElement
+        c.addElement('a');
+        c.addElement('e');
+        c.addElement('i');
+        c.addElement('o');
+        c.addElement('u');
+        CHECK(c.size() == 5);
+        CHECK(captureOutput(c) == "[a, e, i, o, u]");
+        CHECK(c.getData() == std::vector<char>{'a', 'e', 'i', 'o', 'u'});
+
+        // Test removeElement
+        c.removeElement('e');
+        CHECK(c.size() == 4);
+        CHECK(captureOutput(c) == "[a, i, o, u]");
+        CHECK(c.getData() == std::vector<char>{'a', 'i', 'o', 'u'});
+
+        // Test removeElement with non-existent element
+        CHECK_THROWS_AS(c.removeElement('z'), std::runtime_error);
+
+        // Test remove all elements
+        c.removeElement('a');
+        c.removeElement('i');
+        c.removeElement('o');
+        c.removeElement('u');
+        CHECK(c.size() == 0);
+        CHECK(captureOutput(c) == "[]");
+        CHECK(c.getData() == std::vector<char>{});
+
+        // Test remove from empty container
+        CHECK_THROWS_AS(c.removeElement('a'), std::runtime_error);
+    }
+    SUBCASE("Testing with float") {
+        MyContainer<float> c;
+
+        // Test initial state
+        CHECK(c.size() == 0);
+        CHECK(captureOutput(c) == "[]");
+        CHECK(c.getData() == std::vector<float>{});
+
+        // Test addElement
+        c.addElement(1.1f);
+        c.addElement(2.2f);
+        c.addElement(3.3f);
+        c.addElement(4.4f);
+        c.addElement(5.5f);
+        CHECK(c.size() == 5);
+        CHECK(captureOutput(c) == "[1.1, 2.2, 3.3, 4.4, 5.5]");
+        CHECK(c.getData() == std::vector<float>{1.1f, 2.2f, 3.3f, 4.4f, 5.5f});
+
+        // Test removeElement
+        c.removeElement(2.2f);
+        CHECK(c.size() == 4);
+        CHECK(captureOutput(c) == "[1.1, 3.3, 4.4, 5.5]");
+        CHECK(c.getData() == std::vector<float>{1.1f, 3.3f, 4.4f, 5.5f});
+
+        // Test removeElement with non-existent element
+        CHECK_THROWS_AS(c.removeElement(99.9f), std::runtime_error);
+
+        // Test remove all elements
+        c.removeElement(1.1f);
+        c.removeElement(3.3f);
+        c.removeElement(4.4f);
+        c.removeElement(5.5f);
+        CHECK(c.size() == 0);
+        CHECK(captureOutput(c) == "[]");
+        CHECK(c.getData() == std::vector<float>{});
+
+        // Test remove from empty container
+        CHECK_THROWS_AS(c.removeElement(3.14f), std::runtime_error);
+    }
+}
+
+TEST_CASE("Iterator advancement: prefix and postfix for all types") {
+    SUBCASE("int") {
+        MyContainer<int> c;
+        for (int i = 1; i <= 5; ++i) c.addElement(i);
+        CHECK(c.size() == 5);
+
+        auto it_prefix = c.begin_ascending_order();
+        CHECK(*it_prefix == 1);
+        CHECK(*(++it_prefix) == 2);
+
+        auto it_postfix = c.begin_ascending_order();
+        CHECK(*it_postfix == 1);
+        CHECK(*(it_postfix++) == 1);
+        CHECK(*it_postfix == 2);
+
+        auto order_prefix = c.begin_order();
+        CHECK(*order_prefix == 1);
+        CHECK(*(++order_prefix) == 2);
+
+        auto order_postfix = c.begin_order();
+        CHECK(*order_postfix == 1);
+        CHECK(*(order_postfix++) == 1);
+        CHECK(*order_postfix == 2);
+
+        auto desc_prefix = c.begin_descending_order();
+        CHECK(*desc_prefix == 5);
+        CHECK(*(++desc_prefix) == 4);
+
+        auto desc_postfix = c.begin_descending_order();
+        CHECK(*desc_postfix == 5);
+        CHECK(*(desc_postfix++) == 5);
+        CHECK(*desc_postfix == 4);
+
+        auto side_prefix = c.begin_side_cross_order();
+        CHECK(*side_prefix == 1);
+        CHECK(*(++side_prefix) == 5);
+
+        auto side_postfix = c.begin_side_cross_order();
+        CHECK(*side_postfix == 1);
+        CHECK(*(side_postfix++) == 1);
+        CHECK(*side_postfix == 5);
+
+        auto rev_prefix = c.begin_reverse_order();
+        CHECK(*rev_prefix == 5);
+        CHECK(*(++rev_prefix) == 4);
+
+        auto rev_postfix = c.begin_reverse_order();
+        CHECK(*rev_postfix == 5);
+        CHECK(*(rev_postfix++) == 5);
+        CHECK(*rev_postfix == 4);
+
+        auto mid_prefix = c.begin_middle_out_order();
+        CHECK(*mid_prefix == 3);
+        CHECK(*(++mid_prefix) == 2);
+
+        auto mid_postfix = c.begin_middle_out_order();
+        CHECK(*mid_postfix == 3);
+        CHECK(*(mid_postfix++) == 3);
+        CHECK(*mid_postfix == 2);
+    }
+
+    SUBCASE("float") {
+        MyContainer<float> c;
+        for (float i = 1.1f; i <= 5.1f; i += 1.0f) c.addElement(i);
+        CHECK(c.size() == 5);
+
+        auto asc_prefix = c.begin_ascending_order();
+        CHECK(*asc_prefix == 1.1f);
+        CHECK(*(++asc_prefix) == 2.1f);
+
+        auto asc_postfix = c.begin_ascending_order();
+        CHECK(*asc_postfix == 1.1f);
+        CHECK(*(asc_postfix++) == 1.1f);
+        CHECK(*asc_postfix == 2.1f);
+
+        auto desc_prefix = c.begin_descending_order();
+        CHECK(*desc_prefix == 5.1f);
+        CHECK(*(++desc_prefix) == 4.1f);
+
+        auto desc_postfix = c.begin_descending_order();
+        CHECK(*desc_postfix == 5.1f);
+        CHECK(*(desc_postfix++) == 5.1f);
+        CHECK(*desc_postfix == 4.1f);
+
+        auto side_prefix = c.begin_side_cross_order();
+        CHECK(*side_prefix == 1.1f);
+        CHECK(*(++side_prefix) == 5.1f);
+
+        auto side_postfix = c.begin_side_cross_order();
+        CHECK(*side_postfix == 1.1f);
+        CHECK(*(side_postfix++) == 1.1f);
+        CHECK(*side_postfix == 5.1f);
+
+        auto rev_prefix = c.begin_reverse_order();
+        CHECK(*rev_prefix == 5.1f);
+        CHECK(*(++rev_prefix) == 4.1f);
+
+        auto rev_postfix = c.begin_reverse_order();
+        CHECK(*rev_postfix == 5.1f);
+        CHECK(*(rev_postfix++) == 5.1f);
+        CHECK(*rev_postfix == 4.1f);
+
+        auto mid_prefix = c.begin_middle_out_order();
+        CHECK(*mid_prefix == 3.1f);
+        CHECK(*(++mid_prefix) == 2.1f);
+
+        auto mid_postfix = c.begin_middle_out_order();
+        CHECK(*mid_postfix == 3.1f);
+        CHECK(*(mid_postfix++) == 3.1f);
+        CHECK(*mid_postfix == 2.1f);
+    }
+
+    SUBCASE("double") {
+        MyContainer<double> c;
+        for (double i = 1.0; i <= 5.0; i += 1.0) c.addElement(i);
+        CHECK(c.size() == 5);
+
+        auto asc_prefix = c.begin_ascending_order();
+        CHECK(*asc_prefix == 1.0);
+        CHECK(*(++asc_prefix) == 2.0);
+
+        auto asc_postfix = c.begin_ascending_order();
+        CHECK(*asc_postfix == 1.0);
+        CHECK(*(asc_postfix++) == 1.0);
+        CHECK(*asc_postfix == 2.0);
+
+        auto order_prefix = c.begin_order();
+        CHECK(*order_prefix == 1.0);
+        CHECK(*(++order_prefix) == 2.0);
+
+        auto order_postfix = c.begin_order();
+        CHECK(*order_postfix == 1.0);
+        CHECK(*(order_postfix++) == 1.0);
+        CHECK(*order_postfix == 2.0);
+
+        auto desc_prefix = c.begin_descending_order();
+        CHECK(*desc_prefix == 5.0);
+        CHECK(*(++desc_prefix) == 4.0);
+
+        auto desc_postfix = c.begin_descending_order();
+        CHECK(*desc_postfix == 5.0);
+        CHECK(*(desc_postfix++) == 5.0);
+        CHECK(*desc_postfix == 4.0);
+
+        auto side_prefix = c.begin_side_cross_order();
+        CHECK(*side_prefix == 1.0);
+        CHECK(*(++side_prefix) == 5.0);
+
+        auto side_postfix = c.begin_side_cross_order();
+        CHECK(*side_postfix == 1.0);
+        CHECK(*(side_postfix++) == 1.0);
+        CHECK(*side_postfix == 5.0);
+
+        auto rev_prefix = c.begin_reverse_order();
+        CHECK(*rev_prefix == 5.0);
+        CHECK(*(++rev_prefix) == 4.0);
+
+        auto rev_postfix = c.begin_reverse_order();
+        CHECK(*rev_postfix == 5.0);
+        CHECK(*(rev_postfix++) == 5.0);
+        CHECK(*rev_postfix == 4.0);
+
+        auto mid_prefix = c.begin_middle_out_order();
+        CHECK(*mid_prefix == 3.0);
+        CHECK(*(++mid_prefix) == 2.0);
+
+        auto mid_postfix = c.begin_middle_out_order();
+        CHECK(*mid_postfix == 3.0);
+        CHECK(*(mid_postfix++) == 3.0);
+        CHECK(*mid_postfix == 2.0);
+    }
+
+    SUBCASE("string") {
+        MyContainer<std::string> c;
+        c.addElement("alpha");
+        c.addElement("bravo");
+        c.addElement("charlie");
+        c.addElement("delta");
+        c.addElement("echo");
+        CHECK(c.size() == 5);
+
+        auto asc_prefix = c.begin_ascending_order();
+        CHECK(*asc_prefix == "alpha");
+        CHECK(*(++asc_prefix) == "bravo");
+
+        auto asc_postfix = c.begin_ascending_order();
+        CHECK(*asc_postfix == "alpha");
+        CHECK(*(asc_postfix++) == "alpha");
+        CHECK(*asc_postfix == "bravo");
+
+        auto desc_prefix = c.begin_descending_order();
+        CHECK(*desc_prefix == "echo");
+        CHECK(*(++desc_prefix) == "delta");
+
+        auto desc_postfix = c.begin_descending_order();
+        CHECK(*desc_postfix == "echo");
+        CHECK(*(desc_postfix++) == "echo");
+        CHECK(*desc_postfix == "delta");
+
+        auto side_prefix = c.begin_side_cross_order();
+        CHECK(*side_prefix == "alpha");
+        CHECK(*(++side_prefix) == "echo");
+
+        auto side_postfix = c.begin_side_cross_order();
+        CHECK(*side_postfix == "alpha");
+        CHECK(*(side_postfix++) == "alpha");
+        CHECK(*side_postfix == "echo");
+
+        auto rev_prefix = c.begin_reverse_order();
+        CHECK(*rev_prefix == "echo");
+        CHECK(*(++rev_prefix) == "delta");
+
+        auto rev_postfix = c.begin_reverse_order();
+        CHECK(*rev_postfix == "echo");
+        CHECK(*(rev_postfix++) == "echo");
+        CHECK(*rev_postfix == "delta");
+
+        auto mid_prefix = c.begin_middle_out_order();
+        CHECK(*mid_prefix == "charlie");
+        CHECK(*(++mid_prefix) == "bravo");
+
+        auto mid_postfix = c.begin_middle_out_order();
+        CHECK(*mid_postfix == "charlie");
+        CHECK(*(mid_postfix++) == "charlie");
+        CHECK(*mid_postfix == "bravo");
+    }
+
+    SUBCASE("char") {
+        MyContainer<char> c;
+        c.addElement('a');
+        c.addElement('b');
+        c.addElement('c');
+        c.addElement('d');
+        c.addElement('e');
+        CHECK(c.size() == 5);
+
+        auto asc_prefix = c.begin_ascending_order();
+        CHECK(*asc_prefix == 'a');
+        CHECK(*(++asc_prefix) == 'b');
+
+        auto asc_postfix = c.begin_ascending_order();
+        CHECK(*asc_postfix == 'a');
+        CHECK(*(asc_postfix++) == 'a');
+        CHECK(*asc_postfix == 'b');
+
+        auto desc_prefix = c.begin_descending_order();
+        CHECK(*desc_prefix == 'e');
+        CHECK(*(++desc_prefix) == 'd');
+
+        auto desc_postfix = c.begin_descending_order();
+        CHECK(*desc_postfix == 'e');
+        CHECK(*(desc_postfix++) == 'e');
+        CHECK(*desc_postfix == 'd');
+
+        auto side_prefix = c.begin_side_cross_order();
+        CHECK(*side_prefix == 'a');
+        CHECK(*(++side_prefix) == 'e');
+
+        auto side_postfix = c.begin_side_cross_order();
+        CHECK(*side_postfix == 'a');
+        CHECK(*(side_postfix++) == 'a');
+        CHECK(*side_postfix == 'e');
+
+        auto rev_prefix = c.begin_reverse_order();
+        CHECK(*rev_prefix == 'e');
+        CHECK(*(++rev_prefix) == 'd');
+
+        auto rev_postfix = c.begin_reverse_order();
+        CHECK(*rev_postfix == 'e');
+        CHECK(*(rev_postfix++) == 'e');
+        CHECK(*rev_postfix == 'd');
+
+        auto mid_prefix = c.begin_middle_out_order();
+        CHECK(*mid_prefix == 'c');
+        CHECK(*(++mid_prefix) == 'b');
+
+        auto mid_postfix = c.begin_middle_out_order();
+        CHECK(*mid_postfix == 'c');
+        CHECK(*(mid_postfix++) == 'c');
+        CHECK(*mid_postfix == 'b');
+    }
 }
 
 TEST_CASE("Iterators with int") {
@@ -463,6 +924,76 @@ TEST_CASE("Iterators with string") {
         CHECK_THROWS_AS(mid_end_it++, out_of_range);
     }
 
+    SUBCASE("Even-sized container") {
+        MyContainer<string> c;
+        c.addElement("grape");
+        c.addElement("apple");
+        c.addElement("banana");
+        c.addElement("cherry");
+        c.addElement("date");
+        c.addElement("fig");
+
+        vector<string> result;
+        for (auto asc_it = c.begin_ascending_order(); asc_it != c.end_ascending_order(); ++asc_it) {
+            result.push_back(*asc_it);
+        }
+        CHECK(result == vector<string>{"apple", "banana", "cherry", "date", "fig", "grape"});
+        auto asc_end_it = c.end_ascending_order();
+        CHECK_THROWS_AS(*asc_end_it, out_of_range);
+        CHECK_THROWS_AS(++asc_end_it, out_of_range);
+        CHECK_THROWS_AS(asc_end_it++, out_of_range);
+
+        result.clear();
+        for (auto desc_it = c.begin_descending_order(); desc_it != c.end_descending_order(); ++desc_it) {
+            result.push_back(*desc_it);
+        }
+        CHECK(result == vector<string>{"grape", "fig", "date", "cherry", "banana", "apple"});
+        auto desc_end_it = c.end_descending_order();
+        CHECK_THROWS_AS(*desc_end_it, out_of_range);
+        CHECK_THROWS_AS(++desc_end_it, out_of_range);
+        CHECK_THROWS_AS(desc_end_it++, out_of_range);
+
+        result.clear();
+        for (auto side_it = c.begin_side_cross_order(); side_it != c.end_side_cross_order(); ++side_it) {
+            result.push_back(*side_it);
+        }
+        CHECK(result == vector<string>{"apple", "grape", "banana", "fig", "cherry", "date"});
+        auto side_end_it = c.end_side_cross_order();
+        CHECK_THROWS_AS(*side_end_it, out_of_range);
+        CHECK_THROWS_AS(++side_end_it, out_of_range);
+        CHECK_THROWS_AS(side_end_it++, out_of_range);
+
+        result.clear();
+        for (auto rev_it = c.begin_reverse_order(); rev_it != c.end_reverse_order(); ++rev_it) {
+            result.push_back(*rev_it);
+        }
+        CHECK(result == vector<string>{"fig", "date", "cherry", "banana", "apple", "grape"});
+        auto rev_end_it = c.end_reverse_order();
+        CHECK_THROWS_AS(*rev_end_it, out_of_range);
+        CHECK_THROWS_AS(++rev_end_it, out_of_range);
+        CHECK_THROWS_AS(rev_end_it++, out_of_range);
+
+        result.clear();
+        for (auto order_it = c.begin_order(); order_it != c.end_order(); ++order_it) {
+            result.push_back(*order_it);
+        }
+        CHECK(result == vector<string>{"grape", "apple", "banana", "cherry", "date", "fig"});
+        auto order_end_it = c.end_order();
+        CHECK_THROWS_AS(*order_end_it, out_of_range);
+        CHECK_THROWS_AS(++order_end_it, out_of_range);
+        CHECK_THROWS_AS(order_end_it++, out_of_range);
+
+        result.clear();
+        for (auto mid_it = c.begin_middle_out_order(); mid_it != c.end_middle_out_order(); ++mid_it) {
+            result.push_back(*mid_it);
+        }
+        CHECK(result == vector<string>{"cherry", "banana", "date", "apple", "fig", "grape"});
+        auto mid_end_it = c.end_middle_out_order();
+        CHECK_THROWS_AS(*mid_end_it, out_of_range);
+        CHECK_THROWS_AS(++mid_end_it, out_of_range);
+        CHECK_THROWS_AS(mid_end_it++, out_of_range);
+    }
+
     SUBCASE("Empty container") {
         MyContainer<string> c;
 
@@ -591,6 +1122,90 @@ TEST_CASE("Iterators with string") {
         CHECK_THROWS_AS(++mid_end_it, out_of_range);
         CHECK_THROWS_AS(mid_end_it++, out_of_range);
     }
+
+    SUBCASE("Duplicate elements") {
+        MyContainer<string> c;
+        c.addElement("apple");
+        c.addElement("apple");
+        c.addElement("apple");
+        c.addElement("apple");
+        c.addElement("apple");
+
+        vector<string> result;
+        for (auto asc_it = c.begin_ascending_order(); asc_it != c.end_ascending_order(); ++asc_it) {
+            result.push_back(*asc_it);
+        }
+        CHECK(result == vector<string>{"apple", "apple", "apple", "apple", "apple"});
+        auto asc_end_it = c.end_ascending_order();
+        CHECK_THROWS_AS(*asc_end_it, out_of_range);
+        CHECK_THROWS_AS(++asc_end_it, out_of_range);
+        CHECK_THROWS_AS(asc_end_it++, out_of_range);
+
+        result.clear();
+        for (auto desc_it = c.begin_descending_order(); desc_it != c.end_descending_order(); ++desc_it) {
+            result.push_back(*desc_it);
+        }
+        CHECK(result == vector<string>{"apple", "apple", "apple", "apple", "apple"});
+        auto desc_end_it = c.end_descending_order();
+        CHECK_THROWS_AS(*desc_end_it, out_of_range);
+        CHECK_THROWS_AS(++desc_end_it, out_of_range);
+        CHECK_THROWS_AS(desc_end_it++, out_of_range);
+
+        result.clear();
+        for (auto side_it = c.begin_side_cross_order(); side_it != c.end_side_cross_order(); ++side_it) {
+            result.push_back(*side_it);
+        }
+        CHECK(result == vector<string>{"apple", "apple", "apple", "apple", "apple"});
+        auto side_end_it = c.end_side_cross_order();
+        CHECK_THROWS_AS(*side_end_it, out_of_range);
+        CHECK_THROWS_AS(++side_end_it, out_of_range);
+        CHECK_THROWS_AS(side_end_it++, out_of_range);
+
+        result.clear();
+        for (auto rev_it = c.begin_reverse_order(); rev_it != c.end_reverse_order(); ++rev_it) {
+            result.push_back(*rev_it);
+        }
+        CHECK(result == vector<string>{"apple", "apple", "apple", "apple", "apple"});
+        auto rev_end_it = c.end_reverse_order();
+        CHECK_THROWS_AS(*rev_end_it, out_of_range);
+        CHECK_THROWS_AS(++rev_end_it, out_of_range);
+        CHECK_THROWS_AS(rev_end_it++, out_of_range);
+
+        result.clear();
+        for (auto order_it = c.begin_order(); order_it != c.end_order(); ++order_it) {
+            result.push_back(*order_it);
+        }
+        CHECK(result == vector<string>{"apple", "apple", "apple", "apple", "apple"});
+        auto order_end_it = c.end_order();
+        CHECK_THROWS_AS(*order_end_it, out_of_range);
+        CHECK_THROWS_AS(++order_end_it, out_of_range);
+        CHECK_THROWS_AS(order_end_it++, out_of_range);
+
+        result.clear();
+        for (auto mid_it = c.begin_middle_out_order(); mid_it != c.end_middle_out_order(); ++mid_it) {
+            result.push_back(*mid_it);
+        }
+        CHECK(result == vector<string>{"apple", "apple", "apple", "apple", "apple"});
+        auto mid_end_it = c.end_middle_out_order();
+        CHECK_THROWS_AS(*mid_end_it, out_of_range);
+        CHECK_THROWS_AS(++mid_end_it, out_of_range);
+        CHECK_THROWS_AS(mid_end_it++, out_of_range);
+    }
+
+    SUBCASE("Large container") {
+        MyContainer<string> c;
+        for (int i = 0; i < 1000; ++i) {
+            c.addElement("item" + to_string(i % 100));
+        }
+        CHECK(c.size() == 1000);
+        vector<string> asc;
+        for (auto asc_it = c.begin_ascending_order(); asc_it != c.end_ascending_order(); ++asc_it) {
+            asc.push_back(*asc_it);
+        }
+        CHECK(asc.size() == 1000);
+        CHECK(asc[0] == "item0");
+        CHECK(asc[999] == "item99");
+    }
 }
 
 TEST_CASE("Iterators with double") {
@@ -657,6 +1272,76 @@ TEST_CASE("Iterators with double") {
             result.push_back(*mid_it);
         }
         CHECK(result == vector<double>{2.72, 1.41, 5.0, 3.14, 0.5});
+        auto mid_end_it = c.end_middle_out_order();
+        CHECK_THROWS_AS(*mid_end_it, out_of_range);
+        CHECK_THROWS_AS(++mid_end_it, out_of_range);
+        CHECK_THROWS_AS(mid_end_it++, out_of_range);
+    }
+
+    SUBCASE("Even-sized container") {
+        MyContainer<double> c;
+        c.addElement(1.0);
+        c.addElement(2.0);
+        c.addElement(3.0);
+        c.addElement(4.0);
+        c.addElement(5.0);
+        c.addElement(6.0);
+
+        vector<double> result;
+        for (auto asc_it = c.begin_ascending_order(); asc_it != c.end_ascending_order(); ++asc_it) {
+            result.push_back(*asc_it);
+        }
+        CHECK(result == vector<double>{1.0, 2.0, 3.0, 4.0, 5.0, 6.0});
+        auto asc_end_it = c.end_ascending_order();
+        CHECK_THROWS_AS(*asc_end_it, out_of_range);
+        CHECK_THROWS_AS(++asc_end_it, out_of_range);
+        CHECK_THROWS_AS(asc_end_it++, out_of_range);
+
+        result.clear();
+        for (auto desc_it = c.begin_descending_order(); desc_it != c.end_descending_order(); ++desc_it) {
+            result.push_back(*desc_it);
+        }
+        CHECK(result == vector<double>{6.0, 5.0, 4.0, 3.0, 2.0, 1.0});
+        auto desc_end_it = c.end_descending_order();
+        CHECK_THROWS_AS(*desc_end_it, out_of_range);
+        CHECK_THROWS_AS(++desc_end_it, out_of_range);
+        CHECK_THROWS_AS(desc_end_it++, out_of_range);
+
+        result.clear();
+        for (auto side_it = c.begin_side_cross_order(); side_it != c.end_side_cross_order(); ++side_it) {
+            result.push_back(*side_it);
+        }
+        CHECK(result == vector<double>{1.0, 6.0, 2.0, 5.0, 3.0, 4.0});
+        auto side_end_it = c.end_side_cross_order();
+        CHECK_THROWS_AS(*side_end_it, out_of_range);
+        CHECK_THROWS_AS(++side_end_it, out_of_range);
+        CHECK_THROWS_AS(side_end_it++, out_of_range);
+
+        result.clear();
+        for (auto rev_it = c.begin_reverse_order(); rev_it != c.end_reverse_order(); ++rev_it) {
+            result.push_back(*rev_it);
+        }
+        CHECK(result == vector<double>{6.0, 5.0, 4.0, 3.0, 2.0, 1.0});
+        auto rev_end_it = c.end_reverse_order();
+        CHECK_THROWS_AS(*rev_end_it, out_of_range);
+        CHECK_THROWS_AS(++rev_end_it, out_of_range);
+        CHECK_THROWS_AS(rev_end_it++, out_of_range);
+
+        result.clear();
+        for (auto order_it = c.begin_order(); order_it != c.end_order(); ++order_it) {
+            result.push_back(*order_it);
+        }
+        CHECK(result == vector<double>{1.0, 2.0, 3.0, 4.0, 5.0, 6.0});
+        auto order_end_it = c.end_order();
+        CHECK_THROWS_AS(*order_end_it, out_of_range);
+        CHECK_THROWS_AS(++order_end_it, out_of_range);
+        CHECK_THROWS_AS(order_end_it++, out_of_range);
+
+        result.clear();
+        for (auto mid_it = c.begin_middle_out_order(); mid_it != c.end_middle_out_order(); ++mid_it) {
+            result.push_back(*mid_it);
+        }
+        CHECK(result == vector<double>{4.0, 3.0, 5.0, 2.0, 6.0, 1.0});
         auto mid_end_it = c.end_middle_out_order();
         CHECK_THROWS_AS(*mid_end_it, out_of_range);
         CHECK_THROWS_AS(++mid_end_it, out_of_range);
@@ -790,6 +1475,90 @@ TEST_CASE("Iterators with double") {
         CHECK_THROWS_AS(*mid_end_it, out_of_range);
         CHECK_THROWS_AS(++mid_end_it, out_of_range);
         CHECK_THROWS_AS(mid_end_it++, out_of_range);
+    }
+
+    SUBCASE("Duplicate elements") {
+        MyContainer<double> c;
+        c.addElement(2.5);
+        c.addElement(2.5);
+        c.addElement(2.5);
+        c.addElement(2.5);
+        c.addElement(2.5);
+
+        vector<double> result;
+        for (auto asc_it = c.begin_ascending_order(); asc_it != c.end_ascending_order(); ++asc_it) {
+            result.push_back(*asc_it);
+        }
+        CHECK(result == vector<double>{2.5, 2.5, 2.5, 2.5, 2.5});
+        auto asc_end_it = c.end_ascending_order();
+        CHECK_THROWS_AS(*asc_end_it, out_of_range);
+        CHECK_THROWS_AS(++asc_end_it, out_of_range);
+        CHECK_THROWS_AS(asc_end_it++, out_of_range);
+
+        result.clear();
+        for (auto desc_it = c.begin_descending_order(); desc_it != c.end_descending_order(); ++desc_it) {
+            result.push_back(*desc_it);
+        }
+        CHECK(result == vector<double>{2.5, 2.5, 2.5, 2.5, 2.5});
+        auto desc_end_it = c.end_descending_order();
+        CHECK_THROWS_AS(*desc_end_it, out_of_range);
+        CHECK_THROWS_AS(++desc_end_it, out_of_range);
+        CHECK_THROWS_AS(desc_end_it++, out_of_range);
+
+        result.clear();
+        for (auto side_it = c.begin_side_cross_order(); side_it != c.end_side_cross_order(); ++side_it) {
+            result.push_back(*side_it);
+        }
+        CHECK(result == vector<double>{2.5, 2.5, 2.5, 2.5, 2.5});
+        auto side_end_it = c.end_side_cross_order();
+        CHECK_THROWS_AS(*side_end_it, out_of_range);
+        CHECK_THROWS_AS(++side_end_it, out_of_range);
+        CHECK_THROWS_AS(side_end_it++, out_of_range);
+
+        result.clear();
+        for (auto rev_it = c.begin_reverse_order(); rev_it != c.end_reverse_order(); ++rev_it) {
+            result.push_back(*rev_it);
+        }
+        CHECK(result == vector<double>{2.5, 2.5, 2.5, 2.5, 2.5});
+        auto rev_end_it = c.end_reverse_order();
+        CHECK_THROWS_AS(*rev_end_it, out_of_range);
+        CHECK_THROWS_AS(++rev_end_it, out_of_range);
+        CHECK_THROWS_AS(rev_end_it++, out_of_range);
+
+        result.clear();
+        for (auto order_it = c.begin_order(); order_it != c.end_order(); ++order_it) {
+            result.push_back(*order_it);
+        }
+        CHECK(result == vector<double>{2.5, 2.5, 2.5, 2.5, 2.5});
+        auto order_end_it = c.end_order();
+        CHECK_THROWS_AS(*order_end_it, out_of_range);
+        CHECK_THROWS_AS(++order_end_it, out_of_range);
+        CHECK_THROWS_AS(order_end_it++, out_of_range);
+
+        result.clear();
+        for (auto mid_it = c.begin_middle_out_order(); mid_it != c.end_middle_out_order(); ++mid_it) {
+            result.push_back(*mid_it);
+        }
+        CHECK(result == vector<double>{2.5, 2.5, 2.5, 2.5, 2.5});
+        auto mid_end_it = c.end_middle_out_order();
+        CHECK_THROWS_AS(*mid_end_it, out_of_range);
+        CHECK_THROWS_AS(++mid_end_it, out_of_range);
+        CHECK_THROWS_AS(mid_end_it++, out_of_range);
+    }
+
+    SUBCASE("Large container") {
+        MyContainer<double> c;
+        for (int i = 0; i < 1000; ++i) {
+            c.addElement(static_cast<double>(i % 100) + 0.5);
+        }
+        CHECK(c.size() == 1000);
+        vector<double> asc;
+        for (auto asc_it = c.begin_ascending_order(); asc_it != c.end_ascending_order(); ++asc_it) {
+            asc.push_back(*asc_it);
+        }
+        CHECK(asc.size() == 1000);
+        CHECK(asc[0] == 0.5);
+        CHECK(asc[999] == 99.5);
     }
 }
 
@@ -991,6 +1760,160 @@ TEST_CASE("Iterators with char") {
         CHECK_THROWS_AS(++mid_end_it, out_of_range);
         CHECK_THROWS_AS(mid_end_it++, out_of_range);
     }
+
+    SUBCASE("Even-sized container") {
+        MyContainer<char> c;
+        c.addElement('a');
+        c.addElement('b');
+        c.addElement('c');
+        c.addElement('d');
+        c.addElement('e');
+        c.addElement('f');
+
+        vector<char> result;
+        for (auto asc_it = c.begin_ascending_order(); asc_it != c.end_ascending_order(); ++asc_it) {
+            result.push_back(*asc_it);
+        }
+        CHECK(result == vector<char>{'a', 'b', 'c', 'd', 'e', 'f'});
+        auto asc_end_it = c.end_ascending_order();
+        CHECK_THROWS_AS(*asc_end_it, out_of_range);
+        CHECK_THROWS_AS(++asc_end_it, out_of_range);
+        CHECK_THROWS_AS(asc_end_it++, out_of_range);
+
+        result.clear();
+        for (auto desc_it = c.begin_descending_order(); desc_it != c.end_descending_order(); ++desc_it) {
+            result.push_back(*desc_it);
+        }
+        CHECK(result == vector<char>{'f', 'e', 'd', 'c', 'b', 'a'});
+        auto desc_end_it = c.end_descending_order();
+        CHECK_THROWS_AS(*desc_end_it, out_of_range);
+        CHECK_THROWS_AS(++desc_end_it, out_of_range);
+        CHECK_THROWS_AS(desc_end_it++, out_of_range);
+
+        result.clear();
+        for (auto side_it = c.begin_side_cross_order(); side_it != c.end_side_cross_order(); ++side_it) {
+            result.push_back(*side_it);
+        }
+        CHECK(result == vector<char>{'a', 'f', 'b', 'e', 'c', 'd'});
+        auto side_end_it = c.end_side_cross_order();
+        CHECK_THROWS_AS(*side_end_it, out_of_range);
+        CHECK_THROWS_AS(++side_end_it, out_of_range);
+        CHECK_THROWS_AS(side_end_it++, out_of_range);
+
+        result.clear();
+        for (auto rev_it = c.begin_reverse_order(); rev_it != c.end_reverse_order(); ++rev_it) {
+            result.push_back(*rev_it);
+        }
+        CHECK(result == vector<char>{'f', 'e', 'd', 'c', 'b', 'a'});
+        auto rev_end_it = c.end_reverse_order();
+        CHECK_THROWS_AS(*rev_end_it, out_of_range);
+        CHECK_THROWS_AS(++rev_end_it, out_of_range);
+        CHECK_THROWS_AS(rev_end_it++, out_of_range);
+
+        result.clear();
+        for (auto order_it = c.begin_order(); order_it != c.end_order(); ++order_it) {
+            result.push_back(*order_it);
+        }
+        CHECK(result == vector<char>{'a', 'b', 'c', 'd', 'e', 'f'});
+        auto order_end_it = c.end_order();
+        CHECK_THROWS_AS(*order_end_it, out_of_range);
+        CHECK_THROWS_AS(++order_end_it, out_of_range);
+        CHECK_THROWS_AS(order_end_it++, out_of_range);
+
+        result.clear();
+        for (auto mid_it = c.begin_middle_out_order(); mid_it != c.end_middle_out_order(); ++mid_it) {
+            result.push_back(*mid_it);
+        }
+        CHECK(result == vector<char>{'d', 'c', 'e', 'b', 'f', 'a'});
+        auto mid_end_it = c.end_middle_out_order();
+        CHECK_THROWS_AS(*mid_end_it, out_of_range);
+        CHECK_THROWS_AS(++mid_end_it, out_of_range);
+        CHECK_THROWS_AS(mid_end_it++, out_of_range);
+    }
+
+    SUBCASE("Duplicate elements") {
+        MyContainer<char> c;
+        c.addElement('a');
+        c.addElement('a');
+        c.addElement('a');
+        c.addElement('a');
+        c.addElement('a');
+
+        vector<char> result;
+        for (auto asc_it = c.begin_ascending_order(); asc_it != c.end_ascending_order(); ++asc_it) {
+            result.push_back(*asc_it);
+        }
+        CHECK(result == vector<char>{'a', 'a', 'a', 'a', 'a'});
+        auto asc_end_it = c.end_ascending_order();
+        CHECK_THROWS_AS(*asc_end_it, out_of_range);
+        CHECK_THROWS_AS(++asc_end_it, out_of_range);
+        CHECK_THROWS_AS(asc_end_it++, out_of_range);
+
+        result.clear();
+        for (auto desc_it = c.begin_descending_order(); desc_it != c.end_descending_order(); ++desc_it) {
+            result.push_back(*desc_it);
+        }
+        CHECK(result == vector<char>{'a', 'a', 'a', 'a', 'a'});
+        auto desc_end_it = c.end_descending_order();
+        CHECK_THROWS_AS(*desc_end_it, out_of_range);
+        CHECK_THROWS_AS(++desc_end_it, out_of_range);
+        CHECK_THROWS_AS(desc_end_it++, out_of_range);
+
+        result.clear();
+        for (auto side_it = c.begin_side_cross_order(); side_it != c.end_side_cross_order(); ++side_it) {
+            result.push_back(*side_it);
+        }
+        CHECK(result == vector<char>{'a', 'a', 'a', 'a', 'a'});
+        auto side_end_it = c.end_side_cross_order();
+        CHECK_THROWS_AS(*side_end_it, out_of_range);
+        CHECK_THROWS_AS(++side_end_it, out_of_range);
+        CHECK_THROWS_AS(side_end_it++, out_of_range);
+
+        result.clear();
+        for (auto rev_it = c.begin_reverse_order(); rev_it != c.end_reverse_order(); ++rev_it) {
+            result.push_back(*rev_it);
+        }
+        CHECK(result == vector<char>{'a', 'a', 'a', 'a', 'a'});
+        auto rev_end_it = c.end_reverse_order();
+        CHECK_THROWS_AS(*rev_end_it, out_of_range);
+        CHECK_THROWS_AS(++rev_end_it, out_of_range);
+        CHECK_THROWS_AS(rev_end_it++, out_of_range);
+
+        result.clear();
+        for (auto order_it = c.begin_order(); order_it != c.end_order(); ++order_it) {
+            result.push_back(*order_it);
+        }
+        CHECK(result == vector<char>{'a', 'a', 'a', 'a', 'a'});
+        auto order_end_it = c.end_order();
+        CHECK_THROWS_AS(*order_end_it, out_of_range);
+        CHECK_THROWS_AS(++order_end_it, out_of_range);
+        CHECK_THROWS_AS(order_end_it++, out_of_range);
+
+        result.clear();
+        for (auto mid_it = c.begin_middle_out_order(); mid_it != c.end_middle_out_order(); ++mid_it) {
+            result.push_back(*mid_it);
+        }
+        CHECK(result == vector<char>{'a', 'a', 'a', 'a', 'a'});
+        auto mid_end_it = c.end_middle_out_order();
+        CHECK_THROWS_AS(*mid_end_it, out_of_range);
+        CHECK_THROWS_AS(++mid_end_it, out_of_range);
+        CHECK_THROWS_AS(mid_end_it++, out_of_range);
+    }
+
+    SUBCASE("Large container") {
+        MyContainer<char> c;
+        for (int i = 0; i < 1000; ++i) {
+            c.addElement(static_cast<char>('a' + (i % 26)));
+        }
+        CHECK(c.size() == 1000);
+        vector<char> asc;
+        for (auto asc_it = c.begin_ascending_order(); asc_it != c.end_ascending_order(); ++asc_it) {
+            asc.push_back(*asc_it);
+        }
+        CHECK(asc.size() == 1000);
+        CHECK(asc[0] == 'a');
+        CHECK(asc[999] == 'z');
+    }
 }
 
 TEST_CASE("Iterators with float") {
@@ -1190,5 +2113,159 @@ TEST_CASE("Iterators with float") {
         CHECK_THROWS_AS(*mid_end_it, out_of_range);
         CHECK_THROWS_AS(++mid_end_it, out_of_range);
         CHECK_THROWS_AS(mid_end_it++, out_of_range);
+    }
+
+    SUBCASE("Even-sized container") {
+        MyContainer<float> c;
+        c.addElement(1.0f);
+        c.addElement(2.0f);
+        c.addElement(3.0f);
+        c.addElement(4.0f);
+        c.addElement(5.0f);
+        c.addElement(6.0f);
+
+        vector<float> result;
+        for (auto asc_it = c.begin_ascending_order(); asc_it != c.end_ascending_order(); ++asc_it) {
+            result.push_back(*asc_it);
+        }
+        CHECK(result == vector<float>{1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f});
+        auto asc_end_it = c.end_ascending_order();
+        CHECK_THROWS_AS(*asc_end_it, out_of_range);
+        CHECK_THROWS_AS(++asc_end_it, out_of_range);
+        CHECK_THROWS_AS(asc_end_it++, out_of_range);
+
+        result.clear();
+        for (auto desc_it = c.begin_descending_order(); desc_it != c.end_descending_order(); ++desc_it) {
+            result.push_back(*desc_it);
+        }
+        CHECK(result == vector<float>{6.0f, 5.0f, 4.0f, 3.0f, 2.0f, 1.0f});
+        auto desc_end_it = c.end_descending_order();
+        CHECK_THROWS_AS(*desc_end_it, out_of_range);
+        CHECK_THROWS_AS(++desc_end_it, out_of_range);
+        CHECK_THROWS_AS(desc_end_it++, out_of_range);
+
+        result.clear();
+        for (auto side_it = c.begin_side_cross_order(); side_it != c.end_side_cross_order(); ++side_it) {
+            result.push_back(*side_it);
+        }
+        CHECK(result == vector<float>{1.0f, 6.0f, 2.0f, 5.0f, 3.0f, 4.0f});
+        auto side_end_it = c.end_side_cross_order();
+        CHECK_THROWS_AS(*side_end_it, out_of_range);
+        CHECK_THROWS_AS(++side_end_it, out_of_range);
+        CHECK_THROWS_AS(side_end_it++, out_of_range);
+
+        result.clear();
+        for (auto rev_it = c.begin_reverse_order(); rev_it != c.end_reverse_order(); ++rev_it) {
+            result.push_back(*rev_it);
+        }
+        CHECK(result == vector<float>{6.0f, 5.0f, 4.0f, 3.0f, 2.0f, 1.0f});
+        auto rev_end_it = c.end_reverse_order();
+        CHECK_THROWS_AS(*rev_end_it, out_of_range);
+        CHECK_THROWS_AS(++rev_end_it, out_of_range);
+        CHECK_THROWS_AS(rev_end_it++, out_of_range);
+
+        result.clear();
+        for (auto order_it = c.begin_order(); order_it != c.end_order(); ++order_it) {
+            result.push_back(*order_it);
+        }
+        CHECK(result == vector<float>{1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f});
+        auto order_end_it = c.end_order();
+        CHECK_THROWS_AS(*order_end_it, out_of_range);
+        CHECK_THROWS_AS(++order_end_it, out_of_range);
+        CHECK_THROWS_AS(order_end_it++, out_of_range);
+
+        result.clear();
+        for (auto mid_it = c.begin_middle_out_order(); mid_it != c.end_middle_out_order(); ++mid_it) {
+            result.push_back(*mid_it);
+        }
+        CHECK(result == vector<float>{4.0f, 3.0f, 5.0f, 2.0f, 6.0f, 1.0f});
+        auto mid_end_it = c.end_middle_out_order();
+        CHECK_THROWS_AS(*mid_end_it, out_of_range);
+        CHECK_THROWS_AS(++mid_end_it, out_of_range);
+        CHECK_THROWS_AS(mid_end_it++, out_of_range);
+    }
+
+    SUBCASE("Duplicate elements") {
+        MyContainer<float> c;
+        c.addElement(2.5f);
+        c.addElement(2.5f);
+        c.addElement(2.5f);
+        c.addElement(2.5f);
+        c.addElement(2.5f);
+
+        vector<float> result;
+        for (auto asc_it = c.begin_ascending_order(); asc_it != c.end_ascending_order(); ++asc_it) {
+            result.push_back(*asc_it);
+        }
+        CHECK(result == vector<float>{2.5f, 2.5f, 2.5f, 2.5f, 2.5f});
+        auto asc_end_it = c.end_ascending_order();
+        CHECK_THROWS_AS(*asc_end_it, out_of_range);
+        CHECK_THROWS_AS(++asc_end_it, out_of_range);
+        CHECK_THROWS_AS(asc_end_it++, out_of_range);
+
+        result.clear();
+        for (auto desc_it = c.begin_descending_order(); desc_it != c.end_descending_order(); ++desc_it) {
+            result.push_back(*desc_it);
+        }
+        CHECK(result == vector<float>{2.5f, 2.5f, 2.5f, 2.5f, 2.5f});
+        auto desc_end_it = c.end_descending_order();
+        CHECK_THROWS_AS(*desc_end_it, out_of_range);
+        CHECK_THROWS_AS(++desc_end_it, out_of_range);
+        CHECK_THROWS_AS(desc_end_it++, out_of_range);
+
+        result.clear();
+        for (auto side_it = c.begin_side_cross_order(); side_it != c.end_side_cross_order(); ++side_it) {
+            result.push_back(*side_it);
+        }
+        CHECK(result == vector<float>{2.5f, 2.5f, 2.5f, 2.5f, 2.5f});
+        auto side_end_it = c.end_side_cross_order();
+        CHECK_THROWS_AS(*side_end_it, out_of_range);
+        CHECK_THROWS_AS(++side_end_it, out_of_range);
+        CHECK_THROWS_AS(side_end_it++, out_of_range);
+
+        result.clear();
+        for (auto rev_it = c.begin_reverse_order(); rev_it != c.end_reverse_order(); ++rev_it) {
+            result.push_back(*rev_it);
+        }
+        CHECK(result == vector<float>{2.5f, 2.5f, 2.5f, 2.5f, 2.5f});
+        auto rev_end_it = c.end_reverse_order();
+        CHECK_THROWS_AS(*rev_end_it, out_of_range);
+        CHECK_THROWS_AS(++rev_end_it, out_of_range);
+        CHECK_THROWS_AS(rev_end_it++, out_of_range);
+
+        result.clear();
+        for (auto order_it = c.begin_order(); order_it != c.end_order(); ++order_it) {
+            result.push_back(*order_it);
+        }
+        CHECK(result == vector<float>{2.5f, 2.5f, 2.5f, 2.5f, 2.5f});
+        auto order_end_it = c.end_order();
+        CHECK_THROWS_AS(*order_end_it, out_of_range);
+        CHECK_THROWS_AS(++order_end_it, out_of_range);
+        CHECK_THROWS_AS(order_end_it++, out_of_range);
+
+        result.clear();
+        for (auto mid_it = c.begin_middle_out_order(); mid_it != c.end_middle_out_order(); ++mid_it) {
+            result.push_back(*mid_it);
+        }
+        CHECK(result == vector<float>{2.5f, 2.5f, 2.5f, 2.5f, 2.5f});
+        auto mid_end_it = c.end_middle_out_order();
+        CHECK_THROWS_AS(*mid_end_it, out_of_range);
+        CHECK_THROWS_AS(++mid_end_it, out_of_range);
+        CHECK_THROWS_AS(mid_end_it++, out_of_range);
+    }
+
+    SUBCASE("Large container") {
+        MyContainer<float> c;
+        for (int i = 0; i < 1000; ++i) {
+            c.addElement(static_cast<float>(i % 100) + 0.1f);
+        }
+        CHECK(c.size() == 1000);
+        vector<float> asc;
+        for (auto asc_it = c.begin_ascending_order(); asc_it != c.end_ascending_order(); ++asc_it) {
+            asc.push_back(*asc_it);
+        }
+        CHECK(asc.size() == 1000);
+        CHECK(asc[0] == 0.1f);
+        CHECK(asc[999] == 99.1f);
     }
 }
