@@ -42,6 +42,13 @@ namespace ariel {
             ++index;
             return *this;
         }
+        // 🔹 ++ (postfix)
+        ReverseOrderIterator operator++(int) {
+            ReverseOrderIterator temp = *this;  // שמירה על המצב הנוכחי
+            ++(*this);                          // שימוש באופרטור prefix שכבר קיים
+            return temp;                        // החזרת המצב הישן
+        }
+
 
         // 🔹 השוואה
         bool operator!=(const ReverseOrderIterator& other) const {

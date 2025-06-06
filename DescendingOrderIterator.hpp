@@ -50,6 +50,14 @@ namespace ariel {
             return *this;
         }
 
+        // אופרטור ++ (postfix)
+        DescendingOrderIterator operator++(int) {
+            DescendingOrderIterator temp = *this;  // שומר מצב נוכחי
+            ++(*this);                             // מעלה אינדקס (משתמש ב־prefix)
+            return temp;                           // מחזיר עותק מהמצב הקודם
+        }
+
+
         // השוואה
         bool operator!=(const DescendingOrderIterator& other) const {
             return index != other.index;

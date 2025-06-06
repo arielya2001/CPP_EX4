@@ -49,6 +49,12 @@ namespace ariel {
             return *this;
         }
 
+        AscendingOrderIterator operator++(int) {
+            AscendingOrderIterator temp = *this;  // שומר את הערך הנוכחי
+            ++(*this);                            // מעלה את האינדקס (משתמש ב־++ הקיים)
+            return temp;                          // מחזיר את הערך הישן
+        }
+
         // השוואה
         bool operator!=(const AscendingOrderIterator& other) const {
             return index != other.index;

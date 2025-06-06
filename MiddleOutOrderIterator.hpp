@@ -71,6 +71,14 @@ namespace ariel {
             return *this;
         }
 
+        // 🔹 ++ (postfix)
+        MiddleOutOrderIterator operator++(int) {
+            MiddleOutOrderIterator temp = *this;  // שומר את המצב הנוכחי
+            ++(*this);                            // מפעיל את prefix ++
+            return temp;                          // מחזיר את העותק הישן
+        }
+
+
         // 🔹 השוואה
         bool operator!=(const MiddleOutOrderIterator& other) const {
             return index != other.index;

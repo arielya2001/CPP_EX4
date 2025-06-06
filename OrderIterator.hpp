@@ -46,6 +46,14 @@ namespace ariel {
             return *this;
         }
 
+        // 🔹 ++ (postfix)
+        OrderIterator operator++(int) {
+            OrderIterator temp = *this;  // שומר את המצב הנוכחי
+            ++(*this);                   // מפעיל את prefix ++ שכבר קיים
+            return temp;                 // מחזיר את העותק לפני ההגדלה
+        }
+
+
         // 🔹 השוואה
         bool operator!=(const OrderIterator& other) const {
             return index != other.index;

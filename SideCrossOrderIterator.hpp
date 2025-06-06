@@ -64,6 +64,14 @@ namespace ariel {
             return *this;
         }
 
+        // 🔹 ++ (postfix)
+        SideCrossOrderIterator operator++(int) {
+            SideCrossOrderIterator temp = *this;  // שומר את המצב הנוכחי
+            ++(*this);                            // קורא ל־prefix ++ שכבר מוגדר
+            return temp;                          // מחזיר את העותק לפני ההגדלה
+        }
+
+
         // 🔹 השוואה
         bool operator!=(const SideCrossOrderIterator& other) const {
             return index != other.index;
