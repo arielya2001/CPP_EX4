@@ -16,9 +16,9 @@ namespace ariel { // Namespace ariel to encapsulate classes and functions
     template<typename T> // Template class definition for MiddleOutOrderIterator
     class MiddleOutOrderIterator {
     private:
-        const MyContainer<T>* container;  // Pointer to the MyContainer instance // מצביע לקונטיינר
-        std::vector<T> middle_out_data;   // Data arranged in middle-out order // Data in middle-out traversal order
-        size_t index;                     // Current index into middle_out_data // Index into middle_out_data
+        const MyContainer<T>* container;  // Pointer to the MyContainer instance
+        std::vector<T> middle_out_data;   // Data arranged in middle-out order
+        size_t index;                     // Current index into middle_out_data
 
     public:
         /**
@@ -93,9 +93,9 @@ namespace ariel { // Namespace ariel to encapsulate classes and functions
             if (index >= middle_out_data.size()) {  // Check if increment would go beyond end
                 throw std::out_of_range("Cannot increment beyond end.");  // Throw exception for invalid increment
             }
-            MiddleOutOrderIterator temp = *this;  // Save current iterator state // שומר את המצב הנוכחי
-            ++(*this);                            // Increment self using prefix ++ // מפעיל את prefix ++
-            return temp;                          // Return copy before increment // מחזיר את העותק הישן
+            MiddleOutOrderIterator temp = *this;  // Save current iterator state
+            ++(*this);                            // Increment self using prefix ++
+            return temp;                          // Return copy before increment
         }
 
         /**
@@ -103,7 +103,7 @@ namespace ariel { // Namespace ariel to encapsulate classes and functions
          * @return True if iterators are at different positions, false otherwise
          */
         // Inequality comparison operator
-        bool operator!=(const MiddleOutOrderIterator& other) const {  // Compare iterators for inequality // השוואה
+        bool operator!=(const MiddleOutOrderIterator& other) const {  // Compare iterators for inequality
             return index != other.index;  // Return true if indices differ
         }
 

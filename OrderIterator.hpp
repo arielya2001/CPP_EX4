@@ -16,8 +16,8 @@ namespace ariel { // Namespace to encapsulate classes and functions
     template<typename T> // Template class definition for OrderIterator
     class OrderIterator {
     private:
-        const MyContainer<T>* container;  // Pointer to the MyContainer instance // מצביע לקונטיינר
-        size_t index;                     // Current index into container data // אינדקס נוכחי
+        const MyContainer<T>* container;  // Pointer to the MyContainer instance
+        size_t index;                     // Current index into container data
 
     public:
         /**
@@ -26,7 +26,7 @@ namespace ariel { // Namespace to encapsulate classes and functions
          * @throws None
          */
         // Regular constructor
-        OrderIterator(const MyContainer<T>& cont, bool is_end = false)  // Constructor for iterator // בנאי רגיל
+        OrderIterator(const MyContainer<T>& cont, bool is_end = false)  // Constructor for iterator
             : container(&cont), index(0) {  // Initialize container pointer and index to 0
             if (is_end) {  // Check if end iterator is requested
                 index = container->getData().size();  // Set index to end of data
@@ -78,7 +78,7 @@ namespace ariel { // Namespace to encapsulate classes and functions
          * @return True if iterators are at different positions, false otherwise
          */
         // Inequality comparison operator
-        bool operator!=(const OrderIterator& other) const {  // Compare iterators for inequality // השוואה
+        bool operator!=(const OrderIterator& other) const {  // Compare iterators for inequality
             return index != other.index;  // Return true if indices differ
         }
 

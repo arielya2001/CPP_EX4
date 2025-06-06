@@ -17,9 +17,9 @@ namespace ariel { // Namespace to encapsulate classes and functions
     template<typename T> // Template class definition for SideCrossOrderIterator
     class SideCrossOrderIterator {
     private:
-        const MyContainer<T>* container;  // Pointer to the MyContainer instance // מצביע לקונטיינר
-        std::vector<T> cross_data;        // Data arranged in side-cross order // הסדר המיוחד
-        size_t index;                     // Current index into cross_data // אינדקס נוכחי
+        const MyContainer<T>* container;  // Pointer to the MyContainer instance
+        std::vector<T> cross_data;        // Data arranged in side-cross order
+        size_t index;                     // Current index into cross_data
 
     public:
         /**
@@ -28,7 +28,7 @@ namespace ariel { // Namespace to encapsulate classes and functions
          * @throws None
          */
         // Regular constructor
-        SideCrossOrderIterator(const MyContainer<T>& cont, bool is_end = false)  // Constructor for iterator // בנאי רגיל
+        SideCrossOrderIterator(const MyContainer<T>& cont, bool is_end = false)  // Constructor for iterator
             : container(&cont), index(0) {  // Initialize container pointer and index to 0
 
             if (container->size() == 0) {  // Check if container is empty
@@ -52,7 +52,7 @@ namespace ariel { // Namespace to encapsulate classes and functions
                     cross_data.push_back(sorted[end]);  // Add element from end
                 }
                 ++start;  // Increment start index
-                if (end > 0) --end; // Decrement end index with underflow protection // הגנה מפני underflow
+                if (end > 0) --end; // Decrement end index with underflow protection
             }
 
             if (is_end) {  // Check if end iterator is requested
@@ -65,7 +65,7 @@ namespace ariel { // Namespace to encapsulate classes and functions
          * @throws std::out_of_range If iterator is at or beyond end
          */
         // Dereference operator to access value
-        T operator*() const {  // Return current element // גישה לערך
+        T operator*() const {  // Return current element
             if (index >= cross_data.size()) {  // Check if index is out of bounds
                 throw std::out_of_range("Iterator out of range");  // Throw exception for invalid access
             }
@@ -94,9 +94,9 @@ namespace ariel { // Namespace to encapsulate classes and functions
             if (index >= cross_data.size()) {  // Check if increment would go beyond end
                 throw std::out_of_range("Cannot increment beyond end.");  // Throw exception for invalid increment
             }
-            SideCrossOrderIterator temp = *this;  // Save current iterator state // שומר את המצב הנוכחי
-            ++(*this);                            // Increment self using prefix ++ // קורא ל־prefix ++ שכבר מוגדר
-            return temp;                          // Return copy before increment // מחזיר את העותק לפני ההגדלה
+            SideCrossOrderIterator temp = *this;  // Save current iterator state
+            ++(*this);                            // Increment self using prefix ++
+            return temp;                          // Return copy before increment
         }
 
         /**
@@ -104,7 +104,7 @@ namespace ariel { // Namespace to encapsulate classes and functions
          * @return True if iterators are at different positions, false otherwise
          */
         // Inequality comparison operator
-        bool operator!=(const SideCrossOrderIterator& other) const {  // Compare iterators for inequality // השוואה
+        bool operator!=(const SideCrossOrderIterator& other) const {  // Compare iterators for inequality
             return index != other.index;  // Return true if indices differ
         }
 

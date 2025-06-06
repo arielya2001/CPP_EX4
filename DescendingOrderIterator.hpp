@@ -17,9 +17,9 @@ namespace ariel { // Namespace to encapsulate classes and functions
     template<typename T> // Template class definition for DescendingOrderIterator
     class DescendingOrderIterator {
     private:
-        const MyContainer<T>* container;  // Pointer to the MyContainer instance // מצביע לקונטיינר
-        std::vector<T> sorted_data;       // Copy of container data in descending order // Sorted copy of container data
-        size_t index;                     // Current index into sorted data // Index into sorted_data
+        const MyContainer<T>* container;  // Pointer to the MyContainer instance
+        std::vector<T> sorted_data;       // Copy of container data in descending order
+        size_t index;                     // Current index into sorted data
 
     public:
         /**
@@ -71,9 +71,9 @@ namespace ariel { // Namespace to encapsulate classes and functions
             if (index >= sorted_data.size()) {  // Check if increment would go beyond end
                 throw std::out_of_range("Cannot increment beyond end.");  // Throw exception for invalid increment
             }
-            DescendingOrderIterator temp = *this;  // Save current iterator state // שומר מצב נוכחי
-            ++(*this);                             // Increment self // מעלה אינדקס (משתמש ב־prefix)
-            return temp;                           // Return copy before increment // מחזיר עותק מהמצב הקודם
+            DescendingOrderIterator temp = *this;  // Save current iterator state
+            ++(*this);                             // Increment self // מעלה אינדקס
+            return temp;                           // Return copy before increment
         }
 
         /**

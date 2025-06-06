@@ -16,8 +16,8 @@ namespace ariel { // Namespace to encapsulate classes and functions
     template<typename T> // Template class definition for ReverseOrderIterator
     class ReverseOrderIterator {
     private:
-        const MyContainer<T>* container;  // Pointer to the MyContainer instance // מצביע לקונטיינר
-        size_t index;                     // Current index for iteration // אינדקס נוכחי
+        const MyContainer<T>* container;  // Pointer to the MyContainer instance
+        size_t index;                     // Current index for iteration
 
     public:
         /**
@@ -26,7 +26,7 @@ namespace ariel { // Namespace to encapsulate classes and functions
          * @throws None
          */
         // Regular constructor
-        ReverseOrderIterator(const MyContainer<T>& cont, bool is_end = false)  // Constructor for iterator // בנאי רגיל
+        ReverseOrderIterator(const MyContainer<T>& cont, bool is_end = false)  // Constructor for iterator
             : container(&cont), index(0) {  // Initialize container pointer and index to 0
             if (is_end) {  // Check if end iterator is requested
                 index = container->getData().size();  // Set index to end of data
@@ -43,7 +43,7 @@ namespace ariel { // Namespace to encapsulate classes and functions
             if (index >= data.size()) {  // Check if index is out of bounds
                 throw std::out_of_range("Iterator out of range");  // Throw exception for invalid access
             }
-            return data[data.size() - 1 - index]; // Access element in reverse order // סריקה הפוכה
+            return data[data.size() - 1 - index]; // Access element in reverse order
         }
 
         /**
@@ -68,9 +68,9 @@ namespace ariel { // Namespace to encapsulate classes and functions
             if (index >= container->getData().size()) {  // Check if increment would go beyond end
                 throw std::out_of_range("Cannot increment beyond end.");  // Throw exception for invalid increment
             }
-            ReverseOrderIterator temp = *this;  // Save current iterator state // שמירה על המצב הנוכחי
-            ++(*this);                          // Increment self using prefix ++ // שימוש באופרטור prefix שכבר קיים
-            return temp;                        // Return copy before increment // החזרת המצב הישן
+            ReverseOrderIterator temp = *this;  // Save current iterator state
+            ++(*this);                          // Increment self using prefix ++
+            return temp;                        // Return copy before increment
         }
 
         /**
@@ -78,7 +78,7 @@ namespace ariel { // Namespace to encapsulate classes and functions
          * @return True if iterators are at different positions, false otherwise
          */
         // Inequality comparison operator
-        bool operator!=(const ReverseOrderIterator& other) const {  // Compare iterators for inequality // השוואה
+        bool operator!=(const ReverseOrderIterator& other) const {  // Compare iterators for inequality
             return index != other.index;  // Return true if indices differ
         }
 

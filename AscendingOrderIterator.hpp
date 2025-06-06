@@ -17,9 +17,9 @@ namespace ariel { // Namespace to encapsulate classes and functions
     template<typename T> // Template class definition for AscendingOrderIterator
     class AscendingOrderIterator {
     private:
-        const MyContainer<T>* container;  // Pointer to the MyContainer instance // מצביע לקונטיינר
-        std::vector<T> sorted_data;       // Copy of container data in ascending order // Sorted copy of container data
-        size_t index;                     // Current index into sorted data // Index into sorted_data
+        const MyContainer<T>* container;  // Pointer to the MyContainer instance
+        std::vector<T> sorted_data;       // Copy of container data in ascending order
+        size_t index;                     // Current index into sorted data
 
     public:
         /**
