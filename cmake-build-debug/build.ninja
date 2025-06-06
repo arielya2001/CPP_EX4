@@ -56,6 +56,20 @@ build CMakeFiles/CPP_EX4.dir/Demo.cpp.o: CXX_COMPILER__CPP_EX4_unscanned_Debug /
   OBJECT_DIR = CMakeFiles/CPP_EX4.dir
   OBJECT_FILE_DIR = CMakeFiles/CPP_EX4.dir
 
+build CMakeFiles/CPP_EX4.dir/Main.cpp.o: CXX_COMPILER__CPP_EX4_unscanned_Debug /home/ariely122/CPP_EX4/Main.cpp || cmake_object_order_depends_target_CPP_EX4
+  DEP_FILE = CMakeFiles/CPP_EX4.dir/Main.cpp.o.d
+  FLAGS = -g -std=gnu++14 -fdiagnostics-color=always
+  INCLUDES = -I/home/ariely122/CPP_EX4/.
+  OBJECT_DIR = CMakeFiles/CPP_EX4.dir
+  OBJECT_FILE_DIR = CMakeFiles/CPP_EX4.dir
+
+build CMakeFiles/CPP_EX4.dir/tests.cpp.o: CXX_COMPILER__CPP_EX4_unscanned_Debug /home/ariely122/CPP_EX4/tests.cpp || cmake_object_order_depends_target_CPP_EX4
+  DEP_FILE = CMakeFiles/CPP_EX4.dir/tests.cpp.o.d
+  FLAGS = -g -std=gnu++14 -fdiagnostics-color=always
+  INCLUDES = -I/home/ariely122/CPP_EX4/.
+  OBJECT_DIR = CMakeFiles/CPP_EX4.dir
+  OBJECT_FILE_DIR = CMakeFiles/CPP_EX4.dir
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target CPP_EX4
@@ -64,7 +78,7 @@ build CMakeFiles/CPP_EX4.dir/Demo.cpp.o: CXX_COMPILER__CPP_EX4_unscanned_Debug /
 #############################################
 # Link the executable CPP_EX4
 
-build CPP_EX4: CXX_EXECUTABLE_LINKER__CPP_EX4_Debug CMakeFiles/CPP_EX4.dir/Demo.cpp.o
+build CPP_EX4: CXX_EXECUTABLE_LINKER__CPP_EX4_Debug CMakeFiles/CPP_EX4.dir/Demo.cpp.o CMakeFiles/CPP_EX4.dir/Main.cpp.o CMakeFiles/CPP_EX4.dir/tests.cpp.o
   FLAGS = -g
   OBJECT_DIR = CMakeFiles/CPP_EX4.dir
   POST_BUILD = :

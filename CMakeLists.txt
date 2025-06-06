@@ -14,4 +14,6 @@ add_executable(CPP_EX4
         ReverseOrderIterator.hpp
         OrderIterator.hpp
         MiddleOutOrderIterator.hpp
+        Main.cpp
+        tests.cpp
 )
