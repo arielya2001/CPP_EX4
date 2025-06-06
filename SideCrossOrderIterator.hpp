@@ -26,6 +26,13 @@ namespace ariel {
         SideCrossOrderIterator(const MyContainer<T>& cont, bool is_end = false)
             : container(&cont), index(0) {
 
+            if (container->size() == 0) {
+                cross_data = std::vector<T>{};
+                if (is_end) {
+                    index = 0;
+                }
+                return;
+            }
             std::vector<T> sorted = container->getData();
             std::sort(sorted.begin(), sorted.end());
 

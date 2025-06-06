@@ -8,6 +8,9 @@ HEADERS = MyContainer.hpp AscendingOrderIterator.hpp DescendingOrderIterator.hpp
 MAIN_TARGET = main.out
 MAIN_SOURCE = Main.cpp
 
+TEST_TARGET = tests.out
+TEST_SOURCE = tests.cpp
+
 all: $(TARGET)
 
 $(TARGET): $(SOURCES) $(HEADERS)
@@ -24,5 +27,11 @@ main: $(MAIN_TARGET)
 $(MAIN_TARGET): $(MAIN_SOURCE) $(HEADERS)
 	$(CXX) $(CXXFLAGS) -o $(MAIN_TARGET) $(MAIN_SOURCE)
 
+test: $(TEST_TARGET)
+	./$(TEST_TARGET)
+
+$(TEST_TARGET): $(TEST_SOURCE) $(HEADERS)
+	$(CXX) $(CXXFLAGS) -o $(TEST_TARGET) $(TEST_SOURCE)
+
 clean:
-	rm -f $(TARGET) $(MAIN_TARGET)
+	rm -f $(TARGET) $(MAIN_TARGET) $(TEST_TARGET)
