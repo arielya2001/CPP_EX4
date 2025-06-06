@@ -586,6 +586,462 @@ TEST_CASE("Iterator advancement: prefix and postfix for all types") {
     }
 }
 
+TEST_CASE("Iterator == and != comparison for all orders and cases") {
+
+    SUBCASE("Empty container") {
+        MyContainer<int> c;
+        CHECK(c.begin_ascending_order() == c.end_ascending_order());
+        CHECK(c.begin_descending_order() == c.end_descending_order());
+        CHECK(c.begin_side_cross_order() == c.end_side_cross_order());
+        CHECK(c.begin_reverse_order() == c.end_reverse_order());
+        CHECK(c.begin_order() == c.end_order());
+        CHECK(c.begin_middle_out_order() == c.end_middle_out_order());
+    }
+
+    SUBCASE("Single element") {
+        MyContainer<int> c;
+        c.addElement(1);
+
+        auto asc1 = c.begin_ascending_order();
+        auto asc2 = c.begin_ascending_order();
+        CHECK(asc1 == asc2);
+        ++asc2;
+        CHECK(asc1 != asc2);
+        ++asc1;
+        CHECK(asc1 == asc2);
+        asc1 = c.begin_ascending_order();
+        asc2 = c.begin_ascending_order();
+        CHECK(asc1++ == asc2);
+        CHECK(asc1 != asc2);
+        CHECK(++asc2 == asc1);
+
+        auto desc1 = c.begin_descending_order();
+        auto desc2 = c.begin_descending_order();
+        CHECK(desc1 == desc2);
+        ++desc2;
+        CHECK(desc1 != desc2);
+        ++desc1;
+        CHECK(desc1 == desc2);
+        desc1 = c.begin_descending_order();
+        desc2 = c.begin_descending_order();
+        CHECK(desc1++ == desc2);
+        CHECK(desc1 != desc2);
+        CHECK(++desc2 == desc1);
+
+        auto cross1 = c.begin_side_cross_order();
+        auto cross2 = c.begin_side_cross_order();
+        CHECK(cross1 == cross2);
+        ++cross2;
+        CHECK(cross1 != cross2);
+        ++cross1;
+        CHECK(cross1 == cross2);
+        cross1 = c.begin_side_cross_order();
+        cross2 = c.begin_side_cross_order();
+        CHECK(cross1++ == cross2);
+        CHECK(cross1 != cross2);
+        CHECK(++cross2 == cross1);
+
+        auto rev1 = c.begin_reverse_order();
+        auto rev2 = c.begin_reverse_order();
+        CHECK(rev1 == rev2);
+        ++rev2;
+        CHECK(rev1 != rev2);
+        ++rev1;
+        CHECK(rev1 == rev2);
+        rev1 = c.begin_reverse_order();
+        rev2 = c.begin_reverse_order();
+        CHECK(rev1++ == rev2);
+        CHECK(rev1 != rev2);
+        CHECK(++rev2 == rev1);
+
+        auto ord1 = c.begin_order();
+        auto ord2 = c.begin_order();
+        CHECK(ord1 == ord2);
+        ++ord2;
+        CHECK(ord1 != ord2);
+        ++ord1;
+        CHECK(ord1 == ord2);
+        ord1 = c.begin_order();
+        ord2 = c.begin_order();
+        CHECK(ord1++ == ord2);
+        CHECK(ord1 != ord2);
+        CHECK(++ord2 == ord1);
+
+        auto mid1 = c.begin_middle_out_order();
+        auto mid2 = c.begin_middle_out_order();
+        CHECK(mid1 == mid2);
+        ++mid2;
+        CHECK(mid1 != mid2);
+        ++mid1;
+        CHECK(mid1 == mid2);
+        mid1 = c.begin_middle_out_order();
+        mid2 = c.begin_middle_out_order();
+        CHECK(mid1++ == mid2);
+        CHECK(mid1 != mid2);
+        CHECK(++mid2 == mid1);
+    }
+
+    SUBCASE("Odd-sized container") {
+        MyContainer<int> c;
+        c.addElement(1);
+        c.addElement(2);
+        c.addElement(3);
+
+        auto asc1 = c.begin_ascending_order();
+        auto asc2 = c.begin_ascending_order();
+        CHECK(asc1 == asc2);
+        ++asc2;
+        CHECK(asc1 != asc2);
+        ++asc1;
+        CHECK(asc1 == asc2);
+        asc1 = c.begin_ascending_order();
+        asc2 = c.begin_ascending_order();
+        CHECK(asc1++ == asc2);
+        CHECK(asc1 != asc2);
+        CHECK(++asc2 == asc1);
+
+        auto desc1 = c.begin_descending_order();
+        auto desc2 = c.begin_descending_order();
+        CHECK(desc1 == desc2);
+        ++desc2;
+        CHECK(desc1 != desc2);
+        ++desc1;
+        CHECK(desc1 == desc2);
+        desc1 = c.begin_descending_order();
+        desc2 = c.begin_descending_order();
+        CHECK(desc1++ == desc2);
+        CHECK(desc1 != desc2);
+        CHECK(++desc2 == desc1);
+
+        auto cross1 = c.begin_side_cross_order();
+        auto cross2 = c.begin_side_cross_order();
+        CHECK(cross1 == cross2);
+        ++cross2;
+        CHECK(cross1 != cross2);
+        ++cross1;
+        CHECK(cross1 == cross2);
+        cross1 = c.begin_side_cross_order();
+        cross2 = c.begin_side_cross_order();
+        CHECK(cross1++ == cross2);
+        CHECK(cross1 != cross2);
+        CHECK(++cross2 == cross1);
+
+        auto rev1 = c.begin_reverse_order();
+        auto rev2 = c.begin_reverse_order();
+        CHECK(rev1 == rev2);
+        ++rev2;
+        CHECK(rev1 != rev2);
+        ++rev1;
+        CHECK(rev1 == rev2);
+        rev1 = c.begin_reverse_order();
+        rev2 = c.begin_reverse_order();
+        CHECK(rev1++ == rev2);
+        CHECK(rev1 != rev2);
+        CHECK(++rev2 == rev1);
+
+        auto ord1 = c.begin_order();
+        auto ord2 = c.begin_order();
+        CHECK(ord1 == ord2);
+        ++ord2;
+        CHECK(ord1 != ord2);
+        ++ord1;
+        CHECK(ord1 == ord2);
+        ord1 = c.begin_order();
+        ord2 = c.begin_order();
+        CHECK(ord1++ == ord2);
+        CHECK(ord1 != ord2);
+        CHECK(++ord2 == ord1);
+
+        auto mid1 = c.begin_middle_out_order();
+        auto mid2 = c.begin_middle_out_order();
+        CHECK(mid1 == mid2);
+        ++mid2;
+        CHECK(mid1 != mid2);
+        ++mid1;
+        CHECK(mid1 == mid2);
+        mid1 = c.begin_middle_out_order();
+        mid2 = c.begin_middle_out_order();
+        CHECK(mid1++ == mid2);
+        CHECK(mid1 != mid2);
+        CHECK(++mid2 == mid1);
+    }
+
+    SUBCASE("Even-sized container") {
+        MyContainer<int> c;
+        c.addElement(1);
+        c.addElement(2);
+        c.addElement(3);
+        c.addElement(4);
+
+        auto asc1 = c.begin_ascending_order();
+        auto asc2 = c.begin_ascending_order();
+        CHECK(asc1 == asc2);
+        ++asc2;
+        CHECK(asc1 != asc2);
+        ++asc1;
+        CHECK(asc1 == asc2);
+        asc1 = c.begin_ascending_order();
+        asc2 = c.begin_ascending_order();
+        CHECK(asc1++ == asc2);
+        CHECK(asc1 != asc2);
+        CHECK(++asc2 == asc1);
+
+        auto desc1 = c.begin_descending_order();
+        auto desc2 = c.begin_descending_order();
+        CHECK(desc1 == desc2);
+        ++desc2;
+        CHECK(desc1 != desc2);
+        ++desc1;
+        CHECK(desc1 == desc2);
+        desc1 = c.begin_descending_order();
+        desc2 = c.begin_descending_order();
+        CHECK(desc1++ == desc2);
+        CHECK(desc1 != desc2);
+        CHECK(++desc2 == desc1);
+
+        auto cross1 = c.begin_side_cross_order();
+        auto cross2 = c.begin_side_cross_order();
+        CHECK(cross1 == cross2);
+        ++cross2;
+        CHECK(cross1 != cross2);
+        ++cross1;
+        CHECK(cross1 == cross2);
+        cross1 = c.begin_side_cross_order();
+        cross2 = c.begin_side_cross_order();
+        CHECK(cross1++ == cross2);
+        CHECK(cross1 != cross2);
+        CHECK(++cross2 == cross1);
+
+        auto rev1 = c.begin_reverse_order();
+        auto rev2 = c.begin_reverse_order();
+        CHECK(rev1 == rev2);
+        ++rev2;
+        CHECK(rev1 != rev2);
+        ++rev1;
+        CHECK(rev1 == rev2);
+        rev1 = c.begin_reverse_order();
+        rev2 = c.begin_reverse_order();
+        CHECK(rev1++ == rev2);
+        CHECK(rev1 != rev2);
+        CHECK(++rev2 == rev1);
+
+        auto ord1 = c.begin_order();
+        auto ord2 = c.begin_order();
+        CHECK(ord1 == ord2);
+        ++ord2;
+        CHECK(ord1 != ord2);
+        ++ord1;
+        CHECK(ord1 == ord2);
+        ord1 = c.begin_order();
+        ord2 = c.begin_order();
+        CHECK(ord1++ == ord2);
+        CHECK(ord1 != ord2);
+        CHECK(++ord2 == ord1);
+
+        auto mid1 = c.begin_middle_out_order();
+        auto mid2 = c.begin_middle_out_order();
+        CHECK(mid1 == mid2);
+        ++mid2;
+        CHECK(mid1 != mid2);
+        ++mid1;
+        CHECK(mid1 == mid2);
+        mid1 = c.begin_middle_out_order();
+        mid2 = c.begin_middle_out_order();
+        CHECK(mid1++ == mid2);
+        CHECK(mid1 != mid2);
+        CHECK(++mid2 == mid1);
+    }
+
+    SUBCASE("Duplicate elements") {
+        MyContainer<int> c;
+        for (int i = 0; i < 5; ++i) c.addElement(3);
+
+        auto asc1 = c.begin_ascending_order();
+        auto asc2 = c.begin_ascending_order();
+        CHECK(asc1 == asc2);
+        ++asc2;
+        CHECK(asc1 != asc2);
+        ++asc1;
+        CHECK(asc1 == asc2);
+        asc1 = c.begin_ascending_order();
+        asc2 = c.begin_ascending_order();
+        CHECK(asc1++ == asc2);
+        CHECK(asc1 != asc2);
+        CHECK(++asc2 == asc1);
+
+        auto desc1 = c.begin_descending_order();
+        auto desc2 = c.begin_descending_order();
+        CHECK(desc1 == desc2);
+        ++desc2;
+        CHECK(desc1 != desc2);
+        ++desc1;
+        CHECK(desc1 == desc2);
+        desc1 = c.begin_descending_order();
+        desc2 = c.begin_descending_order();
+        CHECK(desc1++ == desc2);
+        CHECK(desc1 != desc2);
+        CHECK(++desc2 == desc1);
+
+        auto cross1 = c.begin_side_cross_order();
+        auto cross2 = c.begin_side_cross_order();
+        CHECK(cross1 == cross2);
+        ++cross2;
+        CHECK(cross1 != cross2);
+        ++cross1;
+        CHECK(cross1 == cross2);
+        cross1 = c.begin_side_cross_order();
+        cross2 = c.begin_side_cross_order();
+        CHECK(cross1++ == cross2);
+        CHECK(cross1 != cross2);
+        CHECK(++cross2 == cross1);
+
+        auto rev1 = c.begin_reverse_order();
+        auto rev2 = c.begin_reverse_order();
+        CHECK(rev1 == rev2);
+        ++rev2;
+        CHECK(rev1 != rev2);
+        ++rev1;
+        CHECK(rev1 == rev2);
+        rev1 = c.begin_reverse_order();
+        rev2 = c.begin_reverse_order();
+        CHECK(rev1++ == rev2);
+        CHECK(rev1 != rev2);
+        CHECK(++rev2 == rev1);
+
+        auto ord1 = c.begin_order();
+        auto ord2 = c.begin_order();
+        CHECK(ord1 == ord2);
+        ++ord2;
+        CHECK(ord1 != ord2);
+        ++ord1;
+        CHECK(ord1 == ord2);
+        ord1 = c.begin_order();
+        ord2 = c.begin_order();
+        CHECK(ord1++ == ord2);
+        CHECK(ord1 != ord2);
+        CHECK(++ord2 == ord1);
+
+        auto mid1 = c.begin_middle_out_order();
+        auto mid2 = c.begin_middle_out_order();
+        CHECK(mid1 == mid2);
+        ++mid2;
+        CHECK(mid1 != mid2);
+        ++mid1;
+        CHECK(mid1 == mid2);
+        mid1 = c.begin_middle_out_order();
+        mid2 = c.begin_middle_out_order();
+        CHECK(mid1++ == mid2);
+        CHECK(mid1 != mid2);
+        CHECK(++mid2 == mid1);
+    }
+
+    SUBCASE("Large container") {
+        MyContainer<int> c;
+        for (int i = 0; i < 10; ++i) c.addElement(i);
+
+        auto asc1 = c.begin_ascending_order();
+        auto asc2 = c.begin_ascending_order();
+        CHECK(asc1 == asc2);
+        ++asc2;
+        CHECK(asc1 != asc2);
+        ++asc1;
+        CHECK(asc1 == asc2);
+        asc1 = c.begin_ascending_order();
+        asc2 = c.begin_ascending_order();
+        CHECK(asc1++ == asc2);
+        CHECK(asc1 != asc2);
+        CHECK(++asc2 == asc1);
+
+        auto desc1 = c.begin_descending_order();
+        auto desc2 = c.begin_descending_order();
+        CHECK(desc1 == desc2);
+        ++desc2;
+        CHECK(desc1 != desc2);
+        ++desc1;
+        CHECK(desc1 == desc2);
+        desc1 = c.begin_descending_order();
+        desc2 = c.begin_descending_order();
+        CHECK(desc1++ == desc2);
+        CHECK(desc1 != desc2);
+        CHECK(++desc2 == desc1);
+
+        auto cross1 = c.begin_side_cross_order();
+        auto cross2 = c.begin_side_cross_order();
+        CHECK(cross1 == cross2);
+        ++cross2;
+        CHECK(cross1 != cross2);
+        ++cross1;
+        CHECK(cross1 == cross2);
+        cross1 = c.begin_side_cross_order();
+        cross2 = c.begin_side_cross_order();
+        CHECK(cross1++ == cross2);
+        CHECK(cross1 != cross2);
+        CHECK(++cross2 == cross1);
+
+        auto rev1 = c.begin_reverse_order();
+        auto rev2 = c.begin_reverse_order();
+        CHECK(rev1 == rev2);
+        ++rev2;
+        CHECK(rev1 != rev2);
+        ++rev1;
+        CHECK(rev1 == rev2);
+        rev1 = c.begin_reverse_order();
+        rev2 = c.begin_reverse_order();
+        CHECK(rev1++ == rev2);
+        CHECK(rev1 != rev2);
+        CHECK(++rev2 == rev1);
+
+        auto ord1 = c.begin_order();
+        auto ord2 = c.begin_order();
+        CHECK(ord1 == ord2);
+        ++ord2;
+        CHECK(ord1 != ord2);
+        ++ord1;
+        CHECK(ord1 == ord2);
+        ord1 = c.begin_order();
+        ord2 = c.begin_order();
+        CHECK(ord1++ == ord2);
+        CHECK(ord1 != ord2);
+        CHECK(++ord2 == ord1);
+
+        auto mid1 = c.begin_middle_out_order();
+        auto mid2 = c.begin_middle_out_order();
+        CHECK(mid1 == mid2);
+        ++mid2;
+        CHECK(mid1 != mid2);
+        ++mid1;
+        CHECK(mid1 == mid2);
+        mid1 = c.begin_middle_out_order();
+        mid2 = c.begin_middle_out_order();
+        CHECK(mid1++ == mid2);
+        CHECK(mid1 != mid2);
+        CHECK(++mid2 == mid1);
+    }
+}
+
+TEST_CASE("Iterator after container modification") {
+    MyContainer<int> c;
+    c.addElement(1);
+    auto it = c.begin_ascending_order();
+    c.addElement(2);
+    CHECK(*it == 1); // Verify iterator stability
+}
+TEST_CASE("Iterator assignment") {
+    MyContainer<int> c;
+    c.addElement(1);
+    auto it1 = c.begin_ascending_order();
+    auto it2 = c.begin_ascending_order();
+    it2 = it1;
+    CHECK(it1 == it2);
+}
+TEST_CASE("Empty container dereference") {
+    MyContainer<int> c;
+    auto it = c.begin_ascending_order();
+    CHECK_THROWS_AS(*it, std::out_of_range);
+}
+
+
+
 TEST_CASE("Iterators with int") {
     SUBCASE("Odd-sized container") {
         MyContainer<int> c;
