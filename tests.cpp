@@ -56,6 +56,7 @@ TEST_CASE("Iterators with int") {
         auto asc_end_it = c.end_ascending_order();
         CHECK_THROWS_AS(*asc_end_it, out_of_range);
         CHECK_THROWS_AS(++asc_end_it, out_of_range);
+        CHECK_THROWS_AS(asc_end_it++, out_of_range);
 
         result.clear();
         for (auto desc_it = c.begin_descending_order(); desc_it != c.end_descending_order(); ++desc_it) {
@@ -65,6 +66,7 @@ TEST_CASE("Iterators with int") {
         auto desc_end_it = c.end_descending_order();
         CHECK_THROWS_AS(*desc_end_it, out_of_range);
         CHECK_THROWS_AS(++desc_end_it, out_of_range);
+        CHECK_THROWS_AS(desc_end_it++, out_of_range);
 
         result.clear();
         for (auto side_it = c.begin_side_cross_order(); side_it != c.end_side_cross_order(); ++side_it) {
@@ -74,6 +76,7 @@ TEST_CASE("Iterators with int") {
         auto side_end_it = c.end_side_cross_order();
         CHECK_THROWS_AS(*side_end_it, out_of_range);
         CHECK_THROWS_AS(++side_end_it, out_of_range);
+        CHECK_THROWS_AS(side_end_it++, out_of_range);
 
         result.clear();
         for (auto rev_it = c.begin_reverse_order(); rev_it != c.end_reverse_order(); ++rev_it) {
@@ -82,7 +85,8 @@ TEST_CASE("Iterators with int") {
         CHECK(result == vector<int>{5, 11, 3, 9, 4});
         auto rev_end_it = c.end_reverse_order();
         CHECK_THROWS_AS(*rev_end_it, out_of_range);
-        // Note: ReverseOrderIterator does not throw on ++ beyond end
+        CHECK_THROWS_AS(++rev_end_it, out_of_range);
+        CHECK_THROWS_AS(rev_end_it++, out_of_range);
 
         result.clear();
         for (auto order_it = c.begin_order(); order_it != c.end_order(); ++order_it) {
@@ -92,6 +96,7 @@ TEST_CASE("Iterators with int") {
         auto order_end_it = c.end_order();
         CHECK_THROWS_AS(*order_end_it, out_of_range);
         CHECK_THROWS_AS(++order_end_it, out_of_range);
+        CHECK_THROWS_AS(order_end_it++, out_of_range);
 
         result.clear();
         for (auto mid_it = c.begin_middle_out_order(); mid_it != c.end_middle_out_order(); ++mid_it) {
@@ -101,6 +106,7 @@ TEST_CASE("Iterators with int") {
         auto mid_end_it = c.end_middle_out_order();
         CHECK_THROWS_AS(*mid_end_it, out_of_range);
         CHECK_THROWS_AS(++mid_end_it, out_of_range);
+        CHECK_THROWS_AS(mid_end_it++, out_of_range);
     }
 
     SUBCASE("Even-sized container") {
@@ -120,6 +126,7 @@ TEST_CASE("Iterators with int") {
         auto asc_end_it = c.end_ascending_order();
         CHECK_THROWS_AS(*asc_end_it, out_of_range);
         CHECK_THROWS_AS(++asc_end_it, out_of_range);
+        CHECK_THROWS_AS(asc_end_it++, out_of_range);
 
         result.clear();
         for (auto desc_it = c.begin_descending_order(); desc_it != c.end_descending_order(); ++desc_it) {
@@ -129,6 +136,7 @@ TEST_CASE("Iterators with int") {
         auto desc_end_it = c.end_descending_order();
         CHECK_THROWS_AS(*desc_end_it, out_of_range);
         CHECK_THROWS_AS(++desc_end_it, out_of_range);
+        CHECK_THROWS_AS(desc_end_it++, out_of_range);
 
         result.clear();
         for (auto side_it = c.begin_side_cross_order(); side_it != c.end_side_cross_order(); ++side_it) {
@@ -138,6 +146,7 @@ TEST_CASE("Iterators with int") {
         auto side_end_it = c.end_side_cross_order();
         CHECK_THROWS_AS(*side_end_it, out_of_range);
         CHECK_THROWS_AS(++side_end_it, out_of_range);
+        CHECK_THROWS_AS(side_end_it++, out_of_range);
 
         result.clear();
         for (auto rev_it = c.begin_reverse_order(); rev_it != c.end_reverse_order(); ++rev_it) {
@@ -146,7 +155,8 @@ TEST_CASE("Iterators with int") {
         CHECK(result == vector<int>{12, 6, 1, 7, 2, 10});
         auto rev_end_it = c.end_reverse_order();
         CHECK_THROWS_AS(*rev_end_it, out_of_range);
-        // Note: ReverseOrderIterator does not throw on ++ beyond end
+        CHECK_THROWS_AS(++rev_end_it, out_of_range);
+        CHECK_THROWS_AS(rev_end_it++, out_of_range);
 
         result.clear();
         for (auto order_it = c.begin_order(); order_it != c.end_order(); ++order_it) {
@@ -156,6 +166,7 @@ TEST_CASE("Iterators with int") {
         auto order_end_it = c.end_order();
         CHECK_THROWS_AS(*order_end_it, out_of_range);
         CHECK_THROWS_AS(++order_end_it, out_of_range);
+        CHECK_THROWS_AS(order_end_it++, out_of_range);
 
         result.clear();
         for (auto mid_it = c.begin_middle_out_order(); mid_it != c.end_middle_out_order(); ++mid_it) {
@@ -165,6 +176,7 @@ TEST_CASE("Iterators with int") {
         auto mid_end_it = c.end_middle_out_order();
         CHECK_THROWS_AS(*mid_end_it, out_of_range);
         CHECK_THROWS_AS(++mid_end_it, out_of_range);
+        CHECK_THROWS_AS(mid_end_it++, out_of_range);
     }
 
     SUBCASE("Empty container") {
@@ -178,6 +190,7 @@ TEST_CASE("Iterators with int") {
         auto asc_end_it = c.end_ascending_order();
         CHECK_THROWS_AS(*asc_end_it, out_of_range);
         CHECK_THROWS_AS(++asc_end_it, out_of_range);
+        CHECK_THROWS_AS(asc_end_it++, out_of_range);
 
         result.clear();
         for (auto desc_it = c.begin_descending_order(); desc_it != c.end_descending_order(); ++desc_it) {
@@ -187,6 +200,7 @@ TEST_CASE("Iterators with int") {
         auto desc_end_it = c.end_descending_order();
         CHECK_THROWS_AS(*desc_end_it, out_of_range);
         CHECK_THROWS_AS(++desc_end_it, out_of_range);
+        CHECK_THROWS_AS(desc_end_it++, out_of_range);
 
         result.clear();
         for (auto side_it = c.begin_side_cross_order(); side_it != c.end_side_cross_order(); ++side_it) {
@@ -196,6 +210,7 @@ TEST_CASE("Iterators with int") {
         auto side_end_it = c.end_side_cross_order();
         CHECK_THROWS_AS(*side_end_it, out_of_range);
         CHECK_THROWS_AS(++side_end_it, out_of_range);
+        CHECK_THROWS_AS(side_end_it++, out_of_range);
 
         result.clear();
         for (auto rev_it = c.begin_reverse_order(); rev_it != c.end_reverse_order(); ++rev_it) {
@@ -204,7 +219,8 @@ TEST_CASE("Iterators with int") {
         CHECK(result == vector<int>{});
         auto rev_end_it = c.end_reverse_order();
         CHECK_THROWS_AS(*rev_end_it, out_of_range);
-        // Note: ReverseOrderIterator does not throw on ++ beyond end
+        CHECK_THROWS_AS(++rev_end_it, out_of_range);
+        CHECK_THROWS_AS(rev_end_it++, out_of_range);
 
         result.clear();
         for (auto order_it = c.begin_order(); order_it != c.end_order(); ++order_it) {
@@ -214,6 +230,7 @@ TEST_CASE("Iterators with int") {
         auto order_end_it = c.end_order();
         CHECK_THROWS_AS(*order_end_it, out_of_range);
         CHECK_THROWS_AS(++order_end_it, out_of_range);
+        CHECK_THROWS_AS(order_end_it++, out_of_range);
 
         result.clear();
         for (auto mid_it = c.begin_middle_out_order(); mid_it != c.end_middle_out_order(); ++mid_it) {
@@ -223,6 +240,7 @@ TEST_CASE("Iterators with int") {
         auto mid_end_it = c.end_middle_out_order();
         CHECK_THROWS_AS(*mid_end_it, out_of_range);
         CHECK_THROWS_AS(++mid_end_it, out_of_range);
+        CHECK_THROWS_AS(mid_end_it++, out_of_range);
     }
 
     SUBCASE("Single element") {
@@ -237,6 +255,7 @@ TEST_CASE("Iterators with int") {
         auto asc_end_it = c.end_ascending_order();
         CHECK_THROWS_AS(*asc_end_it, out_of_range);
         CHECK_THROWS_AS(++asc_end_it, out_of_range);
+        CHECK_THROWS_AS(asc_end_it++, out_of_range);
 
         result.clear();
         for (auto desc_it = c.begin_descending_order(); desc_it != c.end_descending_order(); ++desc_it) {
@@ -246,6 +265,7 @@ TEST_CASE("Iterators with int") {
         auto desc_end_it = c.end_descending_order();
         CHECK_THROWS_AS(*desc_end_it, out_of_range);
         CHECK_THROWS_AS(++desc_end_it, out_of_range);
+        CHECK_THROWS_AS(desc_end_it++, out_of_range);
 
         result.clear();
         for (auto side_it = c.begin_side_cross_order(); side_it != c.end_side_cross_order(); ++side_it) {
@@ -255,6 +275,7 @@ TEST_CASE("Iterators with int") {
         auto side_end_it = c.end_side_cross_order();
         CHECK_THROWS_AS(*side_end_it, out_of_range);
         CHECK_THROWS_AS(++side_end_it, out_of_range);
+        CHECK_THROWS_AS(side_end_it++, out_of_range);
 
         result.clear();
         for (auto rev_it = c.begin_reverse_order(); rev_it != c.end_reverse_order(); ++rev_it) {
@@ -263,7 +284,8 @@ TEST_CASE("Iterators with int") {
         CHECK(result == vector<int>{42});
         auto rev_end_it = c.end_reverse_order();
         CHECK_THROWS_AS(*rev_end_it, out_of_range);
-        // Note: ReverseOrderIterator does not throw on ++ beyond end
+        CHECK_THROWS_AS(++rev_end_it, out_of_range);
+        CHECK_THROWS_AS(rev_end_it++, out_of_range);
 
         result.clear();
         for (auto order_it = c.begin_order(); order_it != c.end_order(); ++order_it) {
@@ -273,6 +295,7 @@ TEST_CASE("Iterators with int") {
         auto order_end_it = c.end_order();
         CHECK_THROWS_AS(*order_end_it, out_of_range);
         CHECK_THROWS_AS(++order_end_it, out_of_range);
+        CHECK_THROWS_AS(order_end_it++, out_of_range);
 
         result.clear();
         for (auto mid_it = c.begin_middle_out_order(); mid_it != c.end_middle_out_order(); ++mid_it) {
@@ -282,6 +305,7 @@ TEST_CASE("Iterators with int") {
         auto mid_end_it = c.end_middle_out_order();
         CHECK_THROWS_AS(*mid_end_it, out_of_range);
         CHECK_THROWS_AS(++mid_end_it, out_of_range);
+        CHECK_THROWS_AS(mid_end_it++, out_of_range);
     }
 
     SUBCASE("Duplicate elements") {
@@ -300,6 +324,7 @@ TEST_CASE("Iterators with int") {
         auto asc_end_it = c.end_ascending_order();
         CHECK_THROWS_AS(*asc_end_it, out_of_range);
         CHECK_THROWS_AS(++asc_end_it, out_of_range);
+        CHECK_THROWS_AS(asc_end_it++, out_of_range);
 
         result.clear();
         for (auto desc_it = c.begin_descending_order(); desc_it != c.end_descending_order(); ++desc_it) {
@@ -309,6 +334,7 @@ TEST_CASE("Iterators with int") {
         auto desc_end_it = c.end_descending_order();
         CHECK_THROWS_AS(*desc_end_it, out_of_range);
         CHECK_THROWS_AS(++desc_end_it, out_of_range);
+        CHECK_THROWS_AS(desc_end_it++, out_of_range);
 
         result.clear();
         for (auto side_it = c.begin_side_cross_order(); side_it != c.end_side_cross_order(); ++side_it) {
@@ -318,6 +344,7 @@ TEST_CASE("Iterators with int") {
         auto side_end_it = c.end_side_cross_order();
         CHECK_THROWS_AS(*side_end_it, out_of_range);
         CHECK_THROWS_AS(++side_end_it, out_of_range);
+        CHECK_THROWS_AS(side_end_it++, out_of_range);
 
         result.clear();
         for (auto rev_it = c.begin_reverse_order(); rev_it != c.end_reverse_order(); ++rev_it) {
@@ -326,7 +353,8 @@ TEST_CASE("Iterators with int") {
         CHECK(result == vector<int>{3, 3, 3, 3, 3});
         auto rev_end_it = c.end_reverse_order();
         CHECK_THROWS_AS(*rev_end_it, out_of_range);
-        // Note: ReverseOrderIterator does not throw on ++ beyond end
+        CHECK_THROWS_AS(++rev_end_it, out_of_range);
+        CHECK_THROWS_AS(rev_end_it++, out_of_range);
 
         result.clear();
         for (auto order_it = c.begin_order(); order_it != c.end_order(); ++order_it) {
@@ -336,6 +364,7 @@ TEST_CASE("Iterators with int") {
         auto order_end_it = c.end_order();
         CHECK_THROWS_AS(*order_end_it, out_of_range);
         CHECK_THROWS_AS(++order_end_it, out_of_range);
+        CHECK_THROWS_AS(order_end_it++, out_of_range);
 
         result.clear();
         for (auto mid_it = c.begin_middle_out_order(); mid_it != c.end_middle_out_order(); ++mid_it) {
@@ -345,6 +374,7 @@ TEST_CASE("Iterators with int") {
         auto mid_end_it = c.end_middle_out_order();
         CHECK_THROWS_AS(*mid_end_it, out_of_range);
         CHECK_THROWS_AS(++mid_end_it, out_of_range);
+        CHECK_THROWS_AS(mid_end_it++, out_of_range);
     }
 
     SUBCASE("Large container") {
@@ -380,6 +410,7 @@ TEST_CASE("Iterators with string") {
         auto asc_end_it = c.end_ascending_order();
         CHECK_THROWS_AS(*asc_end_it, out_of_range);
         CHECK_THROWS_AS(++asc_end_it, out_of_range);
+        CHECK_THROWS_AS(asc_end_it++, out_of_range);
 
         result.clear();
         for (auto desc_it = c.begin_descending_order(); desc_it != c.end_descending_order(); ++desc_it) {
@@ -389,6 +420,7 @@ TEST_CASE("Iterators with string") {
         auto desc_end_it = c.end_descending_order();
         CHECK_THROWS_AS(*desc_end_it, out_of_range);
         CHECK_THROWS_AS(++desc_end_it, out_of_range);
+        CHECK_THROWS_AS(desc_end_it++, out_of_range);
 
         result.clear();
         for (auto side_it = c.begin_side_cross_order(); side_it != c.end_side_cross_order(); ++side_it) {
@@ -398,6 +430,7 @@ TEST_CASE("Iterators with string") {
         auto side_end_it = c.end_side_cross_order();
         CHECK_THROWS_AS(*side_end_it, out_of_range);
         CHECK_THROWS_AS(++side_end_it, out_of_range);
+        CHECK_THROWS_AS(side_end_it++, out_of_range);
 
         result.clear();
         for (auto rev_it = c.begin_reverse_order(); rev_it != c.end_reverse_order(); ++rev_it) {
@@ -406,7 +439,8 @@ TEST_CASE("Iterators with string") {
         CHECK(result == vector<string>{"fig", "date", "cherry", "apple", "banana"});
         auto rev_end_it = c.end_reverse_order();
         CHECK_THROWS_AS(*rev_end_it, out_of_range);
-        // Note: ReverseOrderIterator does not throw on ++ beyond end
+        CHECK_THROWS_AS(++rev_end_it, out_of_range);
+        CHECK_THROWS_AS(rev_end_it++, out_of_range);
 
         result.clear();
         for (auto order_it = c.begin_order(); order_it != c.end_order(); ++order_it) {
@@ -416,6 +450,7 @@ TEST_CASE("Iterators with string") {
         auto order_end_it = c.end_order();
         CHECK_THROWS_AS(*order_end_it, out_of_range);
         CHECK_THROWS_AS(++order_end_it, out_of_range);
+        CHECK_THROWS_AS(order_end_it++, out_of_range);
 
         result.clear();
         for (auto mid_it = c.begin_middle_out_order(); mid_it != c.end_middle_out_order(); ++mid_it) {
@@ -425,6 +460,7 @@ TEST_CASE("Iterators with string") {
         auto mid_end_it = c.end_middle_out_order();
         CHECK_THROWS_AS(*mid_end_it, out_of_range);
         CHECK_THROWS_AS(++mid_end_it, out_of_range);
+        CHECK_THROWS_AS(mid_end_it++, out_of_range);
     }
 
     SUBCASE("Empty container") {
@@ -438,6 +474,7 @@ TEST_CASE("Iterators with string") {
         auto asc_end_it = c.end_ascending_order();
         CHECK_THROWS_AS(*asc_end_it, out_of_range);
         CHECK_THROWS_AS(++asc_end_it, out_of_range);
+        CHECK_THROWS_AS(asc_end_it++, out_of_range);
 
         result.clear();
         for (auto desc_it = c.begin_descending_order(); desc_it != c.end_descending_order(); ++desc_it) {
@@ -447,6 +484,7 @@ TEST_CASE("Iterators with string") {
         auto desc_end_it = c.end_descending_order();
         CHECK_THROWS_AS(*desc_end_it, out_of_range);
         CHECK_THROWS_AS(++desc_end_it, out_of_range);
+        CHECK_THROWS_AS(desc_end_it++, out_of_range);
 
         result.clear();
         for (auto side_it = c.begin_side_cross_order(); side_it != c.end_side_cross_order(); ++side_it) {
@@ -456,6 +494,7 @@ TEST_CASE("Iterators with string") {
         auto side_end_it = c.end_side_cross_order();
         CHECK_THROWS_AS(*side_end_it, out_of_range);
         CHECK_THROWS_AS(++side_end_it, out_of_range);
+        CHECK_THROWS_AS(side_end_it++, out_of_range);
 
         result.clear();
         for (auto rev_it = c.begin_reverse_order(); rev_it != c.end_reverse_order(); ++rev_it) {
@@ -464,7 +503,8 @@ TEST_CASE("Iterators with string") {
         CHECK(result == vector<string>{});
         auto rev_end_it = c.end_reverse_order();
         CHECK_THROWS_AS(*rev_end_it, out_of_range);
-        // Note: ReverseOrderIterator does not throw on ++ beyond end
+        CHECK_THROWS_AS(++rev_end_it, out_of_range);
+        CHECK_THROWS_AS(rev_end_it++, out_of_range);
 
         result.clear();
         for (auto order_it = c.begin_order(); order_it != c.end_order(); ++order_it) {
@@ -474,6 +514,7 @@ TEST_CASE("Iterators with string") {
         auto order_end_it = c.end_order();
         CHECK_THROWS_AS(*order_end_it, out_of_range);
         CHECK_THROWS_AS(++order_end_it, out_of_range);
+        CHECK_THROWS_AS(order_end_it++, out_of_range);
 
         result.clear();
         for (auto mid_it = c.begin_middle_out_order(); mid_it != c.end_middle_out_order(); ++mid_it) {
@@ -483,6 +524,7 @@ TEST_CASE("Iterators with string") {
         auto mid_end_it = c.end_middle_out_order();
         CHECK_THROWS_AS(*mid_end_it, out_of_range);
         CHECK_THROWS_AS(++mid_end_it, out_of_range);
+        CHECK_THROWS_AS(mid_end_it++, out_of_range);
     }
 
     SUBCASE("Single element") {
@@ -497,6 +539,7 @@ TEST_CASE("Iterators with string") {
         auto asc_end_it = c.end_ascending_order();
         CHECK_THROWS_AS(*asc_end_it, out_of_range);
         CHECK_THROWS_AS(++asc_end_it, out_of_range);
+        CHECK_THROWS_AS(asc_end_it++, out_of_range);
 
         result.clear();
         for (auto desc_it = c.begin_descending_order(); desc_it != c.end_descending_order(); ++desc_it) {
@@ -506,6 +549,7 @@ TEST_CASE("Iterators with string") {
         auto desc_end_it = c.end_descending_order();
         CHECK_THROWS_AS(*desc_end_it, out_of_range);
         CHECK_THROWS_AS(++desc_end_it, out_of_range);
+        CHECK_THROWS_AS(desc_end_it++, out_of_range);
 
         result.clear();
         for (auto side_it = c.begin_side_cross_order(); side_it != c.end_side_cross_order(); ++side_it) {
@@ -515,6 +559,7 @@ TEST_CASE("Iterators with string") {
         auto side_end_it = c.end_side_cross_order();
         CHECK_THROWS_AS(*side_end_it, out_of_range);
         CHECK_THROWS_AS(++side_end_it, out_of_range);
+        CHECK_THROWS_AS(side_end_it++, out_of_range);
 
         result.clear();
         for (auto rev_it = c.begin_reverse_order(); rev_it != c.end_reverse_order(); ++rev_it) {
@@ -523,7 +568,8 @@ TEST_CASE("Iterators with string") {
         CHECK(result == vector<string>{"hello"});
         auto rev_end_it = c.end_reverse_order();
         CHECK_THROWS_AS(*rev_end_it, out_of_range);
-        // Note: ReverseOrderIterator does not throw on ++ beyond end
+        CHECK_THROWS_AS(++rev_end_it, out_of_range);
+        CHECK_THROWS_AS(rev_end_it++, out_of_range);
 
         result.clear();
         for (auto order_it = c.begin_order(); order_it != c.end_order(); ++order_it) {
@@ -533,6 +579,7 @@ TEST_CASE("Iterators with string") {
         auto order_end_it = c.end_order();
         CHECK_THROWS_AS(*order_end_it, out_of_range);
         CHECK_THROWS_AS(++order_end_it, out_of_range);
+        CHECK_THROWS_AS(order_end_it++, out_of_range);
 
         result.clear();
         for (auto mid_it = c.begin_middle_out_order(); mid_it != c.end_middle_out_order(); ++mid_it) {
@@ -542,6 +589,7 @@ TEST_CASE("Iterators with string") {
         auto mid_end_it = c.end_middle_out_order();
         CHECK_THROWS_AS(*mid_end_it, out_of_range);
         CHECK_THROWS_AS(++mid_end_it, out_of_range);
+        CHECK_THROWS_AS(mid_end_it++, out_of_range);
     }
 }
 
@@ -562,6 +610,7 @@ TEST_CASE("Iterators with double") {
         auto asc_end_it = c.end_ascending_order();
         CHECK_THROWS_AS(*asc_end_it, out_of_range);
         CHECK_THROWS_AS(++asc_end_it, out_of_range);
+        CHECK_THROWS_AS(asc_end_it++, out_of_range);
 
         result.clear();
         for (auto desc_it = c.begin_descending_order(); desc_it != c.end_descending_order(); ++desc_it) {
@@ -571,6 +620,7 @@ TEST_CASE("Iterators with double") {
         auto desc_end_it = c.end_descending_order();
         CHECK_THROWS_AS(*desc_end_it, out_of_range);
         CHECK_THROWS_AS(++desc_end_it, out_of_range);
+        CHECK_THROWS_AS(desc_end_it++, out_of_range);
 
         result.clear();
         for (auto side_it = c.begin_side_cross_order(); side_it != c.end_side_cross_order(); ++side_it) {
@@ -580,6 +630,7 @@ TEST_CASE("Iterators with double") {
         auto side_end_it = c.end_side_cross_order();
         CHECK_THROWS_AS(*side_end_it, out_of_range);
         CHECK_THROWS_AS(++side_end_it, out_of_range);
+        CHECK_THROWS_AS(side_end_it++, out_of_range);
 
         result.clear();
         for (auto rev_it = c.begin_reverse_order(); rev_it != c.end_reverse_order(); ++rev_it) {
@@ -588,7 +639,8 @@ TEST_CASE("Iterators with double") {
         CHECK(result == vector<double>{0.5, 5.0, 2.72, 1.41, 3.14});
         auto rev_end_it = c.end_reverse_order();
         CHECK_THROWS_AS(*rev_end_it, out_of_range);
-        // Note: ReverseOrderIterator does not throw on ++ beyond end
+        CHECK_THROWS_AS(++rev_end_it, out_of_range);
+        CHECK_THROWS_AS(rev_end_it++, out_of_range);
 
         result.clear();
         for (auto order_it = c.begin_order(); order_it != c.end_order(); ++order_it) {
@@ -598,6 +650,7 @@ TEST_CASE("Iterators with double") {
         auto order_end_it = c.end_order();
         CHECK_THROWS_AS(*order_end_it, out_of_range);
         CHECK_THROWS_AS(++order_end_it, out_of_range);
+        CHECK_THROWS_AS(order_end_it++, out_of_range);
 
         result.clear();
         for (auto mid_it = c.begin_middle_out_order(); mid_it != c.end_middle_out_order(); ++mid_it) {
@@ -607,6 +660,7 @@ TEST_CASE("Iterators with double") {
         auto mid_end_it = c.end_middle_out_order();
         CHECK_THROWS_AS(*mid_end_it, out_of_range);
         CHECK_THROWS_AS(++mid_end_it, out_of_range);
+        CHECK_THROWS_AS(mid_end_it++, out_of_range);
     }
 
     SUBCASE("Empty container") {
@@ -620,6 +674,7 @@ TEST_CASE("Iterators with double") {
         auto asc_end_it = c.end_ascending_order();
         CHECK_THROWS_AS(*asc_end_it, out_of_range);
         CHECK_THROWS_AS(++asc_end_it, out_of_range);
+        CHECK_THROWS_AS(asc_end_it++, out_of_range);
 
         result.clear();
         for (auto desc_it = c.begin_descending_order(); desc_it != c.end_descending_order(); ++desc_it) {
@@ -629,6 +684,7 @@ TEST_CASE("Iterators with double") {
         auto desc_end_it = c.end_descending_order();
         CHECK_THROWS_AS(*desc_end_it, out_of_range);
         CHECK_THROWS_AS(++desc_end_it, out_of_range);
+        CHECK_THROWS_AS(desc_end_it++, out_of_range);
 
         result.clear();
         for (auto side_it = c.begin_side_cross_order(); side_it != c.end_side_cross_order(); ++side_it) {
@@ -638,6 +694,7 @@ TEST_CASE("Iterators with double") {
         auto side_end_it = c.end_side_cross_order();
         CHECK_THROWS_AS(*side_end_it, out_of_range);
         CHECK_THROWS_AS(++side_end_it, out_of_range);
+        CHECK_THROWS_AS(side_end_it++, out_of_range);
 
         result.clear();
         for (auto rev_it = c.begin_reverse_order(); rev_it != c.end_reverse_order(); ++rev_it) {
@@ -646,7 +703,8 @@ TEST_CASE("Iterators with double") {
         CHECK(result == vector<double>{});
         auto rev_end_it = c.end_reverse_order();
         CHECK_THROWS_AS(*rev_end_it, out_of_range);
-        // Note: ReverseOrderIterator does not throw on ++ beyond end
+        CHECK_THROWS_AS(++rev_end_it, out_of_range);
+        CHECK_THROWS_AS(rev_end_it++, out_of_range);
 
         result.clear();
         for (auto order_it = c.begin_order(); order_it != c.end_order(); ++order_it) {
@@ -656,6 +714,7 @@ TEST_CASE("Iterators with double") {
         auto order_end_it = c.end_order();
         CHECK_THROWS_AS(*order_end_it, out_of_range);
         CHECK_THROWS_AS(++order_end_it, out_of_range);
+        CHECK_THROWS_AS(order_end_it++, out_of_range);
 
         result.clear();
         for (auto mid_it = c.begin_middle_out_order(); mid_it != c.end_middle_out_order(); ++mid_it) {
@@ -665,6 +724,7 @@ TEST_CASE("Iterators with double") {
         auto mid_end_it = c.end_middle_out_order();
         CHECK_THROWS_AS(*mid_end_it, out_of_range);
         CHECK_THROWS_AS(++mid_end_it, out_of_range);
+        CHECK_THROWS_AS(mid_end_it++, out_of_range);
     }
 
     SUBCASE("Single element") {
@@ -679,6 +739,7 @@ TEST_CASE("Iterators with double") {
         auto asc_end_it = c.end_ascending_order();
         CHECK_THROWS_AS(*asc_end_it, out_of_range);
         CHECK_THROWS_AS(++asc_end_it, out_of_range);
+        CHECK_THROWS_AS(asc_end_it++, out_of_range);
 
         result.clear();
         for (auto desc_it = c.begin_descending_order(); desc_it != c.end_descending_order(); ++desc_it) {
@@ -688,6 +749,7 @@ TEST_CASE("Iterators with double") {
         auto desc_end_it = c.end_descending_order();
         CHECK_THROWS_AS(*desc_end_it, out_of_range);
         CHECK_THROWS_AS(++desc_end_it, out_of_range);
+        CHECK_THROWS_AS(desc_end_it++, out_of_range);
 
         result.clear();
         for (auto side_it = c.begin_side_cross_order(); side_it != c.end_side_cross_order(); ++side_it) {
@@ -697,6 +759,7 @@ TEST_CASE("Iterators with double") {
         auto side_end_it = c.end_side_cross_order();
         CHECK_THROWS_AS(*side_end_it, out_of_range);
         CHECK_THROWS_AS(++side_end_it, out_of_range);
+        CHECK_THROWS_AS(side_end_it++, out_of_range);
 
         result.clear();
         for (auto rev_it = c.begin_reverse_order(); rev_it != c.end_reverse_order(); ++rev_it) {
@@ -705,7 +768,8 @@ TEST_CASE("Iterators with double") {
         CHECK(result == vector<double>{1.23});
         auto rev_end_it = c.end_reverse_order();
         CHECK_THROWS_AS(*rev_end_it, out_of_range);
-        // Note: ReverseOrderIterator does not throw on ++ beyond end
+        CHECK_THROWS_AS(++rev_end_it, out_of_range);
+        CHECK_THROWS_AS(rev_end_it++, out_of_range);
 
         result.clear();
         for (auto order_it = c.begin_order(); order_it != c.end_order(); ++order_it) {
@@ -715,6 +779,7 @@ TEST_CASE("Iterators with double") {
         auto order_end_it = c.end_order();
         CHECK_THROWS_AS(*order_end_it, out_of_range);
         CHECK_THROWS_AS(++order_end_it, out_of_range);
+        CHECK_THROWS_AS(order_end_it++, out_of_range);
 
         result.clear();
         for (auto mid_it = c.begin_middle_out_order(); mid_it != c.end_middle_out_order(); ++mid_it) {
@@ -724,6 +789,7 @@ TEST_CASE("Iterators with double") {
         auto mid_end_it = c.end_middle_out_order();
         CHECK_THROWS_AS(*mid_end_it, out_of_range);
         CHECK_THROWS_AS(++mid_end_it, out_of_range);
+        CHECK_THROWS_AS(mid_end_it++, out_of_range);
     }
 }
 
@@ -744,6 +810,7 @@ TEST_CASE("Iterators with char") {
         auto asc_end_it = c.end_ascending_order();
         CHECK_THROWS_AS(*asc_end_it, out_of_range);
         CHECK_THROWS_AS(++asc_end_it, out_of_range);
+        CHECK_THROWS_AS(asc_end_it++, out_of_range);
 
         result.clear();
         for (auto desc_it = c.begin_descending_order(); desc_it != c.end_descending_order(); ++desc_it) {
@@ -753,6 +820,7 @@ TEST_CASE("Iterators with char") {
         auto desc_end_it = c.end_descending_order();
         CHECK_THROWS_AS(*desc_end_it, out_of_range);
         CHECK_THROWS_AS(++desc_end_it, out_of_range);
+        CHECK_THROWS_AS(desc_end_it++, out_of_range);
 
         result.clear();
         for (auto side_it = c.begin_side_cross_order(); side_it != c.end_side_cross_order(); ++side_it) {
@@ -762,6 +830,7 @@ TEST_CASE("Iterators with char") {
         auto side_end_it = c.end_side_cross_order();
         CHECK_THROWS_AS(*side_end_it, out_of_range);
         CHECK_THROWS_AS(++side_end_it, out_of_range);
+        CHECK_THROWS_AS(side_end_it++, out_of_range);
 
         result.clear();
         for (auto rev_it = c.begin_reverse_order(); rev_it != c.end_reverse_order(); ++rev_it) {
@@ -770,7 +839,8 @@ TEST_CASE("Iterators with char") {
         CHECK(result == vector<char>{'d', 'b', 'c', 'a', 'e'});
         auto rev_end_it = c.end_reverse_order();
         CHECK_THROWS_AS(*rev_end_it, out_of_range);
-        // Note: ReverseOrderIterator does not throw on ++ beyond end
+        CHECK_THROWS_AS(++rev_end_it, out_of_range);
+        CHECK_THROWS_AS(rev_end_it++, out_of_range);
 
         result.clear();
         for (auto order_it = c.begin_order(); order_it != c.end_order(); ++order_it) {
@@ -780,6 +850,7 @@ TEST_CASE("Iterators with char") {
         auto order_end_it = c.end_order();
         CHECK_THROWS_AS(*order_end_it, out_of_range);
         CHECK_THROWS_AS(++order_end_it, out_of_range);
+        CHECK_THROWS_AS(order_end_it++, out_of_range);
 
         result.clear();
         for (auto mid_it = c.begin_middle_out_order(); mid_it != c.end_middle_out_order(); ++mid_it) {
@@ -789,6 +860,7 @@ TEST_CASE("Iterators with char") {
         auto mid_end_it = c.end_middle_out_order();
         CHECK_THROWS_AS(*mid_end_it, out_of_range);
         CHECK_THROWS_AS(++mid_end_it, out_of_range);
+        CHECK_THROWS_AS(mid_end_it++, out_of_range);
     }
 
     SUBCASE("Empty container") {
@@ -802,6 +874,7 @@ TEST_CASE("Iterators with char") {
         auto asc_end_it = c.end_ascending_order();
         CHECK_THROWS_AS(*asc_end_it, out_of_range);
         CHECK_THROWS_AS(++asc_end_it, out_of_range);
+        CHECK_THROWS_AS(asc_end_it++, out_of_range);
 
         result.clear();
         for (auto desc_it = c.begin_descending_order(); desc_it != c.end_descending_order(); ++desc_it) {
@@ -811,6 +884,7 @@ TEST_CASE("Iterators with char") {
         auto desc_end_it = c.end_descending_order();
         CHECK_THROWS_AS(*desc_end_it, out_of_range);
         CHECK_THROWS_AS(++desc_end_it, out_of_range);
+        CHECK_THROWS_AS(desc_end_it++, out_of_range);
 
         result.clear();
         for (auto side_it = c.begin_side_cross_order(); side_it != c.end_side_cross_order(); ++side_it) {
@@ -820,6 +894,7 @@ TEST_CASE("Iterators with char") {
         auto side_end_it = c.end_side_cross_order();
         CHECK_THROWS_AS(*side_end_it, out_of_range);
         CHECK_THROWS_AS(++side_end_it, out_of_range);
+        CHECK_THROWS_AS(side_end_it++, out_of_range);
 
         result.clear();
         for (auto rev_it = c.begin_reverse_order(); rev_it != c.end_reverse_order(); ++rev_it) {
@@ -828,7 +903,8 @@ TEST_CASE("Iterators with char") {
         CHECK(result == vector<char>{});
         auto rev_end_it = c.end_reverse_order();
         CHECK_THROWS_AS(*rev_end_it, out_of_range);
-        // Note: ReverseOrderIterator does not throw on ++ beyond end
+        CHECK_THROWS_AS(++rev_end_it, out_of_range);
+        CHECK_THROWS_AS(rev_end_it++, out_of_range);
 
         result.clear();
         for (auto order_it = c.begin_order(); order_it != c.end_order(); ++order_it) {
@@ -838,6 +914,7 @@ TEST_CASE("Iterators with char") {
         auto order_end_it = c.end_order();
         CHECK_THROWS_AS(*order_end_it, out_of_range);
         CHECK_THROWS_AS(++order_end_it, out_of_range);
+        CHECK_THROWS_AS(order_end_it++, out_of_range);
 
         result.clear();
         for (auto mid_it = c.begin_middle_out_order(); mid_it != c.end_middle_out_order(); ++mid_it) {
@@ -847,6 +924,7 @@ TEST_CASE("Iterators with char") {
         auto mid_end_it = c.end_middle_out_order();
         CHECK_THROWS_AS(*mid_end_it, out_of_range);
         CHECK_THROWS_AS(++mid_end_it, out_of_range);
+        CHECK_THROWS_AS(mid_end_it++, out_of_range);
     }
 
     SUBCASE("Single element") {
@@ -861,6 +939,7 @@ TEST_CASE("Iterators with char") {
         auto asc_end_it = c.end_ascending_order();
         CHECK_THROWS_AS(*asc_end_it, out_of_range);
         CHECK_THROWS_AS(++asc_end_it, out_of_range);
+        CHECK_THROWS_AS(asc_end_it++, out_of_range);
 
         result.clear();
         for (auto desc_it = c.begin_descending_order(); desc_it != c.end_descending_order(); ++desc_it) {
@@ -870,6 +949,7 @@ TEST_CASE("Iterators with char") {
         auto desc_end_it = c.end_descending_order();
         CHECK_THROWS_AS(*desc_end_it, out_of_range);
         CHECK_THROWS_AS(++desc_end_it, out_of_range);
+        CHECK_THROWS_AS(desc_end_it++, out_of_range);
 
         result.clear();
         for (auto side_it = c.begin_side_cross_order(); side_it != c.end_side_cross_order(); ++side_it) {
@@ -879,6 +959,7 @@ TEST_CASE("Iterators with char") {
         auto side_end_it = c.end_side_cross_order();
         CHECK_THROWS_AS(*side_end_it, out_of_range);
         CHECK_THROWS_AS(++side_end_it, out_of_range);
+        CHECK_THROWS_AS(side_end_it++, out_of_range);
 
         result.clear();
         for (auto rev_it = c.begin_reverse_order(); rev_it != c.end_reverse_order(); ++rev_it) {
@@ -887,7 +968,8 @@ TEST_CASE("Iterators with char") {
         CHECK(result == vector<char>{'x'});
         auto rev_end_it = c.end_reverse_order();
         CHECK_THROWS_AS(*rev_end_it, out_of_range);
-        // Note: ReverseOrderIterator does not throw on ++ beyond end
+        CHECK_THROWS_AS(++rev_end_it, out_of_range);
+        CHECK_THROWS_AS(rev_end_it++, out_of_range);
 
         result.clear();
         for (auto order_it = c.begin_order(); order_it != c.end_order(); ++order_it) {
@@ -897,6 +979,7 @@ TEST_CASE("Iterators with char") {
         auto order_end_it = c.end_order();
         CHECK_THROWS_AS(*order_end_it, out_of_range);
         CHECK_THROWS_AS(++order_end_it, out_of_range);
+        CHECK_THROWS_AS(order_end_it++, out_of_range);
 
         result.clear();
         for (auto mid_it = c.begin_middle_out_order(); mid_it != c.end_middle_out_order(); ++mid_it) {
@@ -906,6 +989,7 @@ TEST_CASE("Iterators with char") {
         auto mid_end_it = c.end_middle_out_order();
         CHECK_THROWS_AS(*mid_end_it, out_of_range);
         CHECK_THROWS_AS(++mid_end_it, out_of_range);
+        CHECK_THROWS_AS(mid_end_it++, out_of_range);
     }
 }
 
@@ -926,6 +1010,7 @@ TEST_CASE("Iterators with float") {
         auto asc_end_it = c.end_ascending_order();
         CHECK_THROWS_AS(*asc_end_it, out_of_range);
         CHECK_THROWS_AS(++asc_end_it, out_of_range);
+        CHECK_THROWS_AS(asc_end_it++, out_of_range);
 
         result.clear();
         for (auto desc_it = c.begin_descending_order(); desc_it != c.end_descending_order(); ++desc_it) {
@@ -935,6 +1020,7 @@ TEST_CASE("Iterators with float") {
         auto desc_end_it = c.end_descending_order();
         CHECK_THROWS_AS(*desc_end_it, out_of_range);
         CHECK_THROWS_AS(++desc_end_it, out_of_range);
+        CHECK_THROWS_AS(desc_end_it++, out_of_range);
 
         result.clear();
         for (auto side_it = c.begin_side_cross_order(); side_it != c.end_side_cross_order(); ++side_it) {
@@ -944,6 +1030,7 @@ TEST_CASE("Iterators with float") {
         auto side_end_it = c.end_side_cross_order();
         CHECK_THROWS_AS(*side_end_it, out_of_range);
         CHECK_THROWS_AS(++side_end_it, out_of_range);
+        CHECK_THROWS_AS(side_end_it++, out_of_range);
 
         result.clear();
         for (auto rev_it = c.begin_reverse_order(); rev_it != c.end_reverse_order(); ++rev_it) {
@@ -952,7 +1039,8 @@ TEST_CASE("Iterators with float") {
         CHECK(result == vector<float>{0.5f, 4.4f, 2.3f, 1.2f, 3.1f});
         auto rev_end_it = c.end_reverse_order();
         CHECK_THROWS_AS(*rev_end_it, out_of_range);
-        // Note: ReverseOrderIterator does not throw on ++ beyond end
+        CHECK_THROWS_AS(++rev_end_it, out_of_range);
+        CHECK_THROWS_AS(rev_end_it++, out_of_range);
 
         result.clear();
         for (auto order_it = c.begin_order(); order_it != c.end_order(); ++order_it) {
@@ -962,6 +1050,7 @@ TEST_CASE("Iterators with float") {
         auto order_end_it = c.end_order();
         CHECK_THROWS_AS(*order_end_it, out_of_range);
         CHECK_THROWS_AS(++order_end_it, out_of_range);
+        CHECK_THROWS_AS(order_end_it++, out_of_range);
 
         result.clear();
         for (auto mid_it = c.begin_middle_out_order(); mid_it != c.end_middle_out_order(); ++mid_it) {
@@ -971,6 +1060,7 @@ TEST_CASE("Iterators with float") {
         auto mid_end_it = c.end_middle_out_order();
         CHECK_THROWS_AS(*mid_end_it, out_of_range);
         CHECK_THROWS_AS(++mid_end_it, out_of_range);
+        CHECK_THROWS_AS(mid_end_it++, out_of_range);
     }
 
     SUBCASE("Empty container") {
@@ -984,6 +1074,7 @@ TEST_CASE("Iterators with float") {
         auto asc_end_it = c.end_ascending_order();
         CHECK_THROWS_AS(*asc_end_it, out_of_range);
         CHECK_THROWS_AS(++asc_end_it, out_of_range);
+        CHECK_THROWS_AS(asc_end_it++, out_of_range);
 
         result.clear();
         for (auto desc_it = c.begin_descending_order(); desc_it != c.end_descending_order(); ++desc_it) {
@@ -993,6 +1084,7 @@ TEST_CASE("Iterators with float") {
         auto desc_end_it = c.end_descending_order();
         CHECK_THROWS_AS(*desc_end_it, out_of_range);
         CHECK_THROWS_AS(++desc_end_it, out_of_range);
+        CHECK_THROWS_AS(desc_end_it++, out_of_range);
 
         result.clear();
         for (auto side_it = c.begin_side_cross_order(); side_it != c.end_side_cross_order(); ++side_it) {
@@ -1002,6 +1094,7 @@ TEST_CASE("Iterators with float") {
         auto side_end_it = c.end_side_cross_order();
         CHECK_THROWS_AS(*side_end_it, out_of_range);
         CHECK_THROWS_AS(++side_end_it, out_of_range);
+        CHECK_THROWS_AS(side_end_it++, out_of_range);
 
         result.clear();
         for (auto rev_it = c.begin_reverse_order(); rev_it != c.end_reverse_order(); ++rev_it) {
@@ -1010,7 +1103,8 @@ TEST_CASE("Iterators with float") {
         CHECK(result == vector<float>{});
         auto rev_end_it = c.end_reverse_order();
         CHECK_THROWS_AS(*rev_end_it, out_of_range);
-        // Note: ReverseOrderIterator does not throw on ++ beyond end
+        CHECK_THROWS_AS(++rev_end_it, out_of_range);
+        CHECK_THROWS_AS(rev_end_it++, out_of_range);
 
         result.clear();
         for (auto order_it = c.begin_order(); order_it != c.end_order(); ++order_it) {
@@ -1020,6 +1114,7 @@ TEST_CASE("Iterators with float") {
         auto order_end_it = c.end_order();
         CHECK_THROWS_AS(*order_end_it, out_of_range);
         CHECK_THROWS_AS(++order_end_it, out_of_range);
+        CHECK_THROWS_AS(order_end_it++, out_of_range);
 
         result.clear();
         for (auto mid_it = c.begin_middle_out_order(); mid_it != c.end_middle_out_order(); ++mid_it) {
@@ -1029,6 +1124,7 @@ TEST_CASE("Iterators with float") {
         auto mid_end_it = c.end_middle_out_order();
         CHECK_THROWS_AS(*mid_end_it, out_of_range);
         CHECK_THROWS_AS(++mid_end_it, out_of_range);
+        CHECK_THROWS_AS(mid_end_it++, out_of_range);
     }
 
     SUBCASE("Single element") {
@@ -1043,6 +1139,7 @@ TEST_CASE("Iterators with float") {
         auto asc_end_it = c.end_ascending_order();
         CHECK_THROWS_AS(*asc_end_it, out_of_range);
         CHECK_THROWS_AS(++asc_end_it, out_of_range);
+        CHECK_THROWS_AS(asc_end_it++, out_of_range);
 
         result.clear();
         for (auto desc_it = c.begin_descending_order(); desc_it != c.end_descending_order(); ++desc_it) {
@@ -1052,6 +1149,7 @@ TEST_CASE("Iterators with float") {
         auto desc_end_it = c.end_descending_order();
         CHECK_THROWS_AS(*desc_end_it, out_of_range);
         CHECK_THROWS_AS(++desc_end_it, out_of_range);
+        CHECK_THROWS_AS(desc_end_it++, out_of_range);
 
         result.clear();
         for (auto side_it = c.begin_side_cross_order(); side_it != c.end_side_cross_order(); ++side_it) {
@@ -1061,6 +1159,7 @@ TEST_CASE("Iterators with float") {
         auto side_end_it = c.end_side_cross_order();
         CHECK_THROWS_AS(*side_end_it, out_of_range);
         CHECK_THROWS_AS(++side_end_it, out_of_range);
+        CHECK_THROWS_AS(side_end_it++, out_of_range);
 
         result.clear();
         for (auto rev_it = c.begin_reverse_order(); rev_it != c.end_reverse_order(); ++rev_it) {
@@ -1069,7 +1168,8 @@ TEST_CASE("Iterators with float") {
         CHECK(result == vector<float>{1.5f});
         auto rev_end_it = c.end_reverse_order();
         CHECK_THROWS_AS(*rev_end_it, out_of_range);
-        // Note: ReverseOrderIterator does not throw on ++ beyond end
+        CHECK_THROWS_AS(++rev_end_it, out_of_range);
+        CHECK_THROWS_AS(rev_end_it++, out_of_range);
 
         result.clear();
         for (auto order_it = c.begin_order(); order_it != c.end_order(); ++order_it) {
@@ -1079,6 +1179,7 @@ TEST_CASE("Iterators with float") {
         auto order_end_it = c.end_order();
         CHECK_THROWS_AS(*order_end_it, out_of_range);
         CHECK_THROWS_AS(++order_end_it, out_of_range);
+        CHECK_THROWS_AS(order_end_it++, out_of_range);
 
         result.clear();
         for (auto mid_it = c.begin_middle_out_order(); mid_it != c.end_middle_out_order(); ++mid_it) {
@@ -1088,5 +1189,6 @@ TEST_CASE("Iterators with float") {
         auto mid_end_it = c.end_middle_out_order();
         CHECK_THROWS_AS(*mid_end_it, out_of_range);
         CHECK_THROWS_AS(++mid_end_it, out_of_range);
+        CHECK_THROWS_AS(mid_end_it++, out_of_range);
     }
 }

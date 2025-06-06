@@ -73,6 +73,9 @@ namespace ariel {
 
         // 🔹 ++ (postfix)
         SideCrossOrderIterator operator++(int) {
+            if (index >= cross_data.size()) {
+                throw std::out_of_range("Cannot increment beyond end.");
+            }
             SideCrossOrderIterator temp = *this;  // שומר את המצב הנוכחי
             ++(*this);                            // קורא ל־prefix ++ שכבר מוגדר
             return temp;                          // מחזיר את העותק לפני ההגדלה

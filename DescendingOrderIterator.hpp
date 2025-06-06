@@ -52,6 +52,9 @@ namespace ariel {
 
         // אופרטור ++ (postfix)
         DescendingOrderIterator operator++(int) {
+            if (index >= sorted_data.size()) {
+                throw std::out_of_range("Cannot increment beyond end.");
+            }
             DescendingOrderIterator temp = *this;  // שומר מצב נוכחי
             ++(*this);                             // מעלה אינדקס (משתמש ב־prefix)
             return temp;                           // מחזיר עותק מהמצב הקודם

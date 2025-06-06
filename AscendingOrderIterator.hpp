@@ -50,6 +50,9 @@ namespace ariel {
         }
 
         AscendingOrderIterator operator++(int) {
+            if (index >= sorted_data.size()) {
+                throw std::out_of_range("Cannot increment beyond end.");
+            }
             AscendingOrderIterator temp = *this;  // שומר את הערך הנוכחי
             ++(*this);                            // מעלה את האינדקס (משתמש ב־++ הקיים)
             return temp;                          // מחזיר את הערך הישן

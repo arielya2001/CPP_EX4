@@ -48,6 +48,9 @@ namespace ariel {
 
         // 🔹 ++ (postfix)
         OrderIterator operator++(int) {
+            if (index >= container->getData().size()) {
+                throw std::out_of_range("Cannot increment beyond end.");
+            }
             OrderIterator temp = *this;  // שומר את המצב הנוכחי
             ++(*this);                   // מפעיל את prefix ++ שכבר קיים
             return temp;                 // מחזיר את העותק לפני ההגדלה

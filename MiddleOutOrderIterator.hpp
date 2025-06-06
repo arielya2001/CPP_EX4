@@ -73,6 +73,9 @@ namespace ariel {
 
         // 🔹 ++ (postfix)
         MiddleOutOrderIterator operator++(int) {
+            if (index >= middle_out_data.size()) {
+                throw std::out_of_range("Cannot increment beyond end.");
+            }
             MiddleOutOrderIterator temp = *this;  // שומר את המצב הנוכחי
             ++(*this);                            // מפעיל את prefix ++
             return temp;                          // מחזיר את העותק הישן

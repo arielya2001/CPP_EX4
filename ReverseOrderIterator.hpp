@@ -39,11 +39,17 @@ namespace ariel {
 
         // 🔹 ++
         ReverseOrderIterator& operator++() {
+            if (index >= container->getData().size()) {
+                throw std::out_of_range("Cannot increment beyond end.");
+            }
             ++index;
             return *this;
         }
         // 🔹 ++ (postfix)
         ReverseOrderIterator operator++(int) {
+            if (index >= container->getData().size()) {
+                throw std::out_of_range("Cannot increment beyond end.");
+            }
             ReverseOrderIterator temp = *this;  // שמירה על המצב הנוכחי
             ++(*this);                          // שימוש באופרטור prefix שכבר קיים
             return temp;                        // החזרת המצב הישן

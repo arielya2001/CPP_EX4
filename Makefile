@@ -33,5 +33,9 @@ test: $(TEST_TARGET)
 $(TEST_TARGET): $(TEST_SOURCE) $(HEADERS)
 	$(CXX) $(CXXFLAGS) -o $(TEST_TARGET) $(TEST_SOURCE)
 
+valgrind: $(TEST_TARGET) $(MAIN_TARGET)
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(TEST_TARGET)
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(MAIN_TARGET)
+
 clean:
 	rm -f $(TARGET) $(MAIN_TARGET) $(TEST_TARGET)
