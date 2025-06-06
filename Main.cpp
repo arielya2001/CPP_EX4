@@ -1,3 +1,7 @@
+/*
+Mail - ariel.yaacobi@msmail.ariel.ac.il
+*/
+
 #include <iostream>
 #include "MyContainer.hpp"
 

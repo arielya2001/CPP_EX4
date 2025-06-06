@@ -1,6 +1,6 @@
-//
-// Created by ariely122 on 6/6/25.
-//
+/*
+Mail - ariel.yaacobi@msmail.ariel.ac.il
+*/
 
 #ifndef REVERSEORDERITERATOR_HPP
 #define REVERSEORDERITERATOR_HPP
