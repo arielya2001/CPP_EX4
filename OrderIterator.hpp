@@ -28,20 +28,6 @@ namespace ariel {
             }
         }
 
-        // 🔹 Copy constructor
-        OrderIterator(const OrderIterator& other)
-            : container(other.container),
-              index(other.index) {}
-
-        // 🔹 Assignment operator
-        OrderIterator& operator=(const OrderIterator& other) {
-            if (this != &other) {
-                container = other.container;
-                index = other.index;
-            }
-            return *this;
-        }
-
         // 🔹 גישה לערך
         T operator*() const {
             const std::vector<T>& data = container->getData();

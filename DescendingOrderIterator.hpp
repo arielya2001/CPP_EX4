@@ -33,22 +33,6 @@ namespace ariel {
             }
         }
 
-        //  בנאי העתקה
-        DescendingOrderIterator(const DescendingOrderIterator& other)
-            : container(other.container),
-              sorted_data(other.sorted_data),
-              index(other.index) {}
-
-        //  אופרטור השמה
-        DescendingOrderIterator& operator=(const DescendingOrderIterator& other) {
-            if (this != &other) {
-                container = other.container;
-                sorted_data = other.sorted_data;
-                index = other.index;
-            }
-            return *this;
-        }
-
         // אופרטור גישה לערך
         T operator*() const {
             if (index >= sorted_data.size()) {

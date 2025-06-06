@@ -54,22 +54,6 @@ namespace ariel {
             }
         }
 
-        // 🔹 Copy constructor
-        MiddleOutOrderIterator(const MiddleOutOrderIterator& other)
-            : container(other.container),
-              middle_out_data(other.middle_out_data),
-              index(other.index) {}
-
-        // 🔹 Assignment operator
-        MiddleOutOrderIterator& operator=(const MiddleOutOrderIterator& other) {
-            if (this != &other) {
-                container = other.container;
-                middle_out_data = other.middle_out_data;
-                index = other.index;
-            }
-            return *this;
-        }
-
         // 🔹 גישה לערך
         T operator*() const {
             if (index >= middle_out_data.size()) {

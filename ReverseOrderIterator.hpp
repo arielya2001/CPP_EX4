@@ -28,19 +28,6 @@ namespace ariel {
             }
         }
 
-        // 🔹 בנאי העתקה
-        ReverseOrderIterator(const ReverseOrderIterator& other)
-            : container(other.container), index(other.index) {}
-
-        // 🔹 אופרטור השמה
-        ReverseOrderIterator& operator=(const ReverseOrderIterator& other) {
-            if (this != &other) {
-                container = other.container;
-                index = other.index;
-            }
-            return *this;
-        }
-
         // 🔹 גישה לערך
         T operator*() const {
             const std::vector<T>& data = container->getData();

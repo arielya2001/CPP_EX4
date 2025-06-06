@@ -47,23 +47,6 @@ namespace ariel {
                 index = cross_data.size();
             }
         }
-
-        //  Copy constructor
-        SideCrossOrderIterator(const SideCrossOrderIterator& other)
-            : container(other.container),
-              cross_data(other.cross_data),
-              index(other.index) {}
-
-        //  Assignment operator
-        SideCrossOrderIterator& operator=(const SideCrossOrderIterator& other) {
-            if (this != &other) {
-                container = other.container;
-                cross_data = other.cross_data;
-                index = other.index;
-            }
-            return *this;
-        }
-
         // 🔹 גישה לערך
         T operator*() const {
             if (index >= cross_data.size()) {
