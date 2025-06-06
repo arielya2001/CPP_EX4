@@ -1,72 +1,97 @@
 /*
-Mail - ariel.yaacobi@msmail.ariel.ac.il
-*/
+ * Mail - ariel.yaacobi@msmail.ariel.ac.il
+ */
 
-#ifndef ORDERITERATOR_HPP
+#ifndef ORDERITERATOR_HPP  // Header guard to prevent multiple inclusions of this file
 #define ORDERITERATOR_HPP
 
-#include <vector>
-#include <stdexcept>
+#include <vector>      // Include vector header for vector operations
+#include <stdexcept>   // Include stdexcept header for std::out_of_range
 
-namespace ariel {
-
-    template<typename T>
-    class MyContainer;
+namespace ariel { // Namespace to encapsulate classes and functions
 
     template<typename T>
+    class MyContainer;  // Forward declaration of MyContainer class template
+
+    template<typename T> // Template class definition for OrderIterator
     class OrderIterator {
     private:
-        const MyContainer<T>* container;
-        size_t index;
+        const MyContainer<T>* container;  // Pointer to the MyContainer instance // מצביע לקונטיינר
+        size_t index;                     // Current index into container data // אינדקס נוכחי
 
     public:
-        // 🔹 בנאי רגיל
-        OrderIterator(const MyContainer<T>& cont, bool is_end = false)
-            : container(&cont), index(0) {
-            if (is_end) {
-                index = container->getData().size();
+        /**
+         * @param cont Reference to the MyContainer to iterate over
+         * @param is_end If true, initializes iterator to end position; default is false
+         * @throws None
+         */
+        // Regular constructor
+        OrderIterator(const MyContainer<T>& cont, bool is_end = false)  // Constructor for iterator // בנאי רגיל
+            : container(&cont), index(0) {  // Initialize container pointer and index to 0
+            if (is_end) {  // Check if end iterator is requested
+                index = container->getData().size();  // Set index to end of data
             }
         }
 
-        // 🔹 גישה לערך
-        T operator*() const {
-            const std::vector<T>& data = container->getData();
-            if (index >= data.size()) {
-                throw std::out_of_range("Iterator out of range");
+        /**
+         * @return Current element pointed to by iterator
+         * @throws std::out_of_range If iterator is at or beyond end
+         */
+        // Dereference operator to access value
+        T operator*() const {  // Return current element // גישה לערך
+            const std::vector<T>& data = container->getData();  // Get reference to container data
+            if (index >= data.size()) {  // Check if index is out of bounds
+                throw std::out_of_range("Iterator out of range");  // Throw exception for invalid access
             }
-            return data[index];
+            return data[index];  // Return element at current index
         }
 
-        // 🔹 ++
-        OrderIterator& operator++() {
-            if (index >= container->getData().size()) {
-                throw std::out_of_range("Cannot increment beyond end.");
+        /**
+         * @return Reference to incremented iterator
+         * @throws std::out_of_range If iterator is at or beyond end
+         */
+        // Prefix increment operator
+        OrderIterator& operator++() {  // Increment iterator (prefix) // ++
+            if (index >= container->getData().size()) {  // Check if increment would go beyond end
+                throw std::out_of_range("Cannot increment beyond end.");  // Throw exception for invalid increment
             }
-            ++index;
-            return *this;
+            ++index;  // Increment index
+            return *this;  // Return reference to self
         }
 
-        // 🔹 ++ (postfix)
-        OrderIterator operator++(int) {
-            if (index >= container->getData().size()) {
-                throw std::out_of_range("Cannot increment beyond end.");
+        /**
+         * @return Copy of iterator before increment
+         * @throws std::out_of_range If iterator is at or beyond end
+         */
+        // Postfix increment operator
+        OrderIterator operator++(int) {  // Increment iterator (postfix) // ++ (postfix)
+            if (index >= container->getData().size()) {  // Check if increment would go beyond end
+                throw std::out_of_range("Cannot increment beyond end.");  // Throw exception for invalid increment
             }
-            OrderIterator temp = *this;  // שומר את המצב הנוכחי
-            ++(*this);                   // מפעיל את prefix ++ שכבר קיים
-            return temp;                 // מחזיר את העותק לפני ההגדלה
+            OrderIterator temp = *this;  // Save current iterator state // שומר את המצב הנוכחי
+            ++(*this);                   // Increment self using prefix ++ // מפעיל את prefix ++ שכבר קיים
+            return temp;                 // Return copy before increment // מחזיר את העותק לפני ההגדלה
         }
 
-
-        // 🔹 השוואה
-        bool operator!=(const OrderIterator& other) const {
-            return index != other.index;
+        /**
+         * @param other Iterator to compare with
+         * @return True if iterators are at different positions, false otherwise
+         */
+        // Inequality comparison operator
+        bool operator!=(const OrderIterator& other) const {  // Compare iterators for inequality // השוואה
+            return index != other.index;  // Return true if indices differ
         }
 
-        bool operator==(const OrderIterator& other) const {
-            return index == other.index;
+        /**
+         * @param other Iterator to compare with
+         * @return True if iterators are at same position, false otherwise
+         */
+        // Equality comparison operator
+        bool operator==(const OrderIterator& other) const {  // Compare iterators for equality
+            return index == other.index;  // Return true if indices are equal
         }
     };
 
-}
+} // Namespace ariel
 
-#endif // ORDERITERATOR_HPP
+#endif // ORDERITERATOR_HPP  // Header guard
