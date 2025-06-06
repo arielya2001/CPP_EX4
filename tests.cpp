@@ -17,6 +17,90 @@ string captureOutput(const MyContainer<T>& c) {
     return oss.str();
 }
 
+// Helper function to test all iterators for a given container
+template<typename T>
+void testIterators(const MyContainer<T>& c,
+                   const vector<T>& expected_asc,
+                   const vector<T>& expected_desc,
+                   const vector<T>& expected_side,
+                   const vector<T>& expected_rev,
+                   const vector<T>& expected_order,
+                   const vector<T>& expected_mid) {
+    vector<T> result;
+
+    SUBCASE("Ascending Order") {
+        result.clear();
+        for (auto it = c.begin_ascending_order(); it != c.end_ascending_order(); ++it) {
+            result.push_back(*it);
+        }
+        CHECK(result == expected_asc);
+        auto asc_end_it = c.end_ascending_order();
+        CHECK_THROWS_AS(*asc_end_it, out_of_range);
+        CHECK_THROWS_AS(++asc_end_it, out_of_range);
+        CHECK_THROWS_AS(asc_end_it++, out_of_range);
+    }
+
+    SUBCASE("Descending Order") {
+        result.clear();
+        for (auto it = c.begin_descending_order(); it != c.end_descending_order(); ++it) {
+            result.push_back(*it);
+        }
+        CHECK(result == expected_desc);
+        auto desc_end_it = c.end_descending_order();
+        CHECK_THROWS_AS(*desc_end_it, out_of_range);
+        CHECK_THROWS_AS(++desc_end_it, out_of_range);
+        CHECK_THROWS_AS(desc_end_it++, out_of_range);
+    }
+
+    SUBCASE("Side Cross Order") {
+        result.clear();
+        for (auto it = c.begin_side_cross_order(); it != c.end_side_cross_order(); ++it) {
+            result.push_back(*it);
+        }
+        CHECK(result == expected_side);
+        auto side_end_it = c.end_side_cross_order();
+        CHECK_THROWS_AS(*side_end_it, out_of_range);
+        CHECK_THROWS_AS(++side_end_it, out_of_range);
+        CHECK_THROWS_AS(side_end_it++, out_of_range);
+    }
+
+    SUBCASE("Reverse Order") {
+        result.clear();
+        for (auto it = c.begin_reverse_order(); it != c.end_reverse_order(); ++it) {
+            result.push_back(*it);
+        }
+        CHECK(result == expected_rev);
+        auto rev_end_it = c.end_reverse_order();
+        CHECK_THROWS_AS(*rev_end_it, out_of_range);
+        CHECK_THROWS_AS(++rev_end_it, out_of_range);
+        CHECK_THROWS_AS(rev_end_it++, out_of_range);
+    }
+
+    SUBCASE("Insertion Order") {
+        result.clear();
+        for (auto it = c.begin_order(); it != c.end_order(); ++it) {
+            result.push_back(*it);
+        }
+        CHECK(result == expected_order);
+        auto order_end_it = c.end_order();
+        CHECK_THROWS_AS(*order_end_it, out_of_range);
+        CHECK_THROWS_AS(++order_end_it, out_of_range);
+        CHECK_THROWS_AS(order_end_it++, out_of_range);
+    }
+
+    SUBCASE("Middle Out Order") {
+        result.clear();
+        for (auto it = c.begin_middle_out_order(); it != c.end_middle_out_order(); ++it) {
+            result.push_back(*it);
+        }
+        CHECK(result == expected_mid);
+        auto mid_end_it = c.end_middle_out_order();
+        CHECK_THROWS_AS(*mid_end_it, out_of_range);
+        CHECK_THROWS_AS(++mid_end_it, out_of_range);
+        CHECK_THROWS_AS(mid_end_it++, out_of_range);
+    }
+}
+
 TEST_CASE("MyContainer operations with different types") {
     SUBCASE("Testing with int") {
         MyContainer<int> c;
@@ -137,6 +221,7 @@ TEST_CASE("MyContainer operations with different types") {
         // Test remove from empty container
         CHECK_THROWS_AS(c.removeElement("apple"), std::runtime_error);
     }
+
     SUBCASE("Testing with char") {
         MyContainer<char> c;
 
@@ -176,6 +261,7 @@ TEST_CASE("MyContainer operations with different types") {
         // Test remove from empty container
         CHECK_THROWS_AS(c.removeElement('a'), std::runtime_error);
     }
+
     SUBCASE("Testing with float") {
         MyContainer<float> c;
 
@@ -509,65 +595,13 @@ TEST_CASE("Iterators with int") {
         c.addElement(11);
         c.addElement(5);
 
-        vector<int> result;
-        for (auto asc_it = c.begin_ascending_order(); asc_it != c.end_ascending_order(); ++asc_it) {
-            result.push_back(*asc_it);
-        }
-        CHECK(result == vector<int>{3, 4, 5, 9, 11});
-        auto asc_end_it = c.end_ascending_order();
-        CHECK_THROWS_AS(*asc_end_it, out_of_range);
-        CHECK_THROWS_AS(++asc_end_it, out_of_range);
-        CHECK_THROWS_AS(asc_end_it++, out_of_range);
-
-        result.clear();
-        for (auto desc_it = c.begin_descending_order(); desc_it != c.end_descending_order(); ++desc_it) {
-            result.push_back(*desc_it);
-        }
-        CHECK(result == vector<int>{11, 9, 5, 4, 3});
-        auto desc_end_it = c.end_descending_order();
-        CHECK_THROWS_AS(*desc_end_it, out_of_range);
-        CHECK_THROWS_AS(++desc_end_it, out_of_range);
-        CHECK_THROWS_AS(desc_end_it++, out_of_range);
-
-        result.clear();
-        for (auto side_it = c.begin_side_cross_order(); side_it != c.end_side_cross_order(); ++side_it) {
-            result.push_back(*side_it);
-        }
-        CHECK(result == vector<int>{3, 11, 4, 9, 5});
-        auto side_end_it = c.end_side_cross_order();
-        CHECK_THROWS_AS(*side_end_it, out_of_range);
-        CHECK_THROWS_AS(++side_end_it, out_of_range);
-        CHECK_THROWS_AS(side_end_it++, out_of_range);
-
-        result.clear();
-        for (auto rev_it = c.begin_reverse_order(); rev_it != c.end_reverse_order(); ++rev_it) {
-            result.push_back(*rev_it);
-        }
-        CHECK(result == vector<int>{5, 11, 3, 9, 4});
-        auto rev_end_it = c.end_reverse_order();
-        CHECK_THROWS_AS(*rev_end_it, out_of_range);
-        CHECK_THROWS_AS(++rev_end_it, out_of_range);
-        CHECK_THROWS_AS(rev_end_it++, out_of_range);
-
-        result.clear();
-        for (auto order_it = c.begin_order(); order_it != c.end_order(); ++order_it) {
-            result.push_back(*order_it);
-        }
-        CHECK(result == vector<int>{4, 9, 3, 11, 5});
-        auto order_end_it = c.end_order();
-        CHECK_THROWS_AS(*order_end_it, out_of_range);
-        CHECK_THROWS_AS(++order_end_it, out_of_range);
-        CHECK_THROWS_AS(order_end_it++, out_of_range);
-
-        result.clear();
-        for (auto mid_it = c.begin_middle_out_order(); mid_it != c.end_middle_out_order(); ++mid_it) {
-            result.push_back(*mid_it);
-        }
-        CHECK(result == vector<int>{3, 9, 11, 4, 5});
-        auto mid_end_it = c.end_middle_out_order();
-        CHECK_THROWS_AS(*mid_end_it, out_of_range);
-        CHECK_THROWS_AS(++mid_end_it, out_of_range);
-        CHECK_THROWS_AS(mid_end_it++, out_of_range);
+        testIterators(c,
+                      vector<int>{3, 4, 5, 9, 11},    // ascending_order
+                      vector<int>{11, 9, 5, 4, 3},    // descending_order
+                      vector<int>{3, 11, 4, 9, 5},    // side_cross_order
+                      vector<int>{5, 11, 3, 9, 4},    // reverse_order
+                      vector<int>{4, 9, 3, 11, 5},    // order
+                      vector<int>{3, 9, 11, 4, 5});   // middle_out_order
     }
 
     SUBCASE("Even-sized container") {
@@ -579,194 +613,38 @@ TEST_CASE("Iterators with int") {
         c.addElement(6);
         c.addElement(12);
 
-        vector<int> result;
-        for (auto asc_it = c.begin_ascending_order(); asc_it != c.end_ascending_order(); ++asc_it) {
-            result.push_back(*asc_it);
-        }
-        CHECK(result == vector<int>{1, 2, 6, 7, 10, 12});
-        auto asc_end_it = c.end_ascending_order();
-        CHECK_THROWS_AS(*asc_end_it, out_of_range);
-        CHECK_THROWS_AS(++asc_end_it, out_of_range);
-        CHECK_THROWS_AS(asc_end_it++, out_of_range);
-
-        result.clear();
-        for (auto desc_it = c.begin_descending_order(); desc_it != c.end_descending_order(); ++desc_it) {
-            result.push_back(*desc_it);
-        }
-        CHECK(result == vector<int>{12, 10, 7, 6, 2, 1});
-        auto desc_end_it = c.end_descending_order();
-        CHECK_THROWS_AS(*desc_end_it, out_of_range);
-        CHECK_THROWS_AS(++desc_end_it, out_of_range);
-        CHECK_THROWS_AS(desc_end_it++, out_of_range);
-
-        result.clear();
-        for (auto side_it = c.begin_side_cross_order(); side_it != c.end_side_cross_order(); ++side_it) {
-            result.push_back(*side_it);
-        }
-        CHECK(result == vector<int>{1, 12, 2, 10, 6, 7});
-        auto side_end_it = c.end_side_cross_order();
-        CHECK_THROWS_AS(*side_end_it, out_of_range);
-        CHECK_THROWS_AS(++side_end_it, out_of_range);
-        CHECK_THROWS_AS(side_end_it++, out_of_range);
-
-        result.clear();
-        for (auto rev_it = c.begin_reverse_order(); rev_it != c.end_reverse_order(); ++rev_it) {
-            result.push_back(*rev_it);
-        }
-        CHECK(result == vector<int>{12, 6, 1, 7, 2, 10});
-        auto rev_end_it = c.end_reverse_order();
-        CHECK_THROWS_AS(*rev_end_it, out_of_range);
-        CHECK_THROWS_AS(++rev_end_it, out_of_range);
-        CHECK_THROWS_AS(rev_end_it++, out_of_range);
-
-        result.clear();
-        for (auto order_it = c.begin_order(); order_it != c.end_order(); ++order_it) {
-            result.push_back(*order_it);
-        }
-        CHECK(result == vector<int>{10, 2, 7, 1, 6, 12});
-        auto order_end_it = c.end_order();
-        CHECK_THROWS_AS(*order_end_it, out_of_range);
-        CHECK_THROWS_AS(++order_end_it, out_of_range);
-        CHECK_THROWS_AS(order_end_it++, out_of_range);
-
-        result.clear();
-        for (auto mid_it = c.begin_middle_out_order(); mid_it != c.end_middle_out_order(); ++mid_it) {
-            result.push_back(*mid_it);
-        }
-        CHECK(result == vector<int>{1, 7, 6, 2, 12, 10});
-        auto mid_end_it = c.end_middle_out_order();
-        CHECK_THROWS_AS(*mid_end_it, out_of_range);
-        CHECK_THROWS_AS(++mid_end_it, out_of_range);
-        CHECK_THROWS_AS(mid_end_it++, out_of_range);
+        testIterators(c,
+                      vector<int>{1, 2, 6, 7, 10, 12},    // ascending_order
+                      vector<int>{12, 10, 7, 6, 2, 1},    // descending_order
+                      vector<int>{1, 12, 2, 10, 6, 7},    // side_cross_order
+                      vector<int>{12, 6, 1, 7, 2, 10},    // reverse_order
+                      vector<int>{10, 2, 7, 1, 6, 12},    // order
+                      vector<int>{1, 7, 6, 2, 12, 10});   // middle_out_order
     }
 
     SUBCASE("Empty container") {
         MyContainer<int> c;
 
-        vector<int> result;
-        for (auto asc_it = c.begin_ascending_order(); asc_it != c.end_ascending_order(); ++asc_it) {
-            result.push_back(*asc_it);
-        }
-        CHECK(result == vector<int>{});
-        auto asc_end_it = c.end_ascending_order();
-        CHECK_THROWS_AS(*asc_end_it, out_of_range);
-        CHECK_THROWS_AS(++asc_end_it, out_of_range);
-        CHECK_THROWS_AS(asc_end_it++, out_of_range);
-
-        result.clear();
-        for (auto desc_it = c.begin_descending_order(); desc_it != c.end_descending_order(); ++desc_it) {
-            result.push_back(*desc_it);
-        }
-        CHECK(result == vector<int>{});
-        auto desc_end_it = c.end_descending_order();
-        CHECK_THROWS_AS(*desc_end_it, out_of_range);
-        CHECK_THROWS_AS(++desc_end_it, out_of_range);
-        CHECK_THROWS_AS(desc_end_it++, out_of_range);
-
-        result.clear();
-        for (auto side_it = c.begin_side_cross_order(); side_it != c.end_side_cross_order(); ++side_it) {
-            result.push_back(*side_it);
-        }
-        CHECK(result == vector<int>{});
-        auto side_end_it = c.end_side_cross_order();
-        CHECK_THROWS_AS(*side_end_it, out_of_range);
-        CHECK_THROWS_AS(++side_end_it, out_of_range);
-        CHECK_THROWS_AS(side_end_it++, out_of_range);
-
-        result.clear();
-        for (auto rev_it = c.begin_reverse_order(); rev_it != c.end_reverse_order(); ++rev_it) {
-            result.push_back(*rev_it);
-        }
-        CHECK(result == vector<int>{});
-        auto rev_end_it = c.end_reverse_order();
-        CHECK_THROWS_AS(*rev_end_it, out_of_range);
-        CHECK_THROWS_AS(++rev_end_it, out_of_range);
-        CHECK_THROWS_AS(rev_end_it++, out_of_range);
-
-        result.clear();
-        for (auto order_it = c.begin_order(); order_it != c.end_order(); ++order_it) {
-            result.push_back(*order_it);
-        }
-        CHECK(result == vector<int>{});
-        auto order_end_it = c.end_order();
-        CHECK_THROWS_AS(*order_end_it, out_of_range);
-        CHECK_THROWS_AS(++order_end_it, out_of_range);
-        CHECK_THROWS_AS(order_end_it++, out_of_range);
-
-        result.clear();
-        for (auto mid_it = c.begin_middle_out_order(); mid_it != c.end_middle_out_order(); ++mid_it) {
-            result.push_back(*mid_it);
-        }
-        CHECK(result == vector<int>{});
-        auto mid_end_it = c.end_middle_out_order();
-        CHECK_THROWS_AS(*mid_end_it, out_of_range);
-        CHECK_THROWS_AS(++mid_end_it, out_of_range);
-        CHECK_THROWS_AS(mid_end_it++, out_of_range);
+        testIterators(c,
+                      vector<int>{},    // ascending_order
+                      vector<int>{},    // descending_order
+                      vector<int>{},    // side_cross_order
+                      vector<int>{},    // reverse_order
+                      vector<int>{},    // order
+                      vector<int>{});   // middle_out_order
     }
 
     SUBCASE("Single element") {
         MyContainer<int> c;
         c.addElement(42);
 
-        vector<int> result;
-        for (auto asc_it = c.begin_ascending_order(); asc_it != c.end_ascending_order(); ++asc_it) {
-            result.push_back(*asc_it);
-        }
-        CHECK(result == vector<int>{42});
-        auto asc_end_it = c.end_ascending_order();
-        CHECK_THROWS_AS(*asc_end_it, out_of_range);
-        CHECK_THROWS_AS(++asc_end_it, out_of_range);
-        CHECK_THROWS_AS(asc_end_it++, out_of_range);
-
-        result.clear();
-        for (auto desc_it = c.begin_descending_order(); desc_it != c.end_descending_order(); ++desc_it) {
-            result.push_back(*desc_it);
-        }
-        CHECK(result == vector<int>{42});
-        auto desc_end_it = c.end_descending_order();
-        CHECK_THROWS_AS(*desc_end_it, out_of_range);
-        CHECK_THROWS_AS(++desc_end_it, out_of_range);
-        CHECK_THROWS_AS(desc_end_it++, out_of_range);
-
-        result.clear();
-        for (auto side_it = c.begin_side_cross_order(); side_it != c.end_side_cross_order(); ++side_it) {
-            result.push_back(*side_it);
-        }
-        CHECK(result == vector<int>{42});
-        auto side_end_it = c.end_side_cross_order();
-        CHECK_THROWS_AS(*side_end_it, out_of_range);
-        CHECK_THROWS_AS(++side_end_it, out_of_range);
-        CHECK_THROWS_AS(side_end_it++, out_of_range);
-
-        result.clear();
-        for (auto rev_it = c.begin_reverse_order(); rev_it != c.end_reverse_order(); ++rev_it) {
-            result.push_back(*rev_it);
-        }
-        CHECK(result == vector<int>{42});
-        auto rev_end_it = c.end_reverse_order();
-        CHECK_THROWS_AS(*rev_end_it, out_of_range);
-        CHECK_THROWS_AS(++rev_end_it, out_of_range);
-        CHECK_THROWS_AS(rev_end_it++, out_of_range);
-
-        result.clear();
-        for (auto order_it = c.begin_order(); order_it != c.end_order(); ++order_it) {
-            result.push_back(*order_it);
-        }
-        CHECK(result == vector<int>{42});
-        auto order_end_it = c.end_order();
-        CHECK_THROWS_AS(*order_end_it, out_of_range);
-        CHECK_THROWS_AS(++order_end_it, out_of_range);
-        CHECK_THROWS_AS(order_end_it++, out_of_range);
-
-        result.clear();
-        for (auto mid_it = c.begin_middle_out_order(); mid_it != c.end_middle_out_order(); ++mid_it) {
-            result.push_back(*mid_it);
-        }
-        CHECK(result == vector<int>{42});
-        auto mid_end_it = c.end_middle_out_order();
-        CHECK_THROWS_AS(*mid_end_it, out_of_range);
-        CHECK_THROWS_AS(++mid_end_it, out_of_range);
-        CHECK_THROWS_AS(mid_end_it++, out_of_range);
+        testIterators(c,
+                      vector<int>{42},    // ascending_order
+                      vector<int>{42},    // descending_order
+                      vector<int>{42},    // side_cross_order
+                      vector<int>{42},    // reverse_order
+                      vector<int>{42},    // order
+                      vector<int>{42});   // middle_out_order
     }
 
     SUBCASE("Duplicate elements") {
@@ -777,80 +655,38 @@ TEST_CASE("Iterators with int") {
         c.addElement(3);
         c.addElement(3);
 
-        vector<int> result;
-        for (auto asc_it = c.begin_ascending_order(); asc_it != c.end_ascending_order(); ++asc_it) {
-            result.push_back(*asc_it);
-        }
-        CHECK(result == vector<int>{3, 3, 3, 3, 3});
-        auto asc_end_it = c.end_ascending_order();
-        CHECK_THROWS_AS(*asc_end_it, out_of_range);
-        CHECK_THROWS_AS(++asc_end_it, out_of_range);
-        CHECK_THROWS_AS(asc_end_it++, out_of_range);
-
-        result.clear();
-        for (auto desc_it = c.begin_descending_order(); desc_it != c.end_descending_order(); ++desc_it) {
-            result.push_back(*desc_it);
-        }
-        CHECK(result == vector<int>{3, 3, 3, 3, 3});
-        auto desc_end_it = c.end_descending_order();
-        CHECK_THROWS_AS(*desc_end_it, out_of_range);
-        CHECK_THROWS_AS(++desc_end_it, out_of_range);
-        CHECK_THROWS_AS(desc_end_it++, out_of_range);
-
-        result.clear();
-        for (auto side_it = c.begin_side_cross_order(); side_it != c.end_side_cross_order(); ++side_it) {
-            result.push_back(*side_it);
-        }
-        CHECK(result == vector<int>{3, 3, 3, 3, 3});
-        auto side_end_it = c.end_side_cross_order();
-        CHECK_THROWS_AS(*side_end_it, out_of_range);
-        CHECK_THROWS_AS(++side_end_it, out_of_range);
-        CHECK_THROWS_AS(side_end_it++, out_of_range);
-
-        result.clear();
-        for (auto rev_it = c.begin_reverse_order(); rev_it != c.end_reverse_order(); ++rev_it) {
-            result.push_back(*rev_it);
-        }
-        CHECK(result == vector<int>{3, 3, 3, 3, 3});
-        auto rev_end_it = c.end_reverse_order();
-        CHECK_THROWS_AS(*rev_end_it, out_of_range);
-        CHECK_THROWS_AS(++rev_end_it, out_of_range);
-        CHECK_THROWS_AS(rev_end_it++, out_of_range);
-
-        result.clear();
-        for (auto order_it = c.begin_order(); order_it != c.end_order(); ++order_it) {
-            result.push_back(*order_it);
-        }
-        CHECK(result == vector<int>{3, 3, 3, 3, 3});
-        auto order_end_it = c.end_order();
-        CHECK_THROWS_AS(*order_end_it, out_of_range);
-        CHECK_THROWS_AS(++order_end_it, out_of_range);
-        CHECK_THROWS_AS(order_end_it++, out_of_range);
-
-        result.clear();
-        for (auto mid_it = c.begin_middle_out_order(); mid_it != c.end_middle_out_order(); ++mid_it) {
-            result.push_back(*mid_it);
-        }
-        CHECK(result == vector<int>{3, 3, 3, 3, 3});
-        auto mid_end_it = c.end_middle_out_order();
-        CHECK_THROWS_AS(*mid_end_it, out_of_range);
-        CHECK_THROWS_AS(++mid_end_it, out_of_range);
-        CHECK_THROWS_AS(mid_end_it++, out_of_range);
+        testIterators(c,
+                      vector<int>{3, 3, 3, 3, 3},    // ascending_order
+                      vector<int>{3, 3, 3, 3, 3},    // descending_order
+                      vector<int>{3, 3, 3, 3, 3},    // side_cross_order
+                      vector<int>{3, 3, 3, 3, 3},    // reverse_order
+                      vector<int>{3, 3, 3, 3, 3},    // order
+                      vector<int>{3, 3, 3, 3, 3});   // middle_out_order
     }
 
     SUBCASE("Large container") {
         MyContainer<int> c;
-        for (int i = 0; i < 1000; ++i) {
-            c.addElement(i % 100); // Limited range to avoid excessive memory
+        vector<int> insertion_order;
+        for (int i = 0; i < 10; ++i) {
+            int val = i % 10;
+            c.addElement(val);
+            insertion_order.push_back(val);
         }
-        CHECK(c.size() == 1000);
-        vector<int> asc;
-        for (auto asc_it = c.begin_ascending_order(); asc_it != c.end_ascending_order(); ++asc_it) {
-            asc.push_back(*asc_it);
-        }
-        CHECK(asc.size() == 1000);
-        CHECK(asc[0] == 0);
-        CHECK(asc[999] == 99);
+        CHECK(c.size() == 10);
+
+        vector<int> expected_asc = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+        vector<int> expected_desc = {9, 8, 7, 6, 5, 4, 3, 2, 1, 0};
+        vector<int> expected_side = {0, 9, 1, 8, 2, 7, 3, 6, 4, 5};
+        vector<int> expected_rev = {9, 8, 7, 6, 5, 4, 3, 2, 1, 0};
+        vector<int> expected_mid = {5, 4, 6, 3, 7, 2, 8, 1, 9, 0};
+
+        testIterators(c,
+                      expected_asc,           // ascending_order
+                      expected_desc,          // descending_order
+                      expected_side,          // side_cross_order
+                      expected_rev,           // reverse_order
+                      insertion_order,        // order
+                      expected_mid);          // middle_out_order
     }
 }
 
@@ -863,65 +699,13 @@ TEST_CASE("Iterators with string") {
         c.addElement("date");
         c.addElement("fig");
 
-        vector<string> result;
-        for (auto asc_it = c.begin_ascending_order(); asc_it != c.end_ascending_order(); ++asc_it) {
-            result.push_back(*asc_it);
-        }
-        CHECK(result == vector<string>{"apple", "banana", "cherry", "date", "fig"});
-        auto asc_end_it = c.end_ascending_order();
-        CHECK_THROWS_AS(*asc_end_it, out_of_range);
-        CHECK_THROWS_AS(++asc_end_it, out_of_range);
-        CHECK_THROWS_AS(asc_end_it++, out_of_range);
-
-        result.clear();
-        for (auto desc_it = c.begin_descending_order(); desc_it != c.end_descending_order(); ++desc_it) {
-            result.push_back(*desc_it);
-        }
-        CHECK(result == vector<string>{"fig", "date", "cherry", "banana", "apple"});
-        auto desc_end_it = c.end_descending_order();
-        CHECK_THROWS_AS(*desc_end_it, out_of_range);
-        CHECK_THROWS_AS(++desc_end_it, out_of_range);
-        CHECK_THROWS_AS(desc_end_it++, out_of_range);
-
-        result.clear();
-        for (auto side_it = c.begin_side_cross_order(); side_it != c.end_side_cross_order(); ++side_it) {
-            result.push_back(*side_it);
-        }
-        CHECK(result == vector<string>{"apple", "fig", "banana", "date", "cherry"});
-        auto side_end_it = c.end_side_cross_order();
-        CHECK_THROWS_AS(*side_end_it, out_of_range);
-        CHECK_THROWS_AS(++side_end_it, out_of_range);
-        CHECK_THROWS_AS(side_end_it++, out_of_range);
-
-        result.clear();
-        for (auto rev_it = c.begin_reverse_order(); rev_it != c.end_reverse_order(); ++rev_it) {
-            result.push_back(*rev_it);
-        }
-        CHECK(result == vector<string>{"fig", "date", "cherry", "apple", "banana"});
-        auto rev_end_it = c.end_reverse_order();
-        CHECK_THROWS_AS(*rev_end_it, out_of_range);
-        CHECK_THROWS_AS(++rev_end_it, out_of_range);
-        CHECK_THROWS_AS(rev_end_it++, out_of_range);
-
-        result.clear();
-        for (auto order_it = c.begin_order(); order_it != c.end_order(); ++order_it) {
-            result.push_back(*order_it);
-        }
-        CHECK(result == vector<string>{"banana", "apple", "cherry", "date", "fig"});
-        auto order_end_it = c.end_order();
-        CHECK_THROWS_AS(*order_end_it, out_of_range);
-        CHECK_THROWS_AS(++order_end_it, out_of_range);
-        CHECK_THROWS_AS(order_end_it++, out_of_range);
-
-        result.clear();
-        for (auto mid_it = c.begin_middle_out_order(); mid_it != c.end_middle_out_order(); ++mid_it) {
-            result.push_back(*mid_it);
-        }
-        CHECK(result == vector<string>{"cherry", "apple", "date", "banana", "fig"});
-        auto mid_end_it = c.end_middle_out_order();
-        CHECK_THROWS_AS(*mid_end_it, out_of_range);
-        CHECK_THROWS_AS(++mid_end_it, out_of_range);
-        CHECK_THROWS_AS(mid_end_it++, out_of_range);
+        testIterators(c,
+                      vector<string>{"apple", "banana", "cherry", "date", "fig"},    // ascending_order
+                      vector<string>{"fig", "date", "cherry", "banana", "apple"},    // descending_order
+                      vector<string>{"apple", "fig", "banana", "date", "cherry"},    // side_cross_order
+                      vector<string>{"fig", "date", "cherry", "apple", "banana"},    // reverse_order
+                      vector<string>{"banana", "apple", "cherry", "date", "fig"},    // order
+                      vector<string>{"cherry", "apple", "date", "banana", "fig"});   // middle_out_order
     }
 
     SUBCASE("Even-sized container") {
@@ -933,194 +717,38 @@ TEST_CASE("Iterators with string") {
         c.addElement("date");
         c.addElement("fig");
 
-        vector<string> result;
-        for (auto asc_it = c.begin_ascending_order(); asc_it != c.end_ascending_order(); ++asc_it) {
-            result.push_back(*asc_it);
-        }
-        CHECK(result == vector<string>{"apple", "banana", "cherry", "date", "fig", "grape"});
-        auto asc_end_it = c.end_ascending_order();
-        CHECK_THROWS_AS(*asc_end_it, out_of_range);
-        CHECK_THROWS_AS(++asc_end_it, out_of_range);
-        CHECK_THROWS_AS(asc_end_it++, out_of_range);
-
-        result.clear();
-        for (auto desc_it = c.begin_descending_order(); desc_it != c.end_descending_order(); ++desc_it) {
-            result.push_back(*desc_it);
-        }
-        CHECK(result == vector<string>{"grape", "fig", "date", "cherry", "banana", "apple"});
-        auto desc_end_it = c.end_descending_order();
-        CHECK_THROWS_AS(*desc_end_it, out_of_range);
-        CHECK_THROWS_AS(++desc_end_it, out_of_range);
-        CHECK_THROWS_AS(desc_end_it++, out_of_range);
-
-        result.clear();
-        for (auto side_it = c.begin_side_cross_order(); side_it != c.end_side_cross_order(); ++side_it) {
-            result.push_back(*side_it);
-        }
-        CHECK(result == vector<string>{"apple", "grape", "banana", "fig", "cherry", "date"});
-        auto side_end_it = c.end_side_cross_order();
-        CHECK_THROWS_AS(*side_end_it, out_of_range);
-        CHECK_THROWS_AS(++side_end_it, out_of_range);
-        CHECK_THROWS_AS(side_end_it++, out_of_range);
-
-        result.clear();
-        for (auto rev_it = c.begin_reverse_order(); rev_it != c.end_reverse_order(); ++rev_it) {
-            result.push_back(*rev_it);
-        }
-        CHECK(result == vector<string>{"fig", "date", "cherry", "banana", "apple", "grape"});
-        auto rev_end_it = c.end_reverse_order();
-        CHECK_THROWS_AS(*rev_end_it, out_of_range);
-        CHECK_THROWS_AS(++rev_end_it, out_of_range);
-        CHECK_THROWS_AS(rev_end_it++, out_of_range);
-
-        result.clear();
-        for (auto order_it = c.begin_order(); order_it != c.end_order(); ++order_it) {
-            result.push_back(*order_it);
-        }
-        CHECK(result == vector<string>{"grape", "apple", "banana", "cherry", "date", "fig"});
-        auto order_end_it = c.end_order();
-        CHECK_THROWS_AS(*order_end_it, out_of_range);
-        CHECK_THROWS_AS(++order_end_it, out_of_range);
-        CHECK_THROWS_AS(order_end_it++, out_of_range);
-
-        result.clear();
-        for (auto mid_it = c.begin_middle_out_order(); mid_it != c.end_middle_out_order(); ++mid_it) {
-            result.push_back(*mid_it);
-        }
-        CHECK(result == vector<string>{"cherry", "banana", "date", "apple", "fig", "grape"});
-        auto mid_end_it = c.end_middle_out_order();
-        CHECK_THROWS_AS(*mid_end_it, out_of_range);
-        CHECK_THROWS_AS(++mid_end_it, out_of_range);
-        CHECK_THROWS_AS(mid_end_it++, out_of_range);
+        testIterators(c,
+                      vector<string>{"apple", "banana", "cherry", "date", "fig", "grape"},    // ascending_order
+                      vector<string>{"grape", "fig", "date", "cherry", "banana", "apple"},    // descending_order
+                      vector<string>{"apple", "grape", "banana", "fig", "cherry", "date"},    // side_cross_order
+                      vector<string>{"fig", "date", "cherry", "banana", "apple", "grape"},    // reverse_order
+                      vector<string>{"grape", "apple", "banana", "cherry", "date", "fig"},    // order
+                      vector<string>{"cherry", "banana", "date", "apple", "fig", "grape"});   // middle_out_order
     }
 
     SUBCASE("Empty container") {
         MyContainer<string> c;
 
-        vector<string> result;
-        for (auto asc_it = c.begin_ascending_order(); asc_it != c.end_ascending_order(); ++asc_it) {
-            result.push_back(*asc_it);
-        }
-        CHECK(result == vector<string>{});
-        auto asc_end_it = c.end_ascending_order();
-        CHECK_THROWS_AS(*asc_end_it, out_of_range);
-        CHECK_THROWS_AS(++asc_end_it, out_of_range);
-        CHECK_THROWS_AS(asc_end_it++, out_of_range);
-
-        result.clear();
-        for (auto desc_it = c.begin_descending_order(); desc_it != c.end_descending_order(); ++desc_it) {
-            result.push_back(*desc_it);
-        }
-        CHECK(result == vector<string>{});
-        auto desc_end_it = c.end_descending_order();
-        CHECK_THROWS_AS(*desc_end_it, out_of_range);
-        CHECK_THROWS_AS(++desc_end_it, out_of_range);
-        CHECK_THROWS_AS(desc_end_it++, out_of_range);
-
-        result.clear();
-        for (auto side_it = c.begin_side_cross_order(); side_it != c.end_side_cross_order(); ++side_it) {
-            result.push_back(*side_it);
-        }
-        CHECK(result == vector<string>{});
-        auto side_end_it = c.end_side_cross_order();
-        CHECK_THROWS_AS(*side_end_it, out_of_range);
-        CHECK_THROWS_AS(++side_end_it, out_of_range);
-        CHECK_THROWS_AS(side_end_it++, out_of_range);
-
-        result.clear();
-        for (auto rev_it = c.begin_reverse_order(); rev_it != c.end_reverse_order(); ++rev_it) {
-            result.push_back(*rev_it);
-        }
-        CHECK(result == vector<string>{});
-        auto rev_end_it = c.end_reverse_order();
-        CHECK_THROWS_AS(*rev_end_it, out_of_range);
-        CHECK_THROWS_AS(++rev_end_it, out_of_range);
-        CHECK_THROWS_AS(rev_end_it++, out_of_range);
-
-        result.clear();
-        for (auto order_it = c.begin_order(); order_it != c.end_order(); ++order_it) {
-            result.push_back(*order_it);
-        }
-        CHECK(result == vector<string>{});
-        auto order_end_it = c.end_order();
-        CHECK_THROWS_AS(*order_end_it, out_of_range);
-        CHECK_THROWS_AS(++order_end_it, out_of_range);
-        CHECK_THROWS_AS(order_end_it++, out_of_range);
-
-        result.clear();
-        for (auto mid_it = c.begin_middle_out_order(); mid_it != c.end_middle_out_order(); ++mid_it) {
-            result.push_back(*mid_it);
-        }
-        CHECK(result == vector<string>{});
-        auto mid_end_it = c.end_middle_out_order();
-        CHECK_THROWS_AS(*mid_end_it, out_of_range);
-        CHECK_THROWS_AS(++mid_end_it, out_of_range);
-        CHECK_THROWS_AS(mid_end_it++, out_of_range);
+        testIterators(c,
+                      vector<string>{},    // ascending_order
+                      vector<string>{},    // descending_order
+                      vector<string>{},    // side_cross_order
+                      vector<string>{},    // reverse_order
+                      vector<string>{},    // order
+                      vector<string>{});   // middle_out_order
     }
 
     SUBCASE("Single element") {
         MyContainer<string> c;
         c.addElement("hello");
 
-        vector<string> result;
-        for (auto asc_it = c.begin_ascending_order(); asc_it != c.end_ascending_order(); ++asc_it) {
-            result.push_back(*asc_it);
-        }
-        CHECK(result == vector<string>{"hello"});
-        auto asc_end_it = c.end_ascending_order();
-        CHECK_THROWS_AS(*asc_end_it, out_of_range);
-        CHECK_THROWS_AS(++asc_end_it, out_of_range);
-        CHECK_THROWS_AS(asc_end_it++, out_of_range);
-
-        result.clear();
-        for (auto desc_it = c.begin_descending_order(); desc_it != c.end_descending_order(); ++desc_it) {
-            result.push_back(*desc_it);
-        }
-        CHECK(result == vector<string>{"hello"});
-        auto desc_end_it = c.end_descending_order();
-        CHECK_THROWS_AS(*desc_end_it, out_of_range);
-        CHECK_THROWS_AS(++desc_end_it, out_of_range);
-        CHECK_THROWS_AS(desc_end_it++, out_of_range);
-
-        result.clear();
-        for (auto side_it = c.begin_side_cross_order(); side_it != c.end_side_cross_order(); ++side_it) {
-            result.push_back(*side_it);
-        }
-        CHECK(result == vector<string>{"hello"});
-        auto side_end_it = c.end_side_cross_order();
-        CHECK_THROWS_AS(*side_end_it, out_of_range);
-        CHECK_THROWS_AS(++side_end_it, out_of_range);
-        CHECK_THROWS_AS(side_end_it++, out_of_range);
-
-        result.clear();
-        for (auto rev_it = c.begin_reverse_order(); rev_it != c.end_reverse_order(); ++rev_it) {
-            result.push_back(*rev_it);
-        }
-        CHECK(result == vector<string>{"hello"});
-        auto rev_end_it = c.end_reverse_order();
-        CHECK_THROWS_AS(*rev_end_it, out_of_range);
-        CHECK_THROWS_AS(++rev_end_it, out_of_range);
-        CHECK_THROWS_AS(rev_end_it++, out_of_range);
-
-        result.clear();
-        for (auto order_it = c.begin_order(); order_it != c.end_order(); ++order_it) {
-            result.push_back(*order_it);
-        }
-        CHECK(result == vector<string>{"hello"});
-        auto order_end_it = c.end_order();
-        CHECK_THROWS_AS(*order_end_it, out_of_range);
-        CHECK_THROWS_AS(++order_end_it, out_of_range);
-        CHECK_THROWS_AS(order_end_it++, out_of_range);
-
-        result.clear();
-        for (auto mid_it = c.begin_middle_out_order(); mid_it != c.end_middle_out_order(); ++mid_it) {
-            result.push_back(*mid_it);
-        }
-        CHECK(result == vector<string>{"hello"});
-        auto mid_end_it = c.end_middle_out_order();
-        CHECK_THROWS_AS(*mid_end_it, out_of_range);
-        CHECK_THROWS_AS(++mid_end_it, out_of_range);
-        CHECK_THROWS_AS(mid_end_it++, out_of_range);
+        testIterators(c,
+                      vector<string>{"hello"},    // ascending_order
+                      vector<string>{"hello"},    // descending_order
+                      vector<string>{"hello"},    // side_cross_order
+                      vector<string>{"hello"},    // reverse_order
+                      vector<string>{"hello"},    // order
+                      vector<string>{"hello"});   // middle_out_order
     }
 
     SUBCASE("Duplicate elements") {
@@ -1131,80 +759,38 @@ TEST_CASE("Iterators with string") {
         c.addElement("apple");
         c.addElement("apple");
 
-        vector<string> result;
-        for (auto asc_it = c.begin_ascending_order(); asc_it != c.end_ascending_order(); ++asc_it) {
-            result.push_back(*asc_it);
-        }
-        CHECK(result == vector<string>{"apple", "apple", "apple", "apple", "apple"});
-        auto asc_end_it = c.end_ascending_order();
-        CHECK_THROWS_AS(*asc_end_it, out_of_range);
-        CHECK_THROWS_AS(++asc_end_it, out_of_range);
-        CHECK_THROWS_AS(asc_end_it++, out_of_range);
-
-        result.clear();
-        for (auto desc_it = c.begin_descending_order(); desc_it != c.end_descending_order(); ++desc_it) {
-            result.push_back(*desc_it);
-        }
-        CHECK(result == vector<string>{"apple", "apple", "apple", "apple", "apple"});
-        auto desc_end_it = c.end_descending_order();
-        CHECK_THROWS_AS(*desc_end_it, out_of_range);
-        CHECK_THROWS_AS(++desc_end_it, out_of_range);
-        CHECK_THROWS_AS(desc_end_it++, out_of_range);
-
-        result.clear();
-        for (auto side_it = c.begin_side_cross_order(); side_it != c.end_side_cross_order(); ++side_it) {
-            result.push_back(*side_it);
-        }
-        CHECK(result == vector<string>{"apple", "apple", "apple", "apple", "apple"});
-        auto side_end_it = c.end_side_cross_order();
-        CHECK_THROWS_AS(*side_end_it, out_of_range);
-        CHECK_THROWS_AS(++side_end_it, out_of_range);
-        CHECK_THROWS_AS(side_end_it++, out_of_range);
-
-        result.clear();
-        for (auto rev_it = c.begin_reverse_order(); rev_it != c.end_reverse_order(); ++rev_it) {
-            result.push_back(*rev_it);
-        }
-        CHECK(result == vector<string>{"apple", "apple", "apple", "apple", "apple"});
-        auto rev_end_it = c.end_reverse_order();
-        CHECK_THROWS_AS(*rev_end_it, out_of_range);
-        CHECK_THROWS_AS(++rev_end_it, out_of_range);
-        CHECK_THROWS_AS(rev_end_it++, out_of_range);
-
-        result.clear();
-        for (auto order_it = c.begin_order(); order_it != c.end_order(); ++order_it) {
-            result.push_back(*order_it);
-        }
-        CHECK(result == vector<string>{"apple", "apple", "apple", "apple", "apple"});
-        auto order_end_it = c.end_order();
-        CHECK_THROWS_AS(*order_end_it, out_of_range);
-        CHECK_THROWS_AS(++order_end_it, out_of_range);
-        CHECK_THROWS_AS(order_end_it++, out_of_range);
-
-        result.clear();
-        for (auto mid_it = c.begin_middle_out_order(); mid_it != c.end_middle_out_order(); ++mid_it) {
-            result.push_back(*mid_it);
-        }
-        CHECK(result == vector<string>{"apple", "apple", "apple", "apple", "apple"});
-        auto mid_end_it = c.end_middle_out_order();
-        CHECK_THROWS_AS(*mid_end_it, out_of_range);
-        CHECK_THROWS_AS(++mid_end_it, out_of_range);
-        CHECK_THROWS_AS(mid_end_it++, out_of_range);
+        testIterators(c,
+                      vector<string>{"apple", "apple", "apple", "apple", "apple"},    // ascending_order
+                      vector<string>{"apple", "apple", "apple", "apple", "apple"},    // descending_order
+                      vector<string>{"apple", "apple", "apple", "apple", "apple"},    // side_cross_order
+                      vector<string>{"apple", "apple", "apple", "apple", "apple"},    // reverse_order
+                      vector<string>{"apple", "apple", "apple", "apple", "apple"},    // order
+                      vector<string>{"apple", "apple", "apple", "apple", "apple"});   // middle_out_order
     }
 
     SUBCASE("Large container") {
         MyContainer<string> c;
-        for (int i = 0; i < 1000; ++i) {
-            c.addElement("item" + to_string(i % 100));
+        vector<string> insertion_order;
+        for (int i = 0; i < 10; ++i) {
+            string val = "item" + to_string(i % 10);
+            c.addElement(val);
+            insertion_order.push_back(val);
         }
-        CHECK(c.size() == 1000);
-        vector<string> asc;
-        for (auto asc_it = c.begin_ascending_order(); asc_it != c.end_ascending_order(); ++asc_it) {
-            asc.push_back(*asc_it);
-        }
-        CHECK(asc.size() == 1000);
-        CHECK(asc[0] == "item0");
-        CHECK(asc[999] == "item99");
+        CHECK(c.size() == 10);
+
+        vector<string> expected_asc = {"item0", "item1", "item2", "item3", "item4", "item5", "item6", "item7", "item8", "item9"};
+        vector<string> expected_desc = {"item9", "item8", "item7", "item6", "item5", "item4", "item3", "item2", "item1", "item0"};
+        vector<string> expected_side = {"item0", "item9", "item1", "item8", "item2", "item7", "item3", "item6", "item4", "item5"};
+        vector<string> expected_rev = {"item9", "item8", "item7", "item6", "item5", "item4", "item3", "item2", "item1", "item0"};
+        vector<string> expected_mid = {"item5", "item4", "item6", "item3", "item7", "item2", "item8", "item1", "item9", "item0"};
+
+        testIterators(c,
+                      expected_asc,           // ascending_order
+                      expected_desc,          // descending_order
+                      expected_side,          // side_cross_order
+                      expected_rev,           // reverse_order
+                      insertion_order,        // order
+                      expected_mid);          // middle_out_order
     }
 }
 
@@ -1217,65 +803,13 @@ TEST_CASE("Iterators with double") {
         c.addElement(5.0);
         c.addElement(0.5);
 
-        vector<double> result;
-        for (auto asc_it = c.begin_ascending_order(); asc_it != c.end_ascending_order(); ++asc_it) {
-            result.push_back(*asc_it);
-        }
-        CHECK(result == vector<double>{0.5, 1.41, 2.72, 3.14, 5.0});
-        auto asc_end_it = c.end_ascending_order();
-        CHECK_THROWS_AS(*asc_end_it, out_of_range);
-        CHECK_THROWS_AS(++asc_end_it, out_of_range);
-        CHECK_THROWS_AS(asc_end_it++, out_of_range);
-
-        result.clear();
-        for (auto desc_it = c.begin_descending_order(); desc_it != c.end_descending_order(); ++desc_it) {
-            result.push_back(*desc_it);
-        }
-        CHECK(result == vector<double>{5.0, 3.14, 2.72, 1.41, 0.5});
-        auto desc_end_it = c.end_descending_order();
-        CHECK_THROWS_AS(*desc_end_it, out_of_range);
-        CHECK_THROWS_AS(++desc_end_it, out_of_range);
-        CHECK_THROWS_AS(desc_end_it++, out_of_range);
-
-        result.clear();
-        for (auto side_it = c.begin_side_cross_order(); side_it != c.end_side_cross_order(); ++side_it) {
-            result.push_back(*side_it);
-        }
-        CHECK(result == vector<double>{0.5, 5.0, 1.41, 3.14, 2.72});
-        auto side_end_it = c.end_side_cross_order();
-        CHECK_THROWS_AS(*side_end_it, out_of_range);
-        CHECK_THROWS_AS(++side_end_it, out_of_range);
-        CHECK_THROWS_AS(side_end_it++, out_of_range);
-
-        result.clear();
-        for (auto rev_it = c.begin_reverse_order(); rev_it != c.end_reverse_order(); ++rev_it) {
-            result.push_back(*rev_it);
-        }
-        CHECK(result == vector<double>{0.5, 5.0, 2.72, 1.41, 3.14});
-        auto rev_end_it = c.end_reverse_order();
-        CHECK_THROWS_AS(*rev_end_it, out_of_range);
-        CHECK_THROWS_AS(++rev_end_it, out_of_range);
-        CHECK_THROWS_AS(rev_end_it++, out_of_range);
-
-        result.clear();
-        for (auto order_it = c.begin_order(); order_it != c.end_order(); ++order_it) {
-            result.push_back(*order_it);
-        }
-        CHECK(result == vector<double>{3.14, 1.41, 2.72, 5.0, 0.5});
-        auto order_end_it = c.end_order();
-        CHECK_THROWS_AS(*order_end_it, out_of_range);
-        CHECK_THROWS_AS(++order_end_it, out_of_range);
-        CHECK_THROWS_AS(order_end_it++, out_of_range);
-
-        result.clear();
-        for (auto mid_it = c.begin_middle_out_order(); mid_it != c.end_middle_out_order(); ++mid_it) {
-            result.push_back(*mid_it);
-        }
-        CHECK(result == vector<double>{2.72, 1.41, 5.0, 3.14, 0.5});
-        auto mid_end_it = c.end_middle_out_order();
-        CHECK_THROWS_AS(*mid_end_it, out_of_range);
-        CHECK_THROWS_AS(++mid_end_it, out_of_range);
-        CHECK_THROWS_AS(mid_end_it++, out_of_range);
+        testIterators(c,
+                      vector<double>{0.5, 1.41, 2.72, 3.14, 5.0},    // ascending_order
+                      vector<double>{5.0, 3.14, 2.72, 1.41, 0.5},    // descending_order
+                      vector<double>{0.5, 5.0, 1.41, 3.14, 2.72},    // side_cross_order
+                      vector<double>{0.5, 5.0, 2.72, 1.41, 3.14},    // reverse_order
+                      vector<double>{3.14, 1.41, 2.72, 5.0, 0.5},    // order
+                      vector<double>{2.72, 1.41, 5.0, 3.14, 0.5});   // middle_out_order
     }
 
     SUBCASE("Even-sized container") {
@@ -1287,194 +821,38 @@ TEST_CASE("Iterators with double") {
         c.addElement(5.0);
         c.addElement(6.0);
 
-        vector<double> result;
-        for (auto asc_it = c.begin_ascending_order(); asc_it != c.end_ascending_order(); ++asc_it) {
-            result.push_back(*asc_it);
-        }
-        CHECK(result == vector<double>{1.0, 2.0, 3.0, 4.0, 5.0, 6.0});
-        auto asc_end_it = c.end_ascending_order();
-        CHECK_THROWS_AS(*asc_end_it, out_of_range);
-        CHECK_THROWS_AS(++asc_end_it, out_of_range);
-        CHECK_THROWS_AS(asc_end_it++, out_of_range);
-
-        result.clear();
-        for (auto desc_it = c.begin_descending_order(); desc_it != c.end_descending_order(); ++desc_it) {
-            result.push_back(*desc_it);
-        }
-        CHECK(result == vector<double>{6.0, 5.0, 4.0, 3.0, 2.0, 1.0});
-        auto desc_end_it = c.end_descending_order();
-        CHECK_THROWS_AS(*desc_end_it, out_of_range);
-        CHECK_THROWS_AS(++desc_end_it, out_of_range);
-        CHECK_THROWS_AS(desc_end_it++, out_of_range);
-
-        result.clear();
-        for (auto side_it = c.begin_side_cross_order(); side_it != c.end_side_cross_order(); ++side_it) {
-            result.push_back(*side_it);
-        }
-        CHECK(result == vector<double>{1.0, 6.0, 2.0, 5.0, 3.0, 4.0});
-        auto side_end_it = c.end_side_cross_order();
-        CHECK_THROWS_AS(*side_end_it, out_of_range);
-        CHECK_THROWS_AS(++side_end_it, out_of_range);
-        CHECK_THROWS_AS(side_end_it++, out_of_range);
-
-        result.clear();
-        for (auto rev_it = c.begin_reverse_order(); rev_it != c.end_reverse_order(); ++rev_it) {
-            result.push_back(*rev_it);
-        }
-        CHECK(result == vector<double>{6.0, 5.0, 4.0, 3.0, 2.0, 1.0});
-        auto rev_end_it = c.end_reverse_order();
-        CHECK_THROWS_AS(*rev_end_it, out_of_range);
-        CHECK_THROWS_AS(++rev_end_it, out_of_range);
-        CHECK_THROWS_AS(rev_end_it++, out_of_range);
-
-        result.clear();
-        for (auto order_it = c.begin_order(); order_it != c.end_order(); ++order_it) {
-            result.push_back(*order_it);
-        }
-        CHECK(result == vector<double>{1.0, 2.0, 3.0, 4.0, 5.0, 6.0});
-        auto order_end_it = c.end_order();
-        CHECK_THROWS_AS(*order_end_it, out_of_range);
-        CHECK_THROWS_AS(++order_end_it, out_of_range);
-        CHECK_THROWS_AS(order_end_it++, out_of_range);
-
-        result.clear();
-        for (auto mid_it = c.begin_middle_out_order(); mid_it != c.end_middle_out_order(); ++mid_it) {
-            result.push_back(*mid_it);
-        }
-        CHECK(result == vector<double>{4.0, 3.0, 5.0, 2.0, 6.0, 1.0});
-        auto mid_end_it = c.end_middle_out_order();
-        CHECK_THROWS_AS(*mid_end_it, out_of_range);
-        CHECK_THROWS_AS(++mid_end_it, out_of_range);
-        CHECK_THROWS_AS(mid_end_it++, out_of_range);
+        testIterators(c,
+                      vector<double>{1.0, 2.0, 3.0, 4.0, 5.0, 6.0},    // ascending_order
+                      vector<double>{6.0, 5.0, 4.0, 3.0, 2.0, 1.0},    // descending_order
+                      vector<double>{1.0, 6.0, 2.0, 5.0, 3.0, 4.0},    // side_cross_order
+                      vector<double>{6.0, 5.0, 4.0, 3.0, 2.0, 1.0},    // reverse_order
+                      vector<double>{1.0, 2.0, 3.0, 4.0, 5.0, 6.0},    // order
+                      vector<double>{4.0, 3.0, 5.0, 2.0, 6.0, 1.0});   // middle_out_order
     }
 
     SUBCASE("Empty container") {
         MyContainer<double> c;
 
-        vector<double> result;
-        for (auto asc_it = c.begin_ascending_order(); asc_it != c.end_ascending_order(); ++asc_it) {
-            result.push_back(*asc_it);
-        }
-        CHECK(result == vector<double>{});
-        auto asc_end_it = c.end_ascending_order();
-        CHECK_THROWS_AS(*asc_end_it, out_of_range);
-        CHECK_THROWS_AS(++asc_end_it, out_of_range);
-        CHECK_THROWS_AS(asc_end_it++, out_of_range);
-
-        result.clear();
-        for (auto desc_it = c.begin_descending_order(); desc_it != c.end_descending_order(); ++desc_it) {
-            result.push_back(*desc_it);
-        }
-        CHECK(result == vector<double>{});
-        auto desc_end_it = c.end_descending_order();
-        CHECK_THROWS_AS(*desc_end_it, out_of_range);
-        CHECK_THROWS_AS(++desc_end_it, out_of_range);
-        CHECK_THROWS_AS(desc_end_it++, out_of_range);
-
-        result.clear();
-        for (auto side_it = c.begin_side_cross_order(); side_it != c.end_side_cross_order(); ++side_it) {
-            result.push_back(*side_it);
-        }
-        CHECK(result == vector<double>{});
-        auto side_end_it = c.end_side_cross_order();
-        CHECK_THROWS_AS(*side_end_it, out_of_range);
-        CHECK_THROWS_AS(++side_end_it, out_of_range);
-        CHECK_THROWS_AS(side_end_it++, out_of_range);
-
-        result.clear();
-        for (auto rev_it = c.begin_reverse_order(); rev_it != c.end_reverse_order(); ++rev_it) {
-            result.push_back(*rev_it);
-        }
-        CHECK(result == vector<double>{});
-        auto rev_end_it = c.end_reverse_order();
-        CHECK_THROWS_AS(*rev_end_it, out_of_range);
-        CHECK_THROWS_AS(++rev_end_it, out_of_range);
-        CHECK_THROWS_AS(rev_end_it++, out_of_range);
-
-        result.clear();
-        for (auto order_it = c.begin_order(); order_it != c.end_order(); ++order_it) {
-            result.push_back(*order_it);
-        }
-        CHECK(result == vector<double>{});
-        auto order_end_it = c.end_order();
-        CHECK_THROWS_AS(*order_end_it, out_of_range);
-        CHECK_THROWS_AS(++order_end_it, out_of_range);
-        CHECK_THROWS_AS(order_end_it++, out_of_range);
-
-        result.clear();
-        for (auto mid_it = c.begin_middle_out_order(); mid_it != c.end_middle_out_order(); ++mid_it) {
-            result.push_back(*mid_it);
-        }
-        CHECK(result == vector<double>{});
-        auto mid_end_it = c.end_middle_out_order();
-        CHECK_THROWS_AS(*mid_end_it, out_of_range);
-        CHECK_THROWS_AS(++mid_end_it, out_of_range);
-        CHECK_THROWS_AS(mid_end_it++, out_of_range);
+        testIterators(c,
+                      vector<double>{},    // ascending_order
+                      vector<double>{},    // descending_order
+                      vector<double>{},    // side_cross_order
+                      vector<double>{},    // reverse_order
+                      vector<double>{},    // order
+                      vector<double>{});   // middle_out_order
     }
 
     SUBCASE("Single element") {
         MyContainer<double> c;
         c.addElement(1.23);
 
-        vector<double> result;
-        for (auto asc_it = c.begin_ascending_order(); asc_it != c.end_ascending_order(); ++asc_it) {
-            result.push_back(*asc_it);
-        }
-        CHECK(result == vector<double>{1.23});
-        auto asc_end_it = c.end_ascending_order();
-        CHECK_THROWS_AS(*asc_end_it, out_of_range);
-        CHECK_THROWS_AS(++asc_end_it, out_of_range);
-        CHECK_THROWS_AS(asc_end_it++, out_of_range);
-
-        result.clear();
-        for (auto desc_it = c.begin_descending_order(); desc_it != c.end_descending_order(); ++desc_it) {
-            result.push_back(*desc_it);
-        }
-        CHECK(result == vector<double>{1.23});
-        auto desc_end_it = c.end_descending_order();
-        CHECK_THROWS_AS(*desc_end_it, out_of_range);
-        CHECK_THROWS_AS(++desc_end_it, out_of_range);
-        CHECK_THROWS_AS(desc_end_it++, out_of_range);
-
-        result.clear();
-        for (auto side_it = c.begin_side_cross_order(); side_it != c.end_side_cross_order(); ++side_it) {
-            result.push_back(*side_it);
-        }
-        CHECK(result == vector<double>{1.23});
-        auto side_end_it = c.end_side_cross_order();
-        CHECK_THROWS_AS(*side_end_it, out_of_range);
-        CHECK_THROWS_AS(++side_end_it, out_of_range);
-        CHECK_THROWS_AS(side_end_it++, out_of_range);
-
-        result.clear();
-        for (auto rev_it = c.begin_reverse_order(); rev_it != c.end_reverse_order(); ++rev_it) {
-            result.push_back(*rev_it);
-        }
-        CHECK(result == vector<double>{1.23});
-        auto rev_end_it = c.end_reverse_order();
-        CHECK_THROWS_AS(*rev_end_it, out_of_range);
-        CHECK_THROWS_AS(++rev_end_it, out_of_range);
-        CHECK_THROWS_AS(rev_end_it++, out_of_range);
-
-        result.clear();
-        for (auto order_it = c.begin_order(); order_it != c.end_order(); ++order_it) {
-            result.push_back(*order_it);
-        }
-        CHECK(result == vector<double>{1.23});
-        auto order_end_it = c.end_order();
-        CHECK_THROWS_AS(*order_end_it, out_of_range);
-        CHECK_THROWS_AS(++order_end_it, out_of_range);
-        CHECK_THROWS_AS(order_end_it++, out_of_range);
-
-        result.clear();
-        for (auto mid_it = c.begin_middle_out_order(); mid_it != c.end_middle_out_order(); ++mid_it) {
-            result.push_back(*mid_it);
-        }
-        CHECK(result == vector<double>{1.23});
-        auto mid_end_it = c.end_middle_out_order();
-        CHECK_THROWS_AS(*mid_end_it, out_of_range);
-        CHECK_THROWS_AS(++mid_end_it, out_of_range);
-        CHECK_THROWS_AS(mid_end_it++, out_of_range);
+        testIterators(c,
+                      vector<double>{1.23},    // ascending_order
+                      vector<double>{1.23},    // descending_order
+                      vector<double>{1.23},    // side_cross_order
+                      vector<double>{1.23},    // reverse_order
+                      vector<double>{1.23},    // order
+                      vector<double>{1.23});   // middle_out_order
     }
 
     SUBCASE("Duplicate elements") {
@@ -1485,80 +863,38 @@ TEST_CASE("Iterators with double") {
         c.addElement(2.5);
         c.addElement(2.5);
 
-        vector<double> result;
-        for (auto asc_it = c.begin_ascending_order(); asc_it != c.end_ascending_order(); ++asc_it) {
-            result.push_back(*asc_it);
-        }
-        CHECK(result == vector<double>{2.5, 2.5, 2.5, 2.5, 2.5});
-        auto asc_end_it = c.end_ascending_order();
-        CHECK_THROWS_AS(*asc_end_it, out_of_range);
-        CHECK_THROWS_AS(++asc_end_it, out_of_range);
-        CHECK_THROWS_AS(asc_end_it++, out_of_range);
-
-        result.clear();
-        for (auto desc_it = c.begin_descending_order(); desc_it != c.end_descending_order(); ++desc_it) {
-            result.push_back(*desc_it);
-        }
-        CHECK(result == vector<double>{2.5, 2.5, 2.5, 2.5, 2.5});
-        auto desc_end_it = c.end_descending_order();
-        CHECK_THROWS_AS(*desc_end_it, out_of_range);
-        CHECK_THROWS_AS(++desc_end_it, out_of_range);
-        CHECK_THROWS_AS(desc_end_it++, out_of_range);
-
-        result.clear();
-        for (auto side_it = c.begin_side_cross_order(); side_it != c.end_side_cross_order(); ++side_it) {
-            result.push_back(*side_it);
-        }
-        CHECK(result == vector<double>{2.5, 2.5, 2.5, 2.5, 2.5});
-        auto side_end_it = c.end_side_cross_order();
-        CHECK_THROWS_AS(*side_end_it, out_of_range);
-        CHECK_THROWS_AS(++side_end_it, out_of_range);
-        CHECK_THROWS_AS(side_end_it++, out_of_range);
-
-        result.clear();
-        for (auto rev_it = c.begin_reverse_order(); rev_it != c.end_reverse_order(); ++rev_it) {
-            result.push_back(*rev_it);
-        }
-        CHECK(result == vector<double>{2.5, 2.5, 2.5, 2.5, 2.5});
-        auto rev_end_it = c.end_reverse_order();
-        CHECK_THROWS_AS(*rev_end_it, out_of_range);
-        CHECK_THROWS_AS(++rev_end_it, out_of_range);
-        CHECK_THROWS_AS(rev_end_it++, out_of_range);
-
-        result.clear();
-        for (auto order_it = c.begin_order(); order_it != c.end_order(); ++order_it) {
-            result.push_back(*order_it);
-        }
-        CHECK(result == vector<double>{2.5, 2.5, 2.5, 2.5, 2.5});
-        auto order_end_it = c.end_order();
-        CHECK_THROWS_AS(*order_end_it, out_of_range);
-        CHECK_THROWS_AS(++order_end_it, out_of_range);
-        CHECK_THROWS_AS(order_end_it++, out_of_range);
-
-        result.clear();
-        for (auto mid_it = c.begin_middle_out_order(); mid_it != c.end_middle_out_order(); ++mid_it) {
-            result.push_back(*mid_it);
-        }
-        CHECK(result == vector<double>{2.5, 2.5, 2.5, 2.5, 2.5});
-        auto mid_end_it = c.end_middle_out_order();
-        CHECK_THROWS_AS(*mid_end_it, out_of_range);
-        CHECK_THROWS_AS(++mid_end_it, out_of_range);
-        CHECK_THROWS_AS(mid_end_it++, out_of_range);
+        testIterators(c,
+                      vector<double>{2.5, 2.5, 2.5, 2.5, 2.5},    // ascending_order
+                      vector<double>{2.5, 2.5, 2.5, 2.5, 2.5},    // descending_order
+                      vector<double>{2.5, 2.5, 2.5, 2.5, 2.5},    // side_cross_order
+                      vector<double>{2.5, 2.5, 2.5, 2.5, 2.5},    // reverse_order
+                      vector<double>{2.5, 2.5, 2.5, 2.5, 2.5},    // order
+                      vector<double>{2.5, 2.5, 2.5, 2.5, 2.5});   // middle_out_order
     }
 
     SUBCASE("Large container") {
         MyContainer<double> c;
-        for (int i = 0; i < 1000; ++i) {
-            c.addElement(static_cast<double>(i % 100) + 0.5);
+        vector<double> insertion_order;
+        for (int i = 0; i < 10; ++i) {
+            double val = static_cast<double>(i % 10) + 0.5;
+            c.addElement(val);
+            insertion_order.push_back(val);
         }
-        CHECK(c.size() == 1000);
-        vector<double> asc;
-        for (auto asc_it = c.begin_ascending_order(); asc_it != c.end_ascending_order(); ++asc_it) {
-            asc.push_back(*asc_it);
-        }
-        CHECK(asc.size() == 1000);
-        CHECK(asc[0] == 0.5);
-        CHECK(asc[999] == 99.5);
+        CHECK(c.size() == 10);
+
+        vector<double> expected_asc = {0.5, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5, 9.5};
+        vector<double> expected_desc = {9.5, 8.5, 7.5, 6.5, 5.5, 4.5, 3.5, 2.5, 1.5, 0.5};
+        vector<double> expected_side = {0.5, 9.5, 1.5, 8.5, 2.5, 7.5, 3.5, 6.5, 4.5, 5.5};
+        vector<double> expected_rev = {9.5, 8.5, 7.5, 6.5, 5.5, 4.5, 3.5, 2.5, 1.5, 0.5};
+        vector<double> expected_mid = {5.5, 4.5, 6.5, 3.5, 7.5, 2.5, 8.5, 1.5, 9.5, 0.5};
+
+        testIterators(c,
+                      expected_asc,           // ascending_order
+                      expected_desc,          // descending_order
+                      expected_side,          // side_cross_order
+                      expected_rev,           // reverse_order
+                      insertion_order,        // order
+                      expected_mid);          // middle_out_order
     }
 }
 
@@ -1571,194 +907,13 @@ TEST_CASE("Iterators with char") {
         c.addElement('b');
         c.addElement('d');
 
-        vector<char> result;
-        for (auto asc_it = c.begin_ascending_order(); asc_it != c.end_ascending_order(); ++asc_it) {
-            result.push_back(*asc_it);
-        }
-        CHECK(result == vector<char>{'a', 'b', 'c', 'd', 'e'});
-        auto asc_end_it = c.end_ascending_order();
-        CHECK_THROWS_AS(*asc_end_it, out_of_range);
-        CHECK_THROWS_AS(++asc_end_it, out_of_range);
-        CHECK_THROWS_AS(asc_end_it++, out_of_range);
-
-        result.clear();
-        for (auto desc_it = c.begin_descending_order(); desc_it != c.end_descending_order(); ++desc_it) {
-            result.push_back(*desc_it);
-        }
-        CHECK(result == vector<char>{'e', 'd', 'c', 'b', 'a'});
-        auto desc_end_it = c.end_descending_order();
-        CHECK_THROWS_AS(*desc_end_it, out_of_range);
-        CHECK_THROWS_AS(++desc_end_it, out_of_range);
-        CHECK_THROWS_AS(desc_end_it++, out_of_range);
-
-        result.clear();
-        for (auto side_it = c.begin_side_cross_order(); side_it != c.end_side_cross_order(); ++side_it) {
-            result.push_back(*side_it);
-        }
-        CHECK(result == vector<char>{'a', 'e', 'b', 'd', 'c'});
-        auto side_end_it = c.end_side_cross_order();
-        CHECK_THROWS_AS(*side_end_it, out_of_range);
-        CHECK_THROWS_AS(++side_end_it, out_of_range);
-        CHECK_THROWS_AS(side_end_it++, out_of_range);
-
-        result.clear();
-        for (auto rev_it = c.begin_reverse_order(); rev_it != c.end_reverse_order(); ++rev_it) {
-            result.push_back(*rev_it);
-        }
-        CHECK(result == vector<char>{'d', 'b', 'c', 'a', 'e'});
-        auto rev_end_it = c.end_reverse_order();
-        CHECK_THROWS_AS(*rev_end_it, out_of_range);
-        CHECK_THROWS_AS(++rev_end_it, out_of_range);
-        CHECK_THROWS_AS(rev_end_it++, out_of_range);
-
-        result.clear();
-        for (auto order_it = c.begin_order(); order_it != c.end_order(); ++order_it) {
-            result.push_back(*order_it);
-        }
-        CHECK(result == vector<char>{'e', 'a', 'c', 'b', 'd'});
-        auto order_end_it = c.end_order();
-        CHECK_THROWS_AS(*order_end_it, out_of_range);
-        CHECK_THROWS_AS(++order_end_it, out_of_range);
-        CHECK_THROWS_AS(order_end_it++, out_of_range);
-
-        result.clear();
-        for (auto mid_it = c.begin_middle_out_order(); mid_it != c.end_middle_out_order(); ++mid_it) {
-            result.push_back(*mid_it);
-        }
-        CHECK(result == vector<char>{'c', 'a', 'b', 'e', 'd'});
-        auto mid_end_it = c.end_middle_out_order();
-        CHECK_THROWS_AS(*mid_end_it, out_of_range);
-        CHECK_THROWS_AS(++mid_end_it, out_of_range);
-        CHECK_THROWS_AS(mid_end_it++, out_of_range);
-    }
-
-    SUBCASE("Empty container") {
-        MyContainer<char> c;
-
-        vector<char> result;
-        for (auto asc_it = c.begin_ascending_order(); asc_it != c.end_ascending_order(); ++asc_it) {
-            result.push_back(*asc_it);
-        }
-        CHECK(result == vector<char>{});
-        auto asc_end_it = c.end_ascending_order();
-        CHECK_THROWS_AS(*asc_end_it, out_of_range);
-        CHECK_THROWS_AS(++asc_end_it, out_of_range);
-        CHECK_THROWS_AS(asc_end_it++, out_of_range);
-
-        result.clear();
-        for (auto desc_it = c.begin_descending_order(); desc_it != c.end_descending_order(); ++desc_it) {
-            result.push_back(*desc_it);
-        }
-        CHECK(result == vector<char>{});
-        auto desc_end_it = c.end_descending_order();
-        CHECK_THROWS_AS(*desc_end_it, out_of_range);
-        CHECK_THROWS_AS(++desc_end_it, out_of_range);
-        CHECK_THROWS_AS(desc_end_it++, out_of_range);
-
-        result.clear();
-        for (auto side_it = c.begin_side_cross_order(); side_it != c.end_side_cross_order(); ++side_it) {
-            result.push_back(*side_it);
-        }
-        CHECK(result == vector<char>{});
-        auto side_end_it = c.end_side_cross_order();
-        CHECK_THROWS_AS(*side_end_it, out_of_range);
-        CHECK_THROWS_AS(++side_end_it, out_of_range);
-        CHECK_THROWS_AS(side_end_it++, out_of_range);
-
-        result.clear();
-        for (auto rev_it = c.begin_reverse_order(); rev_it != c.end_reverse_order(); ++rev_it) {
-            result.push_back(*rev_it);
-        }
-        CHECK(result == vector<char>{});
-        auto rev_end_it = c.end_reverse_order();
-        CHECK_THROWS_AS(*rev_end_it, out_of_range);
-        CHECK_THROWS_AS(++rev_end_it, out_of_range);
-        CHECK_THROWS_AS(rev_end_it++, out_of_range);
-
-        result.clear();
-        for (auto order_it = c.begin_order(); order_it != c.end_order(); ++order_it) {
-            result.push_back(*order_it);
-        }
-        CHECK(result == vector<char>{});
-        auto order_end_it = c.end_order();
-        CHECK_THROWS_AS(*order_end_it, out_of_range);
-        CHECK_THROWS_AS(++order_end_it, out_of_range);
-        CHECK_THROWS_AS(order_end_it++, out_of_range);
-
-        result.clear();
-        for (auto mid_it = c.begin_middle_out_order(); mid_it != c.end_middle_out_order(); ++mid_it) {
-            result.push_back(*mid_it);
-        }
-        CHECK(result == vector<char>{});
-        auto mid_end_it = c.end_middle_out_order();
-        CHECK_THROWS_AS(*mid_end_it, out_of_range);
-        CHECK_THROWS_AS(++mid_end_it, out_of_range);
-        CHECK_THROWS_AS(mid_end_it++, out_of_range);
-    }
-
-    SUBCASE("Single element") {
-        MyContainer<char> c;
-        c.addElement('x');
-
-        vector<char> result;
-        for (auto asc_it = c.begin_ascending_order(); asc_it != c.end_ascending_order(); ++asc_it) {
-            result.push_back(*asc_it);
-        }
-        CHECK(result == vector<char>{'x'});
-        auto asc_end_it = c.end_ascending_order();
-        CHECK_THROWS_AS(*asc_end_it, out_of_range);
-        CHECK_THROWS_AS(++asc_end_it, out_of_range);
-        CHECK_THROWS_AS(asc_end_it++, out_of_range);
-
-        result.clear();
-        for (auto desc_it = c.begin_descending_order(); desc_it != c.end_descending_order(); ++desc_it) {
-            result.push_back(*desc_it);
-        }
-        CHECK(result == vector<char>{'x'});
-        auto desc_end_it = c.end_descending_order();
-        CHECK_THROWS_AS(*desc_end_it, out_of_range);
-        CHECK_THROWS_AS(++desc_end_it, out_of_range);
-        CHECK_THROWS_AS(desc_end_it++, out_of_range);
-
-        result.clear();
-        for (auto side_it = c.begin_side_cross_order(); side_it != c.end_side_cross_order(); ++side_it) {
-            result.push_back(*side_it);
-        }
-        CHECK(result == vector<char>{'x'});
-        auto side_end_it = c.end_side_cross_order();
-        CHECK_THROWS_AS(*side_end_it, out_of_range);
-        CHECK_THROWS_AS(++side_end_it, out_of_range);
-        CHECK_THROWS_AS(side_end_it++, out_of_range);
-
-        result.clear();
-        for (auto rev_it = c.begin_reverse_order(); rev_it != c.end_reverse_order(); ++rev_it) {
-            result.push_back(*rev_it);
-        }
-        CHECK(result == vector<char>{'x'});
-        auto rev_end_it = c.end_reverse_order();
-        CHECK_THROWS_AS(*rev_end_it, out_of_range);
-        CHECK_THROWS_AS(++rev_end_it, out_of_range);
-        CHECK_THROWS_AS(rev_end_it++, out_of_range);
-
-        result.clear();
-        for (auto order_it = c.begin_order(); order_it != c.end_order(); ++order_it) {
-            result.push_back(*order_it);
-        }
-        CHECK(result == vector<char>{'x'});
-        auto order_end_it = c.end_order();
-        CHECK_THROWS_AS(*order_end_it, out_of_range);
-        CHECK_THROWS_AS(++order_end_it, out_of_range);
-        CHECK_THROWS_AS(order_end_it++, out_of_range);
-
-        result.clear();
-        for (auto mid_it = c.begin_middle_out_order(); mid_it != c.end_middle_out_order(); ++mid_it) {
-            result.push_back(*mid_it);
-        }
-        CHECK(result == vector<char>{'x'});
-        auto mid_end_it = c.end_middle_out_order();
-        CHECK_THROWS_AS(*mid_end_it, out_of_range);
-        CHECK_THROWS_AS(++mid_end_it, out_of_range);
-        CHECK_THROWS_AS(mid_end_it++, out_of_range);
+        testIterators(c,
+                      vector<char>{'a', 'b', 'c', 'd', 'e'},    // ascending_order
+                      vector<char>{'e', 'd', 'c', 'b', 'a'},    // descending_order
+                      vector<char>{'a', 'e', 'b', 'd', 'c'},    // side_cross_order
+                      vector<char>{'d', 'b', 'c', 'a', 'e'},    // reverse_order
+                      vector<char>{'e', 'a', 'c', 'b', 'd'},    // order
+                      vector<char>{'c', 'a', 'b', 'e', 'd'});   // middle_out_order
     }
 
     SUBCASE("Even-sized container") {
@@ -1770,65 +925,38 @@ TEST_CASE("Iterators with char") {
         c.addElement('e');
         c.addElement('f');
 
-        vector<char> result;
-        for (auto asc_it = c.begin_ascending_order(); asc_it != c.end_ascending_order(); ++asc_it) {
-            result.push_back(*asc_it);
-        }
-        CHECK(result == vector<char>{'a', 'b', 'c', 'd', 'e', 'f'});
-        auto asc_end_it = c.end_ascending_order();
-        CHECK_THROWS_AS(*asc_end_it, out_of_range);
-        CHECK_THROWS_AS(++asc_end_it, out_of_range);
-        CHECK_THROWS_AS(asc_end_it++, out_of_range);
+        testIterators(c,
+                      vector<char>{'a', 'b', 'c', 'd', 'e', 'f'},    // ascending_order
+                      vector<char>{'f', 'e', 'd', 'c', 'b', 'a'},    // descending_order
+                      vector<char>{'a', 'f', 'b', 'e', 'c', 'd'},    // side_cross_order
+                      vector<char>{'f', 'e', 'd', 'c', 'b', 'a'},    // reverse_order
+                      vector<char>{'a', 'b', 'c', 'd', 'e', 'f'},    // order
+                      vector<char>{'d', 'c', 'e', 'b', 'f', 'a'});   // middle_out_order
+    }
 
-        result.clear();
-        for (auto desc_it = c.begin_descending_order(); desc_it != c.end_descending_order(); ++desc_it) {
-            result.push_back(*desc_it);
-        }
-        CHECK(result == vector<char>{'f', 'e', 'd', 'c', 'b', 'a'});
-        auto desc_end_it = c.end_descending_order();
-        CHECK_THROWS_AS(*desc_end_it, out_of_range);
-        CHECK_THROWS_AS(++desc_end_it, out_of_range);
-        CHECK_THROWS_AS(desc_end_it++, out_of_range);
+    SUBCASE("Empty container") {
+        MyContainer<char> c;
 
-        result.clear();
-        for (auto side_it = c.begin_side_cross_order(); side_it != c.end_side_cross_order(); ++side_it) {
-            result.push_back(*side_it);
-        }
-        CHECK(result == vector<char>{'a', 'f', 'b', 'e', 'c', 'd'});
-        auto side_end_it = c.end_side_cross_order();
-        CHECK_THROWS_AS(*side_end_it, out_of_range);
-        CHECK_THROWS_AS(++side_end_it, out_of_range);
-        CHECK_THROWS_AS(side_end_it++, out_of_range);
+        testIterators(c,
+                      vector<char>{},    // ascending_order
+                      vector<char>{},    // descending_order
+                      vector<char>{},    // side_cross_order
+                      vector<char>{},    // reverse_order
+                      vector<char>{},    // order
+                      vector<char>{});   // middle_out_order
+    }
 
-        result.clear();
-        for (auto rev_it = c.begin_reverse_order(); rev_it != c.end_reverse_order(); ++rev_it) {
-            result.push_back(*rev_it);
-        }
-        CHECK(result == vector<char>{'f', 'e', 'd', 'c', 'b', 'a'});
-        auto rev_end_it = c.end_reverse_order();
-        CHECK_THROWS_AS(*rev_end_it, out_of_range);
-        CHECK_THROWS_AS(++rev_end_it, out_of_range);
-        CHECK_THROWS_AS(rev_end_it++, out_of_range);
+    SUBCASE("Single element") {
+        MyContainer<char> c;
+        c.addElement('x');
 
-        result.clear();
-        for (auto order_it = c.begin_order(); order_it != c.end_order(); ++order_it) {
-            result.push_back(*order_it);
-        }
-        CHECK(result == vector<char>{'a', 'b', 'c', 'd', 'e', 'f'});
-        auto order_end_it = c.end_order();
-        CHECK_THROWS_AS(*order_end_it, out_of_range);
-        CHECK_THROWS_AS(++order_end_it, out_of_range);
-        CHECK_THROWS_AS(order_end_it++, out_of_range);
-
-        result.clear();
-        for (auto mid_it = c.begin_middle_out_order(); mid_it != c.end_middle_out_order(); ++mid_it) {
-            result.push_back(*mid_it);
-        }
-        CHECK(result == vector<char>{'d', 'c', 'e', 'b', 'f', 'a'});
-        auto mid_end_it = c.end_middle_out_order();
-        CHECK_THROWS_AS(*mid_end_it, out_of_range);
-        CHECK_THROWS_AS(++mid_end_it, out_of_range);
-        CHECK_THROWS_AS(mid_end_it++, out_of_range);
+        testIterators(c,
+                      vector<char>{'x'},    // ascending_order
+                      vector<char>{'x'},    // descending_order
+                      vector<char>{'x'},    // side_cross_order
+                      vector<char>{'x'},    // reverse_order
+                      vector<char>{'x'},    // order
+                      vector<char>{'x'});   // middle_out_order
     }
 
     SUBCASE("Duplicate elements") {
@@ -1839,80 +967,38 @@ TEST_CASE("Iterators with char") {
         c.addElement('a');
         c.addElement('a');
 
-        vector<char> result;
-        for (auto asc_it = c.begin_ascending_order(); asc_it != c.end_ascending_order(); ++asc_it) {
-            result.push_back(*asc_it);
-        }
-        CHECK(result == vector<char>{'a', 'a', 'a', 'a', 'a'});
-        auto asc_end_it = c.end_ascending_order();
-        CHECK_THROWS_AS(*asc_end_it, out_of_range);
-        CHECK_THROWS_AS(++asc_end_it, out_of_range);
-        CHECK_THROWS_AS(asc_end_it++, out_of_range);
-
-        result.clear();
-        for (auto desc_it = c.begin_descending_order(); desc_it != c.end_descending_order(); ++desc_it) {
-            result.push_back(*desc_it);
-        }
-        CHECK(result == vector<char>{'a', 'a', 'a', 'a', 'a'});
-        auto desc_end_it = c.end_descending_order();
-        CHECK_THROWS_AS(*desc_end_it, out_of_range);
-        CHECK_THROWS_AS(++desc_end_it, out_of_range);
-        CHECK_THROWS_AS(desc_end_it++, out_of_range);
-
-        result.clear();
-        for (auto side_it = c.begin_side_cross_order(); side_it != c.end_side_cross_order(); ++side_it) {
-            result.push_back(*side_it);
-        }
-        CHECK(result == vector<char>{'a', 'a', 'a', 'a', 'a'});
-        auto side_end_it = c.end_side_cross_order();
-        CHECK_THROWS_AS(*side_end_it, out_of_range);
-        CHECK_THROWS_AS(++side_end_it, out_of_range);
-        CHECK_THROWS_AS(side_end_it++, out_of_range);
-
-        result.clear();
-        for (auto rev_it = c.begin_reverse_order(); rev_it != c.end_reverse_order(); ++rev_it) {
-            result.push_back(*rev_it);
-        }
-        CHECK(result == vector<char>{'a', 'a', 'a', 'a', 'a'});
-        auto rev_end_it = c.end_reverse_order();
-        CHECK_THROWS_AS(*rev_end_it, out_of_range);
-        CHECK_THROWS_AS(++rev_end_it, out_of_range);
-        CHECK_THROWS_AS(rev_end_it++, out_of_range);
-
-        result.clear();
-        for (auto order_it = c.begin_order(); order_it != c.end_order(); ++order_it) {
-            result.push_back(*order_it);
-        }
-        CHECK(result == vector<char>{'a', 'a', 'a', 'a', 'a'});
-        auto order_end_it = c.end_order();
-        CHECK_THROWS_AS(*order_end_it, out_of_range);
-        CHECK_THROWS_AS(++order_end_it, out_of_range);
-        CHECK_THROWS_AS(order_end_it++, out_of_range);
-
-        result.clear();
-        for (auto mid_it = c.begin_middle_out_order(); mid_it != c.end_middle_out_order(); ++mid_it) {
-            result.push_back(*mid_it);
-        }
-        CHECK(result == vector<char>{'a', 'a', 'a', 'a', 'a'});
-        auto mid_end_it = c.end_middle_out_order();
-        CHECK_THROWS_AS(*mid_end_it, out_of_range);
-        CHECK_THROWS_AS(++mid_end_it, out_of_range);
-        CHECK_THROWS_AS(mid_end_it++, out_of_range);
+        testIterators(c,
+                      vector<char>{'a', 'a', 'a', 'a', 'a'},    // ascending_order
+                      vector<char>{'a', 'a', 'a', 'a', 'a'},    // descending_order
+                      vector<char>{'a', 'a', 'a', 'a', 'a'},    // side_cross_order
+                      vector<char>{'a', 'a', 'a', 'a', 'a'},    // reverse_order
+                      vector<char>{'a', 'a', 'a', 'a', 'a'},    // order
+                      vector<char>{'a', 'a', 'a', 'a', 'a'});   // middle_out_order
     }
 
     SUBCASE("Large container") {
         MyContainer<char> c;
-        for (int i = 0; i < 1000; ++i) {
-            c.addElement(static_cast<char>('a' + (i % 26)));
+        vector<char> insertion_order;
+        for (int i = 0; i < 10; ++i) {
+            char val = static_cast<char>('a' + (i % 10));
+            c.addElement(val);
+            insertion_order.push_back(val);
         }
-        CHECK(c.size() == 1000);
-        vector<char> asc;
-        for (auto asc_it = c.begin_ascending_order(); asc_it != c.end_ascending_order(); ++asc_it) {
-            asc.push_back(*asc_it);
-        }
-        CHECK(asc.size() == 1000);
-        CHECK(asc[0] == 'a');
-        CHECK(asc[999] == 'z');
+        CHECK(c.size() == 10);
+
+        vector<char> expected_asc = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'};
+        vector<char> expected_desc = {'j', 'i', 'h', 'g', 'f', 'e', 'd', 'c', 'b', 'a'};
+        vector<char> expected_side = {'a', 'j', 'b', 'i', 'c', 'h', 'd', 'g', 'e', 'f'};
+        vector<char> expected_rev = {'j', 'i', 'h', 'g', 'f', 'e', 'd', 'c', 'b', 'a'};
+        vector<char> expected_mid = {'f', 'e', 'g', 'd', 'h', 'c', 'i', 'b', 'j', 'a'};
+
+        testIterators(c,
+                      expected_asc,           // ascending_order
+                      expected_desc,          // descending_order
+                      expected_side,          // side_cross_order
+                      expected_rev,           // reverse_order
+                      insertion_order,        // order
+                      expected_mid);          // middle_out_order
     }
 }
 
@@ -1925,194 +1011,13 @@ TEST_CASE("Iterators with float") {
         c.addElement(4.4f);
         c.addElement(0.5f);
 
-        vector<float> result;
-        for (auto asc_it = c.begin_ascending_order(); asc_it != c.end_ascending_order(); ++asc_it) {
-            result.push_back(*asc_it);
-        }
-        CHECK(result == vector<float>{0.5f, 1.2f, 2.3f, 3.1f, 4.4f});
-        auto asc_end_it = c.end_ascending_order();
-        CHECK_THROWS_AS(*asc_end_it, out_of_range);
-        CHECK_THROWS_AS(++asc_end_it, out_of_range);
-        CHECK_THROWS_AS(asc_end_it++, out_of_range);
-
-        result.clear();
-        for (auto desc_it = c.begin_descending_order(); desc_it != c.end_descending_order(); ++desc_it) {
-            result.push_back(*desc_it);
-        }
-        CHECK(result == vector<float>{4.4f, 3.1f, 2.3f, 1.2f, 0.5f});
-        auto desc_end_it = c.end_descending_order();
-        CHECK_THROWS_AS(*desc_end_it, out_of_range);
-        CHECK_THROWS_AS(++desc_end_it, out_of_range);
-        CHECK_THROWS_AS(desc_end_it++, out_of_range);
-
-        result.clear();
-        for (auto side_it = c.begin_side_cross_order(); side_it != c.end_side_cross_order(); ++side_it) {
-            result.push_back(*side_it);
-        }
-        CHECK(result == vector<float>{0.5f, 4.4f, 1.2f, 3.1f, 2.3f});
-        auto side_end_it = c.end_side_cross_order();
-        CHECK_THROWS_AS(*side_end_it, out_of_range);
-        CHECK_THROWS_AS(++side_end_it, out_of_range);
-        CHECK_THROWS_AS(side_end_it++, out_of_range);
-
-        result.clear();
-        for (auto rev_it = c.begin_reverse_order(); rev_it != c.end_reverse_order(); ++rev_it) {
-            result.push_back(*rev_it);
-        }
-        CHECK(result == vector<float>{0.5f, 4.4f, 2.3f, 1.2f, 3.1f});
-        auto rev_end_it = c.end_reverse_order();
-        CHECK_THROWS_AS(*rev_end_it, out_of_range);
-        CHECK_THROWS_AS(++rev_end_it, out_of_range);
-        CHECK_THROWS_AS(rev_end_it++, out_of_range);
-
-        result.clear();
-        for (auto order_it = c.begin_order(); order_it != c.end_order(); ++order_it) {
-            result.push_back(*order_it);
-        }
-        CHECK(result == vector<float>{3.1f, 1.2f, 2.3f, 4.4f, 0.5f});
-        auto order_end_it = c.end_order();
-        CHECK_THROWS_AS(*order_end_it, out_of_range);
-        CHECK_THROWS_AS(++order_end_it, out_of_range);
-        CHECK_THROWS_AS(order_end_it++, out_of_range);
-
-        result.clear();
-        for (auto mid_it = c.begin_middle_out_order(); mid_it != c.end_middle_out_order(); ++mid_it) {
-            result.push_back(*mid_it);
-        }
-        CHECK(result == vector<float>{2.3f, 1.2f, 4.4f, 3.1f, 0.5f});
-        auto mid_end_it = c.end_middle_out_order();
-        CHECK_THROWS_AS(*mid_end_it, out_of_range);
-        CHECK_THROWS_AS(++mid_end_it, out_of_range);
-        CHECK_THROWS_AS(mid_end_it++, out_of_range);
-    }
-
-    SUBCASE("Empty container") {
-        MyContainer<float> c;
-
-        vector<float> result;
-        for (auto asc_it = c.begin_ascending_order(); asc_it != c.end_ascending_order(); ++asc_it) {
-            result.push_back(*asc_it);
-        }
-        CHECK(result == vector<float>{});
-        auto asc_end_it = c.end_ascending_order();
-        CHECK_THROWS_AS(*asc_end_it, out_of_range);
-        CHECK_THROWS_AS(++asc_end_it, out_of_range);
-        CHECK_THROWS_AS(asc_end_it++, out_of_range);
-
-        result.clear();
-        for (auto desc_it = c.begin_descending_order(); desc_it != c.end_descending_order(); ++desc_it) {
-            result.push_back(*desc_it);
-        }
-        CHECK(result == vector<float>{});
-        auto desc_end_it = c.end_descending_order();
-        CHECK_THROWS_AS(*desc_end_it, out_of_range);
-        CHECK_THROWS_AS(++desc_end_it, out_of_range);
-        CHECK_THROWS_AS(desc_end_it++, out_of_range);
-
-        result.clear();
-        for (auto side_it = c.begin_side_cross_order(); side_it != c.end_side_cross_order(); ++side_it) {
-            result.push_back(*side_it);
-        }
-        CHECK(result == vector<float>{});
-        auto side_end_it = c.end_side_cross_order();
-        CHECK_THROWS_AS(*side_end_it, out_of_range);
-        CHECK_THROWS_AS(++side_end_it, out_of_range);
-        CHECK_THROWS_AS(side_end_it++, out_of_range);
-
-        result.clear();
-        for (auto rev_it = c.begin_reverse_order(); rev_it != c.end_reverse_order(); ++rev_it) {
-            result.push_back(*rev_it);
-        }
-        CHECK(result == vector<float>{});
-        auto rev_end_it = c.end_reverse_order();
-        CHECK_THROWS_AS(*rev_end_it, out_of_range);
-        CHECK_THROWS_AS(++rev_end_it, out_of_range);
-        CHECK_THROWS_AS(rev_end_it++, out_of_range);
-
-        result.clear();
-        for (auto order_it = c.begin_order(); order_it != c.end_order(); ++order_it) {
-            result.push_back(*order_it);
-        }
-        CHECK(result == vector<float>{});
-        auto order_end_it = c.end_order();
-        CHECK_THROWS_AS(*order_end_it, out_of_range);
-        CHECK_THROWS_AS(++order_end_it, out_of_range);
-        CHECK_THROWS_AS(order_end_it++, out_of_range);
-
-        result.clear();
-        for (auto mid_it = c.begin_middle_out_order(); mid_it != c.end_middle_out_order(); ++mid_it) {
-            result.push_back(*mid_it);
-        }
-        CHECK(result == vector<float>{});
-        auto mid_end_it = c.end_middle_out_order();
-        CHECK_THROWS_AS(*mid_end_it, out_of_range);
-        CHECK_THROWS_AS(++mid_end_it, out_of_range);
-        CHECK_THROWS_AS(mid_end_it++, out_of_range);
-    }
-
-    SUBCASE("Single element") {
-        MyContainer<float> c;
-        c.addElement(1.5f);
-
-        vector<float> result;
-        for (auto asc_it = c.begin_ascending_order(); asc_it != c.end_ascending_order(); ++asc_it) {
-            result.push_back(*asc_it);
-        }
-        CHECK(result == vector<float>{1.5f});
-        auto asc_end_it = c.end_ascending_order();
-        CHECK_THROWS_AS(*asc_end_it, out_of_range);
-        CHECK_THROWS_AS(++asc_end_it, out_of_range);
-        CHECK_THROWS_AS(asc_end_it++, out_of_range);
-
-        result.clear();
-        for (auto desc_it = c.begin_descending_order(); desc_it != c.end_descending_order(); ++desc_it) {
-            result.push_back(*desc_it);
-        }
-        CHECK(result == vector<float>{1.5f});
-        auto desc_end_it = c.end_descending_order();
-        CHECK_THROWS_AS(*desc_end_it, out_of_range);
-        CHECK_THROWS_AS(++desc_end_it, out_of_range);
-        CHECK_THROWS_AS(desc_end_it++, out_of_range);
-
-        result.clear();
-        for (auto side_it = c.begin_side_cross_order(); side_it != c.end_side_cross_order(); ++side_it) {
-            result.push_back(*side_it);
-        }
-        CHECK(result == vector<float>{1.5f});
-        auto side_end_it = c.end_side_cross_order();
-        CHECK_THROWS_AS(*side_end_it, out_of_range);
-        CHECK_THROWS_AS(++side_end_it, out_of_range);
-        CHECK_THROWS_AS(side_end_it++, out_of_range);
-
-        result.clear();
-        for (auto rev_it = c.begin_reverse_order(); rev_it != c.end_reverse_order(); ++rev_it) {
-            result.push_back(*rev_it);
-        }
-        CHECK(result == vector<float>{1.5f});
-        auto rev_end_it = c.end_reverse_order();
-        CHECK_THROWS_AS(*rev_end_it, out_of_range);
-        CHECK_THROWS_AS(++rev_end_it, out_of_range);
-        CHECK_THROWS_AS(rev_end_it++, out_of_range);
-
-        result.clear();
-        for (auto order_it = c.begin_order(); order_it != c.end_order(); ++order_it) {
-            result.push_back(*order_it);
-        }
-        CHECK(result == vector<float>{1.5f});
-        auto order_end_it = c.end_order();
-        CHECK_THROWS_AS(*order_end_it, out_of_range);
-        CHECK_THROWS_AS(++order_end_it, out_of_range);
-        CHECK_THROWS_AS(order_end_it++, out_of_range);
-
-        result.clear();
-        for (auto mid_it = c.begin_middle_out_order(); mid_it != c.end_middle_out_order(); ++mid_it) {
-            result.push_back(*mid_it);
-        }
-        CHECK(result == vector<float>{1.5f});
-        auto mid_end_it = c.end_middle_out_order();
-        CHECK_THROWS_AS(*mid_end_it, out_of_range);
-        CHECK_THROWS_AS(++mid_end_it, out_of_range);
-        CHECK_THROWS_AS(mid_end_it++, out_of_range);
+        testIterators(c,
+                      vector<float>{0.5f, 1.2f, 2.3f, 3.1f, 4.4f},    // ascending_order
+                      vector<float>{4.4f, 3.1f, 2.3f, 1.2f, 0.5f},    // descending_order
+                      vector<float>{0.5f, 4.4f, 1.2f, 3.1f, 2.3f},    // side_cross_order
+                      vector<float>{0.5f, 4.4f, 2.3f, 1.2f, 3.1f},    // reverse_order
+                      vector<float>{3.1f, 1.2f, 2.3f, 4.4f, 0.5f},    // order
+                      vector<float>{2.3f, 1.2f, 4.4f, 3.1f, 0.5f});   // middle_out_order
     }
 
     SUBCASE("Even-sized container") {
@@ -2124,65 +1029,38 @@ TEST_CASE("Iterators with float") {
         c.addElement(5.0f);
         c.addElement(6.0f);
 
-        vector<float> result;
-        for (auto asc_it = c.begin_ascending_order(); asc_it != c.end_ascending_order(); ++asc_it) {
-            result.push_back(*asc_it);
-        }
-        CHECK(result == vector<float>{1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f});
-        auto asc_end_it = c.end_ascending_order();
-        CHECK_THROWS_AS(*asc_end_it, out_of_range);
-        CHECK_THROWS_AS(++asc_end_it, out_of_range);
-        CHECK_THROWS_AS(asc_end_it++, out_of_range);
+        testIterators(c,
+                      vector<float>{1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f},    // ascending_order
+                      vector<float>{6.0f, 5.0f, 4.0f, 3.0f, 2.0f, 1.0f},    // descending_order
+                      vector<float>{1.0f, 6.0f, 2.0f, 5.0f, 3.0f, 4.0f},    // side_cross_order
+                      vector<float>{6.0f, 5.0f, 4.0f, 3.0f, 2.0f, 1.0f},    // reverse_order
+                      vector<float>{1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f},    // order
+                      vector<float>{4.0f, 3.0f, 5.0f, 2.0f, 6.0f, 1.0f});   // middle_out_order
+    }
 
-        result.clear();
-        for (auto desc_it = c.begin_descending_order(); desc_it != c.end_descending_order(); ++desc_it) {
-            result.push_back(*desc_it);
-        }
-        CHECK(result == vector<float>{6.0f, 5.0f, 4.0f, 3.0f, 2.0f, 1.0f});
-        auto desc_end_it = c.end_descending_order();
-        CHECK_THROWS_AS(*desc_end_it, out_of_range);
-        CHECK_THROWS_AS(++desc_end_it, out_of_range);
-        CHECK_THROWS_AS(desc_end_it++, out_of_range);
+    SUBCASE("Empty container") {
+        MyContainer<float> c;
 
-        result.clear();
-        for (auto side_it = c.begin_side_cross_order(); side_it != c.end_side_cross_order(); ++side_it) {
-            result.push_back(*side_it);
-        }
-        CHECK(result == vector<float>{1.0f, 6.0f, 2.0f, 5.0f, 3.0f, 4.0f});
-        auto side_end_it = c.end_side_cross_order();
-        CHECK_THROWS_AS(*side_end_it, out_of_range);
-        CHECK_THROWS_AS(++side_end_it, out_of_range);
-        CHECK_THROWS_AS(side_end_it++, out_of_range);
+        testIterators(c,
+                      vector<float>{},    // ascending_order
+                      vector<float>{},    // descending_order
+                      vector<float>{},    // side_cross_order
+                      vector<float>{},    // reverse_order
+                      vector<float>{},    // order
+                      vector<float>{});   // middle_out_order
+    }
 
-        result.clear();
-        for (auto rev_it = c.begin_reverse_order(); rev_it != c.end_reverse_order(); ++rev_it) {
-            result.push_back(*rev_it);
-        }
-        CHECK(result == vector<float>{6.0f, 5.0f, 4.0f, 3.0f, 2.0f, 1.0f});
-        auto rev_end_it = c.end_reverse_order();
-        CHECK_THROWS_AS(*rev_end_it, out_of_range);
-        CHECK_THROWS_AS(++rev_end_it, out_of_range);
-        CHECK_THROWS_AS(rev_end_it++, out_of_range);
+    SUBCASE("Single element") {
+        MyContainer<float> c;
+        c.addElement(1.5f);
 
-        result.clear();
-        for (auto order_it = c.begin_order(); order_it != c.end_order(); ++order_it) {
-            result.push_back(*order_it);
-        }
-        CHECK(result == vector<float>{1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f});
-        auto order_end_it = c.end_order();
-        CHECK_THROWS_AS(*order_end_it, out_of_range);
-        CHECK_THROWS_AS(++order_end_it, out_of_range);
-        CHECK_THROWS_AS(order_end_it++, out_of_range);
-
-        result.clear();
-        for (auto mid_it = c.begin_middle_out_order(); mid_it != c.end_middle_out_order(); ++mid_it) {
-            result.push_back(*mid_it);
-        }
-        CHECK(result == vector<float>{4.0f, 3.0f, 5.0f, 2.0f, 6.0f, 1.0f});
-        auto mid_end_it = c.end_middle_out_order();
-        CHECK_THROWS_AS(*mid_end_it, out_of_range);
-        CHECK_THROWS_AS(++mid_end_it, out_of_range);
-        CHECK_THROWS_AS(mid_end_it++, out_of_range);
+        testIterators(c,
+                      vector<float>{1.5f},    // ascending_order
+                      vector<float>{1.5f},    // descending_order
+                      vector<float>{1.5f},    // side_cross_order
+                      vector<float>{1.5f},    // reverse_order
+                      vector<float>{1.5f},    // order
+                      vector<float>{1.5f});   // middle_out_order
     }
 
     SUBCASE("Duplicate elements") {
@@ -2193,79 +1071,37 @@ TEST_CASE("Iterators with float") {
         c.addElement(2.5f);
         c.addElement(2.5f);
 
-        vector<float> result;
-        for (auto asc_it = c.begin_ascending_order(); asc_it != c.end_ascending_order(); ++asc_it) {
-            result.push_back(*asc_it);
-        }
-        CHECK(result == vector<float>{2.5f, 2.5f, 2.5f, 2.5f, 2.5f});
-        auto asc_end_it = c.end_ascending_order();
-        CHECK_THROWS_AS(*asc_end_it, out_of_range);
-        CHECK_THROWS_AS(++asc_end_it, out_of_range);
-        CHECK_THROWS_AS(asc_end_it++, out_of_range);
-
-        result.clear();
-        for (auto desc_it = c.begin_descending_order(); desc_it != c.end_descending_order(); ++desc_it) {
-            result.push_back(*desc_it);
-        }
-        CHECK(result == vector<float>{2.5f, 2.5f, 2.5f, 2.5f, 2.5f});
-        auto desc_end_it = c.end_descending_order();
-        CHECK_THROWS_AS(*desc_end_it, out_of_range);
-        CHECK_THROWS_AS(++desc_end_it, out_of_range);
-        CHECK_THROWS_AS(desc_end_it++, out_of_range);
-
-        result.clear();
-        for (auto side_it = c.begin_side_cross_order(); side_it != c.end_side_cross_order(); ++side_it) {
-            result.push_back(*side_it);
-        }
-        CHECK(result == vector<float>{2.5f, 2.5f, 2.5f, 2.5f, 2.5f});
-        auto side_end_it = c.end_side_cross_order();
-        CHECK_THROWS_AS(*side_end_it, out_of_range);
-        CHECK_THROWS_AS(++side_end_it, out_of_range);
-        CHECK_THROWS_AS(side_end_it++, out_of_range);
-
-        result.clear();
-        for (auto rev_it = c.begin_reverse_order(); rev_it != c.end_reverse_order(); ++rev_it) {
-            result.push_back(*rev_it);
-        }
-        CHECK(result == vector<float>{2.5f, 2.5f, 2.5f, 2.5f, 2.5f});
-        auto rev_end_it = c.end_reverse_order();
-        CHECK_THROWS_AS(*rev_end_it, out_of_range);
-        CHECK_THROWS_AS(++rev_end_it, out_of_range);
-        CHECK_THROWS_AS(rev_end_it++, out_of_range);
-
-        result.clear();
-        for (auto order_it = c.begin_order(); order_it != c.end_order(); ++order_it) {
-            result.push_back(*order_it);
-        }
-        CHECK(result == vector<float>{2.5f, 2.5f, 2.5f, 2.5f, 2.5f});
-        auto order_end_it = c.end_order();
-        CHECK_THROWS_AS(*order_end_it, out_of_range);
-        CHECK_THROWS_AS(++order_end_it, out_of_range);
-        CHECK_THROWS_AS(order_end_it++, out_of_range);
-
-        result.clear();
-        for (auto mid_it = c.begin_middle_out_order(); mid_it != c.end_middle_out_order(); ++mid_it) {
-            result.push_back(*mid_it);
-        }
-        CHECK(result == vector<float>{2.5f, 2.5f, 2.5f, 2.5f, 2.5f});
-        auto mid_end_it = c.end_middle_out_order();
-        CHECK_THROWS_AS(*mid_end_it, out_of_range);
-        CHECK_THROWS_AS(++mid_end_it, out_of_range);
-        CHECK_THROWS_AS(mid_end_it++, out_of_range);
+        testIterators(c,
+                      vector<float>{2.5f, 2.5f, 2.5f, 2.5f, 2.5f},    // ascending_order
+                      vector<float>{2.5f, 2.5f, 2.5f, 2.5f, 2.5f},    // descending_order
+                      vector<float>{2.5f, 2.5f, 2.5f, 2.5f, 2.5f},    // side_cross_order
+                      vector<float>{2.5f, 2.5f, 2.5f, 2.5f, 2.5f},    // reverse_order
+                      vector<float>{2.5f, 2.5f, 2.5f, 2.5f, 2.5f},    // order
+                      vector<float>{2.5f, 2.5f, 2.5f, 2.5f, 2.5f});   // middle_out_order
     }
 
     SUBCASE("Large container") {
         MyContainer<float> c;
-        for (int i = 0; i < 1000; ++i) {
-            c.addElement(static_cast<float>(i % 100) + 0.1f);
+        vector<float> insertion_order;
+        for (int i = 0; i < 10; ++i) {
+            float val = static_cast<float>(i % 10) + 0.1f;
+            c.addElement(val);
+            insertion_order.push_back(val);
         }
-        CHECK(c.size() == 1000);
-        vector<float> asc;
-        for (auto asc_it = c.begin_ascending_order(); asc_it != c.end_ascending_order(); ++asc_it) {
-            asc.push_back(*asc_it);
-        }
-        CHECK(asc.size() == 1000);
-        CHECK(asc[0] == 0.1f);
-        CHECK(asc[999] == 99.1f);
+        CHECK(c.size() == 10);
+
+        vector<float> expected_asc = {0.1f, 1.1f, 2.1f, 3.1f, 4.1f, 5.1f, 6.1f, 7.1f, 8.1f, 9.1f};
+        vector<float> expected_desc = {9.1f, 8.1f, 7.1f, 6.1f, 5.1f, 4.1f, 3.1f, 2.1f, 1.1f, 0.1f};
+        vector<float> expected_side = {0.1f, 9.1f, 1.1f, 8.1f, 2.1f, 7.1f, 3.1f, 6.1f, 4.1f, 5.1f};
+        vector<float> expected_rev = {9.1f, 8.1f, 7.1f, 6.1f, 5.1f, 4.1f, 3.1f, 2.1f, 1.1f, 0.1f};
+        vector<float> expected_mid = {5.1f, 4.1f, 6.1f, 3.1f, 7.1f, 2.1f, 8.1f, 1.1f, 9.1f, 0.1f};
+
+        testIterators(c,
+                      expected_asc,           // ascending_order
+                      expected_desc,          // descending_order
+                      expected_side,          // side_cross_order
+                      expected_rev,           // reverse_order
+                      insertion_order,        // order
+                      expected_mid);          // middle_out_order
     }
 }
