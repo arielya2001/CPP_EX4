@@ -67,6 +67,8 @@ int main() {  // Main function
     oddContainer.addElement(3);  // Add element 3 to oddContainer
     oddContainer.addElement(11);  // Add element 11 to oddContainer
     oddContainer.addElement(5);  // Add element 5 to oddContainer
+    std::cout << "Odd Container: " << oddContainer << std::endl;  // Print oddContainer using operator<<
+    printAllOrders(oddContainer, "Odd-sized container [5 items]");  // Print all orders for oddContainer
 
     MyContainer<int> evenContainer;  // Create container for even-sized test // 6 איברים
     evenContainer.addElement(10);  // Add element 10 to evenContainer
@@ -75,11 +77,36 @@ int main() {  // Main function
     evenContainer.addElement(1);  // Add element 1 to evenContainer
     evenContainer.addElement(6);  // Add element 6 to evenContainer
     evenContainer.addElement(12);  // Add element 12 to evenContainer
-
-    std::cout << "Odd Container: " << oddContainer << std::endl;  // Print oddContainer using operator<<
-    printAllOrders(oddContainer, "Odd-sized container [5 items]");  // Print all orders for oddContainer
     std::cout << "Even Container: " << evenContainer << std::endl;  // Print evenContainer using operator<<
     printAllOrders(evenContainer, "Even-sized container [6 items]");  // Print all orders for evenContainer
+
+    // Single-element container: 1 element
+    MyContainer<int> singleContainer;  // Create single-element container
+    singleContainer.addElement(42);  // Add single element
+    std::cout << "Single Element Container: " << singleContainer << std::endl;  // Print container
+    printAllOrders(singleContainer, "Single-element container [1 item]");  // Print orders
+
+    // Empty container: no elements
+    MyContainer<int> emptyContainer;  // Create empty container
+    std::cout << "Empty Container: " << emptyContainer << std::endl;  // Print container
+    printAllOrders(emptyContainer, "Empty container [0 items]");  // Print orders
+
+    // Duplicate elements container: all identical
+    MyContainer<int> duplicateContainer;  // Create duplicate container
+    for (int i = 0; i < 5; ++i) {
+        duplicateContainer.addElement(7);  // Add repeated element
+    }
+    std::cout << "Duplicate Container: " << duplicateContainer << std::endl;  // Print container
+    printAllOrders(duplicateContainer, "Duplicate-elements container [5 identical items]");  // Print orders
+
+    // Large container: 10 elements
+    MyContainer<int> largeContainer;  // Create large container
+    for (int i = 1; i <= 10; ++i) {
+        largeContainer.addElement(i * 3);  // Add elements (multiples of 3)
+    }
+    std::cout << "Large Container: " << largeContainer << std::endl;  // Print container
+    printAllOrders(largeContainer, "Large container [10 items]");  // Print orders
+
 
     return 0;  // Return success code
 }
