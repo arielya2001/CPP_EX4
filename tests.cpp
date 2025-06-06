@@ -36,7 +36,7 @@ TEST_CASE("Basic operations and container functions") {
     CHECK(captureOutput(c) == "[5, 8, 1, 7]");
     CHECK(c.getData() == vector<int>{5, 8, 1, 7});
 
-    CHECK_THROWS_AS(c.removeElement(42), runtime_error);
+    CHECK_THROWS_AS(c.removeElement(37), runtime_error);
 }
 
 TEST_CASE("Iterators with int") {
