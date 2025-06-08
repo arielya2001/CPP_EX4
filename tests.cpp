@@ -1034,15 +1034,122 @@ TEST_CASE("Iterator == and != comparison for all orders and cases") {  // Tests 
     }
 }
 
-// Tests iterator stability after container modification
-// This test case verifies that an iterator remains valid and points to the same element
-// after the container is modified by adding a new element.
-TEST_CASE("Iterator after container modification") {  // Tests iterator stability
-    MyContainer<int> c;  // Creates integer container
-    c.addElement(1);  // Adds element 1
-    auto it = c.begin_ascending_order();  // Gets ascending order iterator
-    c.addElement(2);  // Adds element 2
-    CHECK(*it == 1); // Verifies iterator points to original element
+TEST_CASE("Iterator throws on container modification") {
+    // Test for add element
+    SUBCASE("Add element modification") {
+        SUBCASE("AscendingOrderIterator") {
+            MyContainer<int> c;
+            c.addElement(1); // Add initial element
+            auto it = c.begin_ascending_order(); // Create iterator
+            c.addElement(2); // Modify container
+            CHECK_THROWS_AS(*it, std::runtime_error); // Check dereference throws
+            CHECK_THROWS_AS(++it, std::runtime_error); // Check prefix increment throws
+            CHECK_THROWS_AS(it++, std::runtime_error); // Check postfix increment throws
+        }
+        SUBCASE("DescendingOrderIterator") {
+            MyContainer<int> c;
+            c.addElement(1);
+            auto it = c.begin_descending_order();
+            c.addElement(2);
+            CHECK_THROWS_AS(*it, std::runtime_error);
+            CHECK_THROWS_AS(++it, std::runtime_error);
+            CHECK_THROWS_AS(it++, std::runtime_error);
+        }
+        SUBCASE("SideCrossOrderIterator") {
+            MyContainer<int> c;
+            c.addElement(1);
+            auto it = c.begin_side_cross_order();
+            c.addElement(2);
+            CHECK_THROWS_AS(*it, std::runtime_error);
+            CHECK_THROWS_AS(++it, std::runtime_error);
+            CHECK_THROWS_AS(it++, std::runtime_error);
+        }
+        SUBCASE("ReverseOrderIterator") {
+            MyContainer<int> c;
+            c.addElement(1);
+            auto it = c.begin_reverse_order();
+            c.addElement(2);
+            CHECK_THROWS_AS(*it, std::runtime_error);
+            CHECK_THROWS_AS(++it, std::runtime_error);
+            CHECK_THROWS_AS(it++, std::runtime_error);
+        }
+        SUBCASE("OrderIterator") {
+            MyContainer<int> c;
+            c.addElement(1);
+            auto it = c.begin_order();
+            c.addElement(2);
+            CHECK_THROWS_AS(*it, std::runtime_error);
+            CHECK_THROWS_AS(++it, std::runtime_error);
+            CHECK_THROWS_AS(it++, std::runtime_error);
+        }
+        SUBCASE("MiddleOutOrderIterator") {
+            MyContainer<int> c;
+            c.addElement(1);
+            auto it = c.begin_middle_out_order();
+            c.addElement(2);
+            CHECK_THROWS_AS(*it, std::runtime_error);
+            CHECK_THROWS_AS(++it, std::runtime_error);
+            CHECK_THROWS_AS(it++, std::runtime_error);
+        }
+    }
+
+    // Test for remove element
+    SUBCASE("Remove element modification") {
+        SUBCASE("AscendingOrderIterator") {
+            MyContainer<int> c;
+            c.addElement(1); // Add initial element
+            auto it = c.begin_ascending_order(); // Create iterator
+            c.removeElement(1); // Modify container
+            CHECK_THROWS_AS(*it, std::runtime_error); // Check dereference throws
+            CHECK_THROWS_AS(++it, std::runtime_error); // Check prefix increment throws
+            CHECK_THROWS_AS(it++, std::runtime_error); // Check postfix increment throws
+        }
+        SUBCASE("DescendingOrderIterator") {
+            MyContainer<int> c;
+            c.addElement(1);
+            auto it = c.begin_descending_order();
+            c.removeElement(1);
+            CHECK_THROWS_AS(*it, std::runtime_error);
+            CHECK_THROWS_AS(++it, std::runtime_error);
+            CHECK_THROWS_AS(it++, std::runtime_error);
+        }
+        SUBCASE("SideCrossOrderIterator") {
+            MyContainer<int> c;
+            c.addElement(1);
+            auto it = c.begin_side_cross_order();
+            c.removeElement(1);
+            CHECK_THROWS_AS(*it, std::runtime_error);
+            CHECK_THROWS_AS(++it, std::runtime_error);
+            CHECK_THROWS_AS(it++, std::runtime_error);
+        }
+        SUBCASE("ReverseOrderIterator") {
+            MyContainer<int> c;
+            c.addElement(1);
+            auto it = c.begin_reverse_order();
+            c.removeElement(1);
+            CHECK_THROWS_AS(*it, std::runtime_error);
+            CHECK_THROWS_AS(++it, std::runtime_error);
+            CHECK_THROWS_AS(it++, std::runtime_error);
+        }
+        SUBCASE("OrderIterator") {
+            MyContainer<int> c;
+            c.addElement(1);
+            auto it = c.begin_order();
+            c.removeElement(1);
+            CHECK_THROWS_AS(*it, std::runtime_error);
+            CHECK_THROWS_AS(++it, std::runtime_error);
+            CHECK_THROWS_AS(it++, std::runtime_error);
+        }
+        SUBCASE("MiddleOutOrderIterator") {
+            MyContainer<int> c;
+            c.addElement(1);
+            auto it = c.begin_middle_out_order();
+            c.removeElement(1);
+            CHECK_THROWS_AS(*it, std::runtime_error);
+            CHECK_THROWS_AS(++it, std::runtime_error);
+            CHECK_THROWS_AS(it++, std::runtime_error);
+        }
+    }
 }
 
 // Tests iterator assignment

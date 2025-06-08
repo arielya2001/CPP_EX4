@@ -8,6 +8,7 @@ Mail - ariel.yaacobi@msmail.ariel.ac.il
 #include <vector>      // Include vector header for vector operations
 #include <algorithm>   // Include algorithm header for std::sort
 #include <cstddef>     // Include cstddef header for size_t
+#include <stdexcept>   // Include stdexcept for exceptions
 
 namespace ariel { // Namespace to encapsulate classes and functions
 
@@ -17,9 +18,10 @@ namespace ariel { // Namespace to encapsulate classes and functions
     template<typename T> // Template class definition for AscendingOrderIterator
     class AscendingOrderIterator {
     private:
-        const MyContainer<T>* container;  // Pointer to the MyContainer instance
-        std::vector<T> sorted_data;       // Copy of container data in ascending order
-        size_t index;                     // Current index into sorted data
+        const MyContainer<T>* container;              // Pointer to the MyContainer instance
+        std::vector<size_t> sorted_indices;           // Indices into container data in ascending order
+        size_t index;                                 // Current index into sorted indices
+        size_t capturedVersion;                       // Version of the container at iterator creation
 
     public:
         /**
@@ -27,13 +29,22 @@ namespace ariel { // Namespace to encapsulate classes and functions
          * @param is_end If true, initializes iterator to end position; default is false
          * @throws None
          */
-        // 🔹 Regular constructor
+        // Regular constructor
         AscendingOrderIterator(const MyContainer<T>& cont, bool is_end = false)  // Constructor for iterator
             : container(&cont), index(0) {  // Initialize container pointer and index to 0
-            sorted_data = container->getData();  // Copy container data into sorted_data
-            std::sort(sorted_data.begin(), sorted_data.end());  // Sort data in ascending order
+            capturedVersion = container->getVersion(); // Capture version at construction
+
+            const std::vector<T>& data = container->getData();  // Reference to container data
+            sorted_indices.resize(data.size());                 // Allocate space for indices
+            for (size_t i = 0; i < data.size(); ++i) {
+                sorted_indices[i] = i;                          // Initialize with 0, 1, 2, ...
+            }
+
+            std::sort(sorted_indices.begin(), sorted_indices.end(),
+                      [&](size_t a, size_t b) { return data[a] < data[b]; });  // Sort by actual values
+
             if (is_end) {  // Check if end iterator is requested
-                index = sorted_data.size();  // Set index to end of sorted_data
+                index = sorted_indices.size();  // Set index to end of sorted indices
             }
         }
 
@@ -43,10 +54,13 @@ namespace ariel { // Namespace to encapsulate classes and functions
          */
         // Dereference operator to access current element
         T operator*() const {  // Return current element
-            if (index >= sorted_data.size()) {  // Check if index is out of bounds
+            if (capturedVersion != container->getVersion()) { // Ensure container was not modified since iterator creation
+                throw std::runtime_error("Container modified during iteration");
+            }
+            if (index >= sorted_indices.size()) {  // Check if index is out of bounds
                 throw std::out_of_range("Iterator out of range");  // Throw exception for invalid access
             }
-            return sorted_data[index];  // Return element at current index
+            return container->getData()[sorted_indices[index]];  // Access sorted value by index
         }
 
         /**
@@ -55,7 +69,10 @@ namespace ariel { // Namespace to encapsulate classes and functions
          */
         // Prefix increment operator
         AscendingOrderIterator& operator++() {  // Increment iterator (prefix)
-            if (index >= sorted_data.size()) {  // Check if increment would go beyond end
+            if (capturedVersion != container->getVersion()) { // Ensure container was not modified since iterator creation
+                throw std::runtime_error("Container modified during iteration");
+            }
+            if (index >= sorted_indices.size()) {  // Check if increment would go beyond end
                 throw std::out_of_range("Cannot increment beyond end.");  // Throw exception for invalid increment
             }
             ++index;  // Increment index
@@ -68,33 +85,34 @@ namespace ariel { // Namespace to encapsulate classes and functions
          */
         // Postfix increment operator
         AscendingOrderIterator operator++(int) {  // Increment iterator (postfix)
-            if (index >= sorted_data.size()) {  // Check if increment would go beyond end
+            if (capturedVersion != container->getVersion()) { // Ensure container was not modified since iterator creation
+                throw std::runtime_error("Container modified during iteration");
+            }
+            if (index >= sorted_indices.size()) {  // Check if increment would go beyond end
                 throw std::out_of_range("Cannot increment beyond end.");  // Throw exception for invalid increment
             }
-            AscendingOrderIterator temp = *this;  // Save current iterator state // Save current iterator state
-            ++(*this);                            // Increment self // Increment self
-            return temp;                          // Return old iterator state // Return copy before increment
+            AscendingOrderIterator temp = *this;  // Save current iterator state
+            ++(*this);                            // Increment self
+            return temp;                          // Return old iterator state
         }
 
         /**
-         * @param other Iterator to compare with
-         * @return True if iterators are at different positions, false otherwise
+         * @brief Equality comparison operator.
+         * @param other Another iterator to compare.
+         * @return True if both iterators are at the same position and container.
          */
-        // Inequality comparison operator
-        bool operator!=(const AscendingOrderIterator& other) const {  // Compare iterators for inequality
-            return index != other.index;  // Return true if indices differ
+        bool operator==(const AscendingOrderIterator& other) const { // Compare iterators for equality
+            return index == other.index && container == other.container; // Return true if indices are equal and containers
         }
-
         /**
-         * @param other Iterator to compare with
-         * @return True if iterators are at same position, false otherwise
+         * @brief Inequality comparison operator.
+         * @param other Another iterator to compare.
+         * @return True if iterators are at different positions or containers.
          */
-        // Equality comparison operator
-        bool operator==(const AscendingOrderIterator& other) const {  // Compare iterators for equality
-            return index == other.index;  // Return true if indices are equal
+        bool operator!=(const AscendingOrderIterator& other) const { // Compare iterators for inequality
+            return !(*this == other); // Return true if indices differ
         }
     };
-
 } // Namespace ariel
 
 #endif //ASCENDINGORDERITERATOR_HPP  // Header guard

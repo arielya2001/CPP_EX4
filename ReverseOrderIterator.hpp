@@ -18,6 +18,7 @@ namespace ariel { // Namespace to encapsulate classes and functions
     private:
         const MyContainer<T>* container;  // Pointer to the MyContainer instance
         size_t index;                     // Current index for iteration
+        size_t capturedVersion;           // Version of the container at iterator creation
 
     public:
         /**
@@ -28,6 +29,7 @@ namespace ariel { // Namespace to encapsulate classes and functions
         // Regular constructor
         ReverseOrderIterator(const MyContainer<T>& cont, bool is_end = false)  // Constructor for iterator
             : container(&cont), index(0) {  // Initialize container pointer and index to 0
+            capturedVersion = container->getVersion();  // Capture version at construction
             if (is_end) {  // Check if end iterator is requested
                 index = container->getData().size();  // Set index to end of data
             }
@@ -39,6 +41,9 @@ namespace ariel { // Namespace to encapsulate classes and functions
          */
         // Dereference operator to access value
         T operator*() const {  // Return current element // גישה לערך
+            if (capturedVersion != container->getVersion()) { // Ensure container was not modified since iterator creation
+                throw std::runtime_error("Container modified during iteration");
+            }
             const std::vector<T>& data = container->getData();  // Get reference to container data
             if (index >= data.size()) {  // Check if index is out of bounds
                 throw std::out_of_range("Iterator out of range");  // Throw exception for invalid access
@@ -52,6 +57,9 @@ namespace ariel { // Namespace to encapsulate classes and functions
          */
         // Prefix increment operator
         ReverseOrderIterator& operator++() {  // Increment iterator (prefix) // ++
+            if (capturedVersion != container->getVersion()) { // Ensure container was not modified since iterator creation
+                throw std::runtime_error("Container modified during iteration");
+            }
             if (index >= container->getData().size()) {  // Check if increment would go beyond end
                 throw std::out_of_range("Cannot increment beyond end.");  // Throw exception for invalid increment
             }
@@ -65,6 +73,9 @@ namespace ariel { // Namespace to encapsulate classes and functions
          */
         // Postfix increment operator
         ReverseOrderIterator operator++(int) {  // Increment iterator (postfix) // ++ (postfix)
+            if (capturedVersion != container->getVersion()) { // Ensure container was not modified since iterator creation
+                throw std::runtime_error("Container modified during iteration");
+            }
             if (index >= container->getData().size()) {  // Check if increment would go beyond end
                 throw std::out_of_range("Cannot increment beyond end.");  // Throw exception for invalid increment
             }
@@ -74,24 +85,25 @@ namespace ariel { // Namespace to encapsulate classes and functions
         }
 
         /**
+         * @brief Equality comparison operator.
          * @param other Iterator to compare with
-         * @return True if iterators are at different positions, false otherwise
+         * @return True if iterators are at same position and same container
          */
-        // Inequality comparison operator
-        bool operator!=(const ReverseOrderIterator& other) const {  // Compare iterators for inequality
-            return index != other.index;  // Return true if indices differ
+        bool operator==(const ReverseOrderIterator& other) const {  // Compare iterators for equality
+            return index == other.index && container == other.container;  // Return true if equal
         }
 
         /**
+         * @brief Inequality comparison operator.
          * @param other Iterator to compare with
-         * @return True if iterators are at same position, false otherwise
+         * @return True if iterators are at different positions or containers
          */
-        // Equality comparison operator
-        bool operator==(const ReverseOrderIterator& other) const {  // Compare iterators for equality
-            return index == other.index;  // Return true if indices are equal
+        bool operator!=(const ReverseOrderIterator& other) const {  // Compare iterators for inequality
+            return !(*this == other);  // Return negation of equality
         }
     };
 
 } // Namespace ariel
 
 #endif //REVERSEORDERITERATOR_HPP  // Header guard
+

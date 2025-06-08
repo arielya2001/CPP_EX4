@@ -22,6 +22,7 @@ namespace ariel { // Namespace ariel to encapsulate classes and functions
     class MyContainer {
     private:
         std::vector<T> data;  // Vector to store container elements
+        size_t version = 0;  // Tracks container version for iterator validation
 
     public:
         /**
@@ -36,6 +37,7 @@ namespace ariel { // Namespace ariel to encapsulate classes and functions
          */
         void addElement(const T& value) {  // Add an element to the container
             data.push_back(value);  // Append value to data vector
+            version++; // Update version on modification
         }
 
         /**
@@ -49,6 +51,7 @@ namespace ariel { // Namespace ariel to encapsulate classes and functions
                 throw std::runtime_error("Element not found in container.");  // Throw exception if not found
             }
             data.erase(it, data.end());  // Erase removed elements from vector
+            version++;  // Update version on modification
         }
 
         /**
@@ -66,6 +69,15 @@ namespace ariel { // Namespace ariel to encapsulate classes and functions
         const std::vector<T>& getData() const {  // Get container data
             return data;  // Return reference to data vector
         }
+
+        /**
+         * @return Current version of the container.
+         * @throws None
+         */
+        size_t getVersion() const {  // Return current version number
+            return version;          // Used for iterator consistency check
+        }
+
 
         /**
          * @param os Output stream to write to

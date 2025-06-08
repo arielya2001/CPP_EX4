@@ -16,9 +16,10 @@ namespace ariel { // Namespace ariel to encapsulate classes and functions
     template<typename T> // Template class definition for MiddleOutOrderIterator
     class MiddleOutOrderIterator {
     private:
-        const MyContainer<T>* container;  // Pointer to the MyContainer instance
-        std::vector<T> middle_out_data;   // Data arranged in middle-out order
-        size_t index;                     // Current index into middle_out_data
+        const MyContainer<T>* container;              // Pointer to the MyContainer instance
+        std::vector<size_t> middle_out_indices;       // Indices into container data in middle-out order
+        size_t index;                                 // Current index into middle_out_indices
+        size_t capturedVersion;                       // Version of the container at iterator creation
 
     public:
         /**
@@ -30,32 +31,30 @@ namespace ariel { // Namespace ariel to encapsulate classes and functions
         MiddleOutOrderIterator(const MyContainer<T>& cont, bool is_end = false)  // Constructor for iterator
             : container(&cont), index(0) {  // Initialize container pointer and index to 0
 
+            capturedVersion = container->getVersion(); // Capture version at construction
             const std::vector<T>& data = container->getData();  // Get reference to container data
             size_t n = data.size();  // Get size of container data
+            middle_out_indices.reserve(n);  // Pre-allocate index vector
 
-            if (n == 0) {  // Check if container is empty
-                middle_out_data = {};  // Initialize empty middle_out_data
-            } else {  // Container is not empty
+            if (n != 0) {  // Container is not empty
                 int mid = n / 2;  // Calculate middle index
                 int left = mid - 1;  // Set left index to one before middle
                 int right = mid + 1;  // Set right index to one after middle
 
-                // Add middle element first
-                middle_out_data.push_back(data[mid]);  // Add middle element to middle_out_data // הוסף את האמצע קודם
+                middle_out_indices.push_back(mid);  // Add middle index first
 
-                // Add alternately left and right
-                while (left >= 0 || right < (int)n) {  // Continue until all elements are added // הוסף לסירוגין שמאלה וימינה
-                    if (left >= 0) {  // Check if left index is valid
-                        middle_out_data.push_back(data[left--]);  // Add left element and decrement left
+                while (left >= 0 || right < (int)n) {  // Add indices alternately from center
+                    if (left >= 0) {
+                        middle_out_indices.push_back(left--);  // Add left index
                     }
-                    if (right < (int)n) {  // Check if right index is valid
-                        middle_out_data.push_back(data[right++]);  // Add right element and increment right
+                    if (right < (int)n) {
+                        middle_out_indices.push_back(right++);  // Add right index
                     }
                 }
             }
 
             if (is_end) {  // Check if end iterator is requested
-                index = middle_out_data.size();  // Set index to end of middle_out_data
+                index = middle_out_indices.size();  // Set index to end of middle_out_indices
             }
         }
 
@@ -65,10 +64,13 @@ namespace ariel { // Namespace ariel to encapsulate classes and functions
          */
         // Dereference operator to access value
         T operator*() const {  // Return current element // גישה לערך
-            if (index >= middle_out_data.size()) {  // Check if index is out of bounds
+            if (capturedVersion != container->getVersion()) { // Ensure container was not modified since iterator creation
+                throw std::runtime_error("Container modified during iteration");  // Throw exception for invalid version
+            }
+            if (index >= middle_out_indices.size()) {  // Check if index is out of bounds
                 throw std::out_of_range("Iterator out of range");  // Throw exception for invalid access
             }
-            return middle_out_data[index];  // Return element at current index
+            return container->getData()[middle_out_indices[index]];  // Return element at current index
         }
 
         /**
@@ -77,7 +79,10 @@ namespace ariel { // Namespace ariel to encapsulate classes and functions
          */
         // Prefix increment operator
         MiddleOutOrderIterator& operator++() {  // Increment iterator (prefix) // ++
-            if (index >= middle_out_data.size()) {  // Check if increment would go beyond end
+            if (capturedVersion != container->getVersion()) { // Ensure container was not modified since iterator creation
+                throw std::runtime_error("Container modified during iteration");  // Throw exception for invalid version
+            }
+            if (index >= middle_out_indices.size()) {  // Check if increment would go beyond end
                 throw std::out_of_range("Cannot increment beyond end.");  // Throw exception for invalid increment
             }
             ++index;  // Increment index
@@ -90,7 +95,10 @@ namespace ariel { // Namespace ariel to encapsulate classes and functions
          */
         // Postfix increment operator
         MiddleOutOrderIterator operator++(int) {  // Increment iterator (postfix) // ++ (postfix)
-            if (index >= middle_out_data.size()) {  // Check if increment would go beyond end
+            if (capturedVersion != container->getVersion()) { // Ensure container was not modified since iterator creation
+                throw std::runtime_error("Container modified during iteration");  // Throw exception for invalid version
+            }
+            if (index >= middle_out_indices.size()) {  // Check if increment would go beyond end
                 throw std::out_of_range("Cannot increment beyond end.");  // Throw exception for invalid increment
             }
             MiddleOutOrderIterator temp = *this;  // Save current iterator state
@@ -99,21 +107,21 @@ namespace ariel { // Namespace ariel to encapsulate classes and functions
         }
 
         /**
-         * @param other Iterator to compare with
-         * @return True if iterators are at different positions, false otherwise
+         * @brief Equality comparison operator.
+         * @param other Another iterator to compare.
+         * @return True if both iterators are at the same position and container.
          */
-        // Inequality comparison operator
-        bool operator!=(const MiddleOutOrderIterator& other) const {  // Compare iterators for inequality
-            return index != other.index;  // Return true if indices differ
+        bool operator==(const MiddleOutOrderIterator& other) const {  // Compare iterators for equality
+            return index == other.index && container == other.container;  // Return true if indices and containers match
         }
 
         /**
-         * @param other Iterator to compare with
-         * @return True if iterators are at same position, false otherwise
+         * @brief Inequality comparison operator.
+         * @param other Another iterator to compare.
+         * @return True if iterators are at different positions or containers.
          */
-        // Equality comparison operator
-        bool operator==(const MiddleOutOrderIterator& other) const {  // Compare iterators for equality
-            return index == other.index;  // Return true if indices are equal
+        bool operator!=(const MiddleOutOrderIterator& other) const {  // Compare iterators for inequality
+            return !(*this == other);  // Return negation of equality
         }
     };
 
