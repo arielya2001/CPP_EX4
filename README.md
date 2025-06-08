@@ -43,6 +43,7 @@ Each iterator is implemented as a separate class that:
 - Iterators throw `std::out_of_range` in the following cases:
     - When dereferencing an iterator equal to `end_*_order()`
     - When incrementing an iterator equal to or beyond `end_*_order()` (both prefix and postfix)
+    - When the container was modified after the iterator was created (based on version tracking)
 
 
 #### AscendingOrderIterator  
@@ -74,6 +75,7 @@ Each iterator is implemented as a separate class that:
 - **Custom logic per iterator**: Each one demonstrates a unique traversal pattern.
 - **Robust exception safety**: Dereferencing `end()` throws a well-defined `std::out_of_range` exception.
 - **Comprehensive unit testing**: All iterator behaviors, comparisons, and exception scenarios are covered.
+- 
 
 ## Usage  
 
@@ -123,6 +125,8 @@ MiddleOut Order: 3 9 11 4 5
 ## Notes  
 - No external libraries are used aside from `doctest.h`.
 - Template-based for generality (though most demos use `int`).
+- Iterators access container data via reference (getData()), avoiding unnecessary copies.
+- Index tracking is done with size_t for type safety and consistency.
 
 ## Author & Date  
 - Developed by: Ariel Ya'acobi  
